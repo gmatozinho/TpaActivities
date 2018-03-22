@@ -26,9 +26,10 @@ public class Hash {
     public static int HashPolynomial(String word)
     {
         int sum = 0;
+        int N = 42;
         for (int i=0; i< word.length();i++)
         {
-            sum += TreatWords.ConvertCharToAsciiValue(word.charAt(i)) * Math.pow(33,i);
+            sum += TreatWords.ConvertCharToAsciiValue(word.charAt(i)) * Math.pow(N,i);
         }
 
         return sum;

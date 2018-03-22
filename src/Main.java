@@ -1,11 +1,12 @@
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         //System.out.println("Hello World");
-        //HashAscii();
+        HashAscii();
         HashPolynomial();
     }
 
@@ -19,9 +20,13 @@ public class Main {
             text = reader.readLine();
         }
 
+        FileWriter file = WorkWithCsvFile.OpenFile("benchascii.csv");
+        int cont = 0;
         for (int value : Hash.getArrayAscii()) {
-            System.out.println(value);
+            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
         }
+
+        WorkWithCsvFile.CloseFile(file);
     }
 
     private static void HashPolynomial() throws IOException {
@@ -34,9 +39,13 @@ public class Main {
             text = reader.readLine();
         }
 
+        FileWriter file = WorkWithCsvFile.OpenFile("benchpolynomial.csv");
+        int cont = 0;
 
         for (int value : Hash.getArrayPolynomial()) {
-            System.out.println(value);
+            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
         }
+
+        WorkWithCsvFile.CloseFile(file);
     }
 }
