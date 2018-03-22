@@ -5,21 +5,37 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         //System.out.println("Hello World");
-        HashAscii();
+        //HashAscii();
+        HashPolynomial();
     }
 
     private static void HashAscii() throws IOException {
 
-        Hash hash = new Hash();
         BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
         String text = reader.readLine();
         while (text  != null) {
-            int sum = TreatWords.ConvertStringToAsciiSum(text);
-            hash.HashAscii(sum);
+            int sum = Hash.HashAscii(text);
+            Hash.ContColision(sum,Hash.getArrayAscii());
             text = reader.readLine();
         }
 
-        for (int value : hash.getArrayAscii()) {
+        for (int value : Hash.getArrayAscii()) {
+            System.out.println(value);
+        }
+    }
+
+    private static void HashPolynomial() throws IOException {
+
+        BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
+        String text = reader.readLine();
+        while (text  != null) {
+            int sum = Hash.HashPolynomial(text);
+            Hash.ContColision(sum,Hash.getArrayPolynomial());
+            text = reader.readLine();
+        }
+
+
+        for (int value : Hash.getArrayPolynomial()) {
             System.out.println(value);
         }
     }

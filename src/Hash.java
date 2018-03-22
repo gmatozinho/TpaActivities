@@ -1,13 +1,45 @@
 public class Hash {
-    private int[] arrayAscii =  new int[100];
+    private static int[] arrayAscii =  new int[100];
+    private static int[] arrayPolynomial =  new int[100];
 
-    public void HashAscii(int sum){
-        int index = sum % getArrayAscii().length;
-        getArrayAscii()[index] += 1;
+    public static void ContColision(int sum, int[] array){
+        int index = DefineIndex(sum,array);
+        array[index] += 1;
     }
 
-    public int[] getArrayAscii() {
+    private static int DefineIndex(int sum, int[] array)
+    {
+        return sum % array.length;
+    }
+
+    public static int HashAscii(String word)
+    {
+        int sum = 0;
+        for (int i=0; i< word.length();i++)
+        {
+            sum += TreatWords.ConvertCharToAsciiValue(word.charAt(i));
+        }
+
+        return sum;
+    }
+
+    public static int HashPolynomial(String word)
+    {
+        int sum = 0;
+        for (int i=0; i< word.length();i++)
+        {
+            sum += TreatWords.ConvertCharToAsciiValue(word.charAt(i)) * Math.pow(33,i);
+        }
+
+        return sum;
+    }
+
+    public static int[] getArrayAscii() {
         return arrayAscii;
+    }
+
+    public static int[] getArrayPolynomial() {
+        return arrayPolynomial;
     }
 
 }
