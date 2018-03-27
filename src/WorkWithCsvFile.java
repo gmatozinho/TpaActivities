@@ -31,4 +31,6 @@ public class WorkWithCsvFile {
         return pos+separator+value +"\n";
     }
 
+
+
 }
