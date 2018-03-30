@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.server.ExportException;
@@ -9,10 +10,10 @@ public class WorkWithCsvFile {
     public static FileWriter OpenFile(String fileName) throws IOException {
         try
         {
-            return new FileWriter(fileName);
+            return new FileWriter("results" + File.separator + fileName);
         }catch (Exception e)
         {
-            return new FileWriter(fileName + System.currentTimeMillis() +".csv");
+            return new FileWriter("results" + File.separator +fileName + System.currentTimeMillis() +".csv");
         }
 
     }
