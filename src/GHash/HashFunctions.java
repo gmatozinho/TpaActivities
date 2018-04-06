@@ -1,3 +1,8 @@
+package GHash;
+
+import NumBib.Prime;
+import NumBib.TreatBigInteger;
+
 import java.math.BigInteger;
 
 public class HashFunctions {
@@ -30,6 +35,11 @@ public class HashFunctions {
     private static int DefineIndex(int sum, int[] array)
     {
         return sum % array.length;
+    }
+
+    public static int DefineIndex(int sum, int length)
+    {
+        return sum % length;
     }
 
     public static void ContColision(long sum, int[] array){

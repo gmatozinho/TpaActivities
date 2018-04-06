@@ -1,3 +1,8 @@
+import GHash.HashFunctions;
+import GHash.MyHash;
+import TreatFilesAndText.TreatWords;
+import TreatFilesAndText.WorkWithCsvFile;
+
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,14 +16,50 @@ public class Main {
 
 
     private static void CallHashsBench() throws IOException {
-        HashFunctions.StartArrays(100);
-        HashAscii();
-        HashPolynomial();
-        HashBernstein();
-        HashModifiedBernstein();
-        HashFNV();
-        HashJSW();
-        HashELF();
+//        HashFunctions.StartArrays(100);
+//        HashAscii();
+//        HashPolynomial();
+//        HashBernstein();
+//        HashModifiedBernstein();
+//        HashFNV();
+//        HashJSW();
+//        HashELF();
+        MyHash hash = new MyHash(100);
+
+        Pessoa pessoa = new Pessoa("Fabricio",23,"braquinho");
+
+        hash.insertItem(pessoa.nome,pessoa);
+        for (int i=0;i<hash.size();i++){
+            System.out.println(hash.getHashVector()[i].size());
+        }
+
+        Pessoa pessoa1 = (Pessoa) hash.findElements(pessoa.nome);
+        System.out.println(pessoa1.getCor());
+    }
+
+    static class Pessoa
+    {
+        private String nome;
+        private int idade;
+        private String cor;
+
+        Pessoa(String nome, int idade, String cor) {
+            this.nome = nome;
+            this.idade = idade;
+            this.cor = cor;
+        }
+
+        public String getNome() {
+            return nome;
+        }
+
+        public int getIdade() {
+            return idade;
+        }
+
+        public String getCor() {
+            return cor;
+        }
     }
 
     private static void HashAscii() throws IOException {

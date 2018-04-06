@@ -1,3 +1,5 @@
+package TreatFilesAndText;
+
 import java.io.*;
 
 public class TreatWords {

@@ -1,3 +1,5 @@
+package GHash;
+
 import java.util.LinkedList;
 
 interface MyMap {

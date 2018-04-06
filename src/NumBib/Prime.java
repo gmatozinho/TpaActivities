@@ -1,3 +1,5 @@
+package NumBib;
+
 public class Prime {
 
     private static boolean isPrime(int n)
