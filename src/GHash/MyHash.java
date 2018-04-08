@@ -1,6 +1,11 @@
 package GHash;
 
+import NumBib.Prime;
+
 import java.util.LinkedList;
+
+import static GHash.AuxHashFunctions.DefineIndex;
+
 class MyNode{
     private Object key;
     private Object object;
@@ -40,8 +45,8 @@ public class MyHash implements MyMap {
         }
     }
 
-    public MyHash(int lenght) {
-        this.lenght = lenght;
+    public MyHash(int length) {
+        this.lenght = Prime.decideArraySize(length);
         hashVector = new LinkedList[this.lenght];
         for(int i = 0; i < hashVector.length; i++){
             hashVector[i] = new LinkedList<>();
@@ -50,10 +55,10 @@ public class MyHash implements MyMap {
 
     @Override
     public Object findElements(Object key) {
-        String word = (String)key;
-        int vectorPos = calcElementVectorPos(word);
+        int code = key.hashCode();
+        int vectorPos = calcElementVectorPos(code);
         LinkedList<MyNode> list = hashVector[vectorPos];
-        int listPos = getElementListPos(word,list);
+        int listPos = getElementListPos(key,list);
 
         if(listPos != -1)
         {
@@ -62,10 +67,18 @@ public class MyHash implements MyMap {
         return null;
     }
 
+
+
     private int calcElementVectorPos(String word)
     {
         int sum = HashFunctions.Polynomial(word);
-        return HashFunctions.DefineIndex(sum,this.lenght);
+        return DefineIndex(sum,this.lenght);
+    }
+
+    private int calcElementVectorPos(int word)
+    {
+        //long sum = HashFunctions.Polynomial(word);
+        return DefineIndex(word,this.lenght);
     }
 
     private int getElementListPos(Object key,LinkedList<MyNode> list)
@@ -81,13 +94,17 @@ public class MyHash implements MyMap {
         return -1;
     }
 
+
+
     @Override
     public boolean insertItem(Object key, Object object) {
 
         try{
             MyNode node = new MyNode(key,object);
-            String word = (String) key;
-            int vectorPos = calcElementVectorPos(word);
+
+            //String word = (String)key;
+            int code = key.hashCode();
+            int vectorPos = calcElementVectorPos(code);
             LinkedList<MyNode> list = hashVector[vectorPos];
             int listPos = getElementListPos(key,list);
 
@@ -108,9 +125,11 @@ public class MyHash implements MyMap {
 
     @Override
     public Object removeElement(Object key) {
+
         try{
-            String word = (String) key;
-            int vectorPos = calcElementVectorPos(word);
+            //String word = (String) key;
+            int code = key.hashCode();
+            int vectorPos = calcElementVectorPos(code);
             LinkedList<MyNode> list = hashVector[vectorPos];
             int listPos = getElementListPos(key,list);
             return list.remove(listPos).getObject();}
@@ -132,12 +151,34 @@ public class MyHash implements MyMap {
 
     @Override
     public LinkedList<Object> keys() {
-        return null;
+        LinkedList<Object> keys = new LinkedList<>();
+
+        for (LinkedList<MyNode> list: hashVector) {
+            if(list.size() > 0)
+            {
+                for (MyNode node:list) {
+                    keys.add(node.getKey());
+                }
+            }
+        }
+
+        return keys;
     }
 
     @Override
     public LinkedList<Object> values() {
-        return null;
+        LinkedList<Object> values = new LinkedList<>();
+
+        for (LinkedList<MyNode> list: hashVector) {
+            if(list.size() > 0)
+            {
+                for (MyNode node:list) {
+                    values.add(node.getObject());
+                }
+            }
+        }
+
+        return values;
     }
 
     public LinkedList[] getHashVector() {

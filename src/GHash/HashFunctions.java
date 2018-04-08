@@ -5,7 +5,7 @@ import NumBib.TreatBigInteger;
 
 import java.math.BigInteger;
 
-public class HashFunctions {
+class HashFunctions {
     private static int[] arrayAscii =  new int[100];
     private static int[] arrayPolynomial =  new int[100];
     private static int[] arrayBernstein =  new int[100];
@@ -15,7 +15,7 @@ public class HashFunctions {
     private static int[] arrayELF =  new int[100];
 
 
-    public static void StartArrays(int n){
+    static void StartArrays(int n){
 
         int size = Prime.decideArraySize(n);
         arrayAscii =  new int[size];
@@ -27,42 +27,7 @@ public class HashFunctions {
         arrayELF =  new int[size];
     }
 
-    public static void ContColision(int sum, int[] array){
-        int index = DefineIndex(sum,array);
-        array[index] += 1;
-    }
-
-    private static int DefineIndex(int sum, int[] array)
-    {
-        return sum % array.length;
-    }
-
-    public static int DefineIndex(int sum, int length)
-    {
-        return sum % length;
-    }
-
-    public static void ContColision(long sum, int[] array){
-        int index = DefineIndex(sum,array);
-        array[index] += 1;
-    }
-
-    private static int DefineIndex(long sum, int[] array)
-    {
-        return (int) sum % array.length;
-    }
-
-    public static void ContColision(BigInteger sum, int[] array){
-        int index = DefineIndex(sum,array);
-        array[index] += 1;
-    }
-
-    private static int DefineIndex(BigInteger sum, int[] array)
-    {
-        return sum.mod(TreatBigInteger.intToBigInteger(array.length)).intValue();
-    }
-
-    public static int Ascii(String word)
+    static int Ascii(String word)
     {
         int sum = 0;
         for (int i=0; i< word.length();i++)
@@ -73,7 +38,7 @@ public class HashFunctions {
         return sum;
     }
 
-    public static int Polynomial(String word)
+    static int Polynomial(String word)
     {
         int sum = 0;
         int N = 42;
@@ -85,7 +50,7 @@ public class HashFunctions {
         return sum;
     }
 
-    public static BigInteger Bernstein(String word)
+    static BigInteger Bernstein(String word)
     {
         BigInteger bigIntegerSum = new BigInteger("0");
         for (int i = 0; i < word.length(); i++)
@@ -107,7 +72,7 @@ public class HashFunctions {
         return sum;*/
     }
 
-    public static BigInteger ModifiedBernstein(String word)
+    static BigInteger ModifiedBernstein(String word)
     {
         BigInteger bigIntegerSum = new BigInteger("0");
 
@@ -130,7 +95,7 @@ public class HashFunctions {
                 return sum;*/
     }
 
-    public static BigInteger FNV(String word)
+    static BigInteger FNV(String word)
     {
         BigInteger fnvSum = new BigInteger("2166136261");
         BigInteger fnvValue = new BigInteger("16777619");
@@ -143,7 +108,7 @@ public class HashFunctions {
         return fnvSum;
     }
 
-    public static BigInteger JSW(String word)
+    static BigInteger JSW(String word)
     {
         BigInteger sum = new BigInteger("16777551");
 
@@ -165,7 +130,7 @@ public class HashFunctions {
         return sum;*/
     }
 
-    public static long ELF(String word)
+    static long ELF(String word)
     {
         long sum = 0, var;
 
@@ -185,32 +150,31 @@ public class HashFunctions {
         return sum;
     }
 
-
-    public static int[] getArrayAscii() {
+    static int[] getArrayAscii() {
         return arrayAscii;
     }
 
-    public static int[] getArrayPolynomial() {
+    static int[] getArrayPolynomial() {
         return arrayPolynomial;
     }
 
-    public static int[] getArrayBernstein() {
+    static int[] getArrayBernstein() {
         return arrayBernstein;
     }
 
-    public static int[] getArrayModifiedBernstein() {
+    static int[] getArrayModifiedBernstein() {
         return arrayModifiedBernstein;
     }
 
-    public static int[] getArrayFNV() {
+    static int[] getArrayFNV() {
         return arrayFNV;
     }
 
-    public static int[] getArrayJSW() {
+    static int[] getArrayJSW() {
         return arrayJSW;
     }
 
-    public static int[] getArrayELF() {
+    static int[] getArrayELF() {
         return arrayELF;
     }
 
