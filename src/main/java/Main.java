@@ -1,0 +1,41 @@
+import GHash.MyHash;
+import Institution.Student;
+
+import java.io.IOException;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        //CallHashsBench();
+        CallHash();
+    }
+
+
+    private static void CallHash() {
+        MyHash hash = new MyHash(100);
+
+        Student student1 = new Student("20132BSI0044","Gustavo",22,"Negro");
+        Student student2 = new Student("20132BSI0099","Gustavo66",22,"Negro");
+
+        hash.insertItem(student1.getNome(), student1);
+        hash.insertItem(student2.getNome(),student2);
+
+        hash.removeElement(student1.getNome());
+
+//        for (int i=0;i<hash.size();i++){
+//            System.out.println(hash.getHashVector()[i].size());
+//        }
+
+        Student student = (Student) hash.findElements(student2.getNome());
+
+        if(student != null)
+        {
+            System.out.println(student.getNome()+","+student.getMatricula());
+        }else{
+            System.out.print("ta tirando irmao");
+        }
+
+    }
+
+
+}
