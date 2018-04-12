@@ -1,7 +1,7 @@
 package GHash;
 
-import NumBib.Prime;
-import NumBib.TreatBigInteger;
+import NumLib.Prime;
+import NumLib.TreatBigInteger;
 
 import java.math.BigInteger;
 

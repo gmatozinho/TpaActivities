@@ -1,4 +1,4 @@
-package NumBib;
+package NumLib;
 
 import java.math.BigInteger;
 

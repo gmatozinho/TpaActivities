@@ -24,24 +24,14 @@ public class Main {
 
         hash.removeElement(student1.getNome());
 
-//        for (int i=0;i<hash.size();i++){
-//            System.out.println(hash.getHashVector()[i].size());
-//        }
-
-        Student student = (Student) hash.findElements(student2.getNome());
+        Student student = (Student) hash.findElements(student1.getNome());
 
 
-//        if(student != null)
-//        {
-//            System.out.println(student.getNome()+","+student.getMatricula());
-//        }else{
-//            System.out.print("ta tirando irmao");
-//        }
-        byte[] bytes = ByteArray.toBytesStream("alazao");
-
-
-
+        if(student != null)
+        {
+            System.out.println(student.getNome()+","+student.getMatricula());
+        }else{
+            System.out.print("ta tirando irmao");
+        }
     }
-
-
 }

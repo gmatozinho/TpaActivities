@@ -1,6 +1,6 @@
 package GHash;
 
-import NumBib.TreatBigInteger;
+import NumLib.TreatBigInteger;
 
 import java.math.BigInteger;
 
