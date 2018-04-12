@@ -9,17 +9,16 @@ import static GHash.AuxHashFunctions.DefineIndex;
 
 
 //TODO put all sincronized
+//TODO put to use bytearray
 class MyNode{
     private Object key;
     private Object object;
+    private int myHashCode;
 
     MyNode(Object key, Object object) {
         this.key = key;
         this.object = object;
-    }
 
-    public void setKey(Object key) {
-        this.key = key;
     }
 
     public void setObject(Object object) {
@@ -32,6 +31,14 @@ class MyNode{
 
     public Object getObject() {
         return object;
+    }
+
+    public int getMyHashCode() {
+        return myHashCode;
+    }
+
+    public void setMyHashCode(int myHashCode) {
+        this.myHashCode = myHashCode;
     }
 }
 
@@ -48,10 +55,6 @@ public class MyHash implements MyMap {
         actualSize = 0;
         calcMaxSize();
         hashVector = new LinkedList[this.lenght];
-//        for(int i = 0; i < hashVector.length; i++){
-//            hashVector[i] = new LinkedList<MyNode>();
-//        }
-
         fillVector();
     }
 
@@ -60,9 +63,6 @@ public class MyHash implements MyMap {
         actualSize = 0;
         calcMaxSize();
         hashVector = new LinkedList[this.lenght];
-//        for(int i = 0; i < hashVector.length; i++){
-//            hashVector[i] = new LinkedList<MyNode>();
-//        }
         fillVector();
     }
 
@@ -92,12 +92,6 @@ public class MyHash implements MyMap {
         return null;
     }
 
-
-    private int calcElementVectorPos(String word)
-    {
-        int sum = HashFunctions.Polynomial(word);
-        return DefineIndex(sum,this.lenght);
-    }
 
     private synchronized void resizeVector()
     {

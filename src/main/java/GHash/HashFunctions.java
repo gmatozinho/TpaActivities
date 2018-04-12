@@ -50,6 +50,18 @@ class HashFunctions {
         return sum;
     }
 
+    static int Polynomial(byte[] bytes)
+    {
+        int sum = 0;
+        int N = 42;
+        for (int i=0; i< bytes.length;i++)
+        {
+            sum += bytes[i] * Math.pow(N,i);
+        }
+
+        return sum;
+    }
+
     static BigInteger Bernstein(String word)
     {
         BigInteger bigIntegerSum = new BigInteger("0");

@@ -37,6 +37,8 @@ public class Main {
 //        }else{
 //            System.out.print("ta tirando irmao");
 //        }
+        byte[] bytes = ByteArray.toBytesStream("alazao");
+
 
 
     }
