@@ -1,5 +1,7 @@
+import ByteLib.ByteArray;
 import GHash.MyHash;
 import Institution.Student;
+import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl;
 
 import java.io.IOException;
 
@@ -11,7 +13,7 @@ public class Main {
     }
 
 
-    private static void CallHash() {
+    private static void CallHash() throws IOException {
         MyHash hash = new MyHash(100);
 
         Student student1 = new Student("20132BSI0044","Gustavo",22,"Negro");
@@ -28,12 +30,14 @@ public class Main {
 
         Student student = (Student) hash.findElements(student2.getNome());
 
-        if(student != null)
-        {
-            System.out.println(student.getNome()+","+student.getMatricula());
-        }else{
-            System.out.print("ta tirando irmao");
-        }
+
+//        if(student != null)
+//        {
+//            System.out.println(student.getNome()+","+student.getMatricula());
+//        }else{
+//            System.out.print("ta tirando irmao");
+//        }
+
 
     }
 

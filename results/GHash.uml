@@ -3,42 +3,45 @@
   <ID>JAVA</ID>
   <OriginalElement>GHash</OriginalElement>
   <nodes>
-    <node x="764.0" y="88.0">GHash.MyMap</node>
-    <node x="165.5" y="409.0">GHash.MyHash</node>
-    <node x="0.0" y="121.0">GHash.MyNode</node>
-    <node x="208.0" y="0.0">GHash.HashFunctions</node>
-    <node x="490.0" y="77.0">GHash.AuxHashFunctions</node>
+    <node x="700.0" y="87.5">GHash.MyMap</node>
+    <node x="193.5" y="409.0">GHash.MyHash</node>
+    <node x="274.0" y="143.0">GHash.MyNode</node>
+    <node x="418.0" y="0.0">GHash.HashFunctions</node>
+    <node x="0.0" y="77.0">GHash.AuxHashFunctions</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="GHash.MyHash" target="GHash.AuxHashFunctions">
-      <point x="69.39999999999998" y="-135.5" />
-      <point x="408.4" y="379.0" />
-      <point x="617.0" y="379.0" />
-      <point x="0.0" y="102.5" />
-    </edge>
     <edge source="GHash.MyHash" target="GHash.HashFunctions">
-      <point x="0.0" y="-135.5" />
+      <point x="69.39999999999998" y="-136.0" />
+      <point x="436.4" y="379.0" />
+      <point x="549.0" y="379.0" />
       <point x="0.0" y="179.5" />
     </edge>
     <edge source="GHash.MyHash" target="GHash.MyNode">
-      <point x="-138.8" y="-135.5" />
-      <point x="200.2" y="389.0" />
-      <point x="47.0" y="389.0" />
-      <point x="-47.0" y="58.5" />
+      <point x="0.0" y="-136.0" />
+      <point x="31.0" y="36.5" />
+    </edge>
+    <edge source="GHash.MyHash" target="GHash.AuxHashFunctions">
+      <point x="-138.8" y="-136.0" />
+      <point x="228.2" y="389.0" />
+      <point x="127.0" y="389.0" />
+      <point x="0.0" y="102.5" />
     </edge>
     <edge source="GHash.MyHash" target="GHash.MyMap">
-      <point x="138.79999999999995" y="-135.5" />
-      <point x="477.79999999999995" y="389.0" />
-      <point x="890.0" y="389.0" />
-      <point x="0.0" y="91.5" />
+      <point x="138.79999999999995" y="-136.0" />
+      <point x="505.79999999999995" y="389.0" />
+      <point x="826.0" y="389.0" />
+      <point x="0.0" y="92.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="263.0" y="246.0" />
-  <SelectedNodes />
+  <settings layout="Hierarchic Group" zoom="1.0" x="434.0" y="269.5" />
+  <SelectedNodes>
+    <node>GHash.MyNode</node>
+  </SelectedNodes>
   <Categories>
-    <Category>Methods</Category>
     <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

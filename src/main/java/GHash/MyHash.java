@@ -1,11 +1,14 @@
 package GHash;
 
 import NumBib.Prime;
+import sun.security.util.Length;
 
 import java.util.LinkedList;
 
 import static GHash.AuxHashFunctions.DefineIndex;
 
+
+//TODO put all sincronized
 class MyNode{
     private Object key;
     private Object object;
@@ -36,21 +39,43 @@ class MyNode{
 public class MyHash implements MyMap {
     private int lenght;
     private LinkedList[] hashVector;
+    private int maxSize;
+    private int actualSize;
+    private float threshold = 0.75f;
 
     public MyHash() {
         this.lenght = 1<<4;
+        actualSize = 0;
+        calcMaxSize();
         hashVector = new LinkedList[this.lenght];
+//        for(int i = 0; i < hashVector.length; i++){
+//            hashVector[i] = new LinkedList<MyNode>();
+//        }
+
+        fillVector();
+    }
+
+    public MyHash(int length) {
+        this.lenght = Prime.decideArraySize(length);
+        actualSize = 0;
+        calcMaxSize();
+        hashVector = new LinkedList[this.lenght];
+//        for(int i = 0; i < hashVector.length; i++){
+//            hashVector[i] = new LinkedList<MyNode>();
+//        }
+        fillVector();
+    }
+
+    private void fillVector()
+    {
         for(int i = 0; i < hashVector.length; i++){
             hashVector[i] = new LinkedList<MyNode>();
         }
     }
 
-    public MyHash(int length) {
-        this.lenght = Prime.decideArraySize(length);
-        hashVector = new LinkedList[this.lenght];
-        for(int i = 0; i < hashVector.length; i++){
-            hashVector[i] = new LinkedList<MyNode>();
-        }
+    private void calcMaxSize()
+    {
+        this.maxSize = (int) (threshold * (Math.pow(lenght,2)));
     }
 
     @Override
@@ -74,6 +99,21 @@ public class MyHash implements MyMap {
         return DefineIndex(sum,this.lenght);
     }
 
+    private synchronized void resizeVector()
+    {
+        LinkedList[] oldVector = hashVector;
+        lenght = Prime.decideArraySize(lenght * 2);
+        hashVector = new LinkedList[this.lenght];
+        calcMaxSize();
+        fillVector();
+
+        for ( LinkedList<MyNode> list: oldVector) {
+            for ( MyNode node: list) {
+                insertItem(node.getKey(),node.getObject());
+            }
+        }
+    }
+
     private int calcElementVectorPos(int word)
     {
         //long sum = HashFunctions.Polynomial(word);
@@ -93,10 +133,13 @@ public class MyHash implements MyMap {
         return -1;
     }
 
-
-
     @Override
     public boolean insertItem(Object key, Object object) {
+
+        if(actualSize == maxSize)
+        {
+            resizeVector();
+        }
 
         try{
             MyNode node = new MyNode(key,object);
@@ -110,6 +153,7 @@ public class MyHash implements MyMap {
             if(listPos == -1)
             {
                 list.add(node);
+                actualSize ++;
             }else{
                 list.get(listPos).setObject(object);
             }
@@ -125,13 +169,17 @@ public class MyHash implements MyMap {
     @Override
     public Object removeElement(Object key) {
 
+        Object aux;
         try{
             //String word = (String) key;
             int code = key.hashCode();
             int vectorPos = calcElementVectorPos(code);
             LinkedList<MyNode> list = hashVector[vectorPos];
             int listPos = getElementListPos(key,list);
-            return list.remove(listPos).getObject();}
+            aux = list.remove(listPos).getObject();
+            actualSize --;
+            return aux;
+        }
         catch (Exception e)
         {
             return null;
