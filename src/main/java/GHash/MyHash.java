@@ -4,44 +4,50 @@ import ByteLib.ByteArray;
 import NumLib.Prime;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import static GHash.AuxHashFunctions.DefineIndex;
 
-class MyNode{
-    private Object key;
-    private Object object;
+class MyNode<K,V>{
     private int myHashCode;
+    private K key;
+    private V value;
 
-    MyNode(Object key, Object object,int myHashCode) {
+    MyNode(int myHashCode,K key, V value) {
         this.key = key;
-        this.object = object;
+        this.value = value;
         this.myHashCode = myHashCode;
     }
 
-    public void setObject(Object object) {
-        this.object = object;
+    void setValue(V value) {
+
+        this.value = value;
     }
 
-    public Object getKey() {
+    K getKey() {
         return key;
     }
 
-    public Object getObject() {
-        return object;
+    V getValue() {
+        return value;
     }
 
-    public int getMyHashCode() {
+    int getMyHashCode() {
         return myHashCode;
     }
 
-    public void setMyHashCode(int myHashCode) {
-        this.myHashCode = myHashCode;
-    }
 }
 
 
-public class MyHash implements MyMap {
+@SuppressWarnings("ALL")
+public class MyHash<K,V> implements MyMap<K,V>,Cloneable, Serializable {
+    public enum HashFunction
+    {
+        Ascii,Polynomial,Bernstein,ModifiedBernstein,FNV,JSW,ELF
+    }
+
+
     private int length;
     private LinkedList[] hashVector;
     private int maxSize;
@@ -56,7 +62,7 @@ public class MyHash implements MyMap {
         fillVector();
     }
 
-    public MyHash(int length) {
+    MyHash(int length) {
         this.length = Prime.decideArraySize(length);
         actualSize = 0;
         calcMaxSize();
@@ -77,7 +83,7 @@ public class MyHash implements MyMap {
     }
 
     @Override
-    public Object findElements(Object key) throws IOException {
+    public V findElements(K key) throws IOException {
         int code = generateHashCode(key);
         int vectorPos = getElementVectorPos(code);
         LinkedList<MyNode> list = hashVector[vectorPos];
@@ -85,14 +91,14 @@ public class MyHash implements MyMap {
 
         if(listPos != -1)
         {
-            return list.get(listPos).getObject();
+            return (V) list.get(listPos).getValue();
         }
         return null;
     }
 
 
     @Override
-    public boolean insertItem(Object key, Object object) {
+    public boolean insertItem(K key, V object) {
 
         if(actualSize == maxSize)
         {
@@ -101,7 +107,7 @@ public class MyHash implements MyMap {
 
         try{
             int myHashCode = generateHashCode(key);
-            MyNode node = new MyNode(key,object,myHashCode);
+            MyNode node = new MyNode(myHashCode,key,object);
 
             int code = node.getMyHashCode();
             int vectorPos = getElementVectorPos(code);
@@ -113,7 +119,7 @@ public class MyHash implements MyMap {
                 list.add(node);
                 actualSize ++;
             }else{
-                list.get(listPos).setObject(object);
+                list.get(listPos).setValue(object);
             }
 
             return  true;
@@ -125,15 +131,15 @@ public class MyHash implements MyMap {
     }
 
     @Override
-    public Object removeElement(Object key) {
+    public V removeElement(K key) {
 
-        Object aux;
+        V aux;
         try{
             int code = generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
             LinkedList<MyNode> list = hashVector[vectorPos];
             int listPos = getElementListPos(key,list);
-            aux = list.remove(listPos).getObject();
+            aux = (V) list.remove(listPos).getValue();
             actualSize --;
             return aux;
         }
@@ -154,14 +160,14 @@ public class MyHash implements MyMap {
     }
 
     @Override
-    public LinkedList<Object> keys() {
-        LinkedList<Object> keys = new LinkedList<>();
+    public LinkedList<K> keys() {
+        LinkedList<K> keys = new LinkedList<>();
 
         for (LinkedList<MyNode> list: hashVector) {
             if(list.size() > 0)
             {
                 for (MyNode node:list) {
-                    keys.add(node.getKey());
+                    keys.add((K) node.getKey());
                 }
             }
         }
@@ -170,22 +176,22 @@ public class MyHash implements MyMap {
     }
 
     @Override
-    public LinkedList<Object> values() {
+    public LinkedList<V> values() {
         LinkedList<Object> values = new LinkedList<>();
 
         for (LinkedList<MyNode> list: hashVector) {
             if(list.size() > 0)
             {
                 for (MyNode node:list) {
-                    values.add(node.getObject());
+                    values.add(node.getValue());
                 }
             }
         }
 
-        return values;
+        return (LinkedList<V>) values;
     }
 
-    private int generateHashCode(Object key) throws IOException {
+    private int generateHashCode(K key) throws IOException {
         byte[] bytes = ByteArray.toBytesStream(key);
         return HashFunctions.Polynomial(bytes);
     }
@@ -210,7 +216,7 @@ public class MyHash implements MyMap {
         return DefineIndex(hashCode,this.length);
     }
 
-    private int getElementListPos(Object key,LinkedList<MyNode> list)
+    private int getElementListPos(K key, LinkedList<MyNode> list)
     {
         for(int i=0;i<list.size();i++ )
         {

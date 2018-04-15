@@ -3,13 +3,13 @@ package GHash;
 import java.io.IOException;
 import java.util.LinkedList;
 
-interface MyMap {
-    Object findElements(Object key) throws IOException;
-    boolean insertItem(Object key, Object object);
-    Object removeElement(Object key);
+interface MyMap <K,V>{
+    V findElements(K key) throws IOException;
+    boolean insertItem(K key, V value);
+    V removeElement(K key);
     int size();
     boolean isEmpty();
-    LinkedList<Object> keys();
-    LinkedList<Object> values();
+    LinkedList<K> keys();
+    LinkedList<V> values();
 
 }

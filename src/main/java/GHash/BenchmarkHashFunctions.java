@@ -10,7 +10,7 @@ import java.math.BigInteger;
 
 import static GHash.AuxHashFunctions.ContColision;
 
-public class BenchmarkHashFunctions {
+class BenchmarkHashFunctions {
 
     private static void HashAscii() throws IOException {
 
@@ -151,7 +151,7 @@ public class BenchmarkHashFunctions {
         WorkWithCsvFile.CloseFile(file);
     }
 
-    public static void CallHashsBench() throws IOException {
+    static void CallHashsBench() throws IOException {
         HashFunctions.StartArrays(100);
         HashAscii();
         HashPolynomial();

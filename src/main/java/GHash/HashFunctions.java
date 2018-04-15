@@ -38,10 +38,20 @@ class HashFunctions {
         return sum;
     }
 
+    static int Ascii(byte[] bytes)
+    {
+        int sum = 0;
+        for (byte aByte : bytes) {
+            sum += aByte;
+        }
+
+        return sum;
+    }
+
     static int Polynomial(String word)
     {
         int sum = 0;
-        int N = 42;
+        int N = 33;
         for (int i=0; i< word.length();i++)
         {
             sum += word.charAt(i) * Math.pow(N,i);
@@ -64,61 +74,79 @@ class HashFunctions {
 
     static BigInteger Bernstein(String word)
     {
-        BigInteger bigIntegerSum = new BigInteger("0");
+        BigInteger sum = new BigInteger("0");
         for (int i = 0; i < word.length(); i++)
         {
-            BigInteger temporary = bigIntegerSum.multiply(new BigInteger("33"));
-            bigIntegerSum = temporary.add(TreatBigInteger.charToBigInteger(word.charAt(i)));
+            BigInteger temporary = sum.multiply(new BigInteger("33"));
+            sum = temporary.add(TreatBigInteger.charToBigInteger(word.charAt(i)));
         }
 
-        return bigIntegerSum;
+        return sum;
+    }
 
-        /*@ Sem Big Integer
-                long sum = 0;
+    static BigInteger Bernstein(byte[] bytes)
+    {
 
-                for (int i = 0; i < word.length(); i++)
-                {
-                    sum = 33 * sum + word.charAt(i);
-                }
+        BigInteger sum = new BigInteger("0");
+        for (byte aByte : bytes) {
+            BigInteger temporary = sum.multiply(new BigInteger("33"));
+            sum = temporary.add(TreatBigInteger.intToBigInteger(aByte));
+        }
 
-        return sum;*/
+        return sum;
     }
 
     static BigInteger ModifiedBernstein(String word)
     {
-        BigInteger bigIntegerSum = new BigInteger("0");
+        BigInteger sum = new BigInteger("0");
 
         for (int i = 0; i < word.length(); i++)
         {
-            BigInteger temporary = bigIntegerSum.multiply(new BigInteger("33"));
-            bigIntegerSum = temporary.xor(TreatBigInteger.charToBigInteger(word.charAt(i)));
+            BigInteger temporary = sum.multiply(new BigInteger("33"));
+            sum = temporary.xor(TreatBigInteger.charToBigInteger(word.charAt(i)));
         }
 
-        return bigIntegerSum;
+        return sum;
+    }
 
-        /* @ Sem Big Integer
-                int sum=0;
+    static BigInteger ModifiedBernstein(byte[] bytes)
+    {
 
-                for (int i = 0; i < word.length(); i++)
-                {
-                    sum = 33 * sum ^ word.charAt(i);
-                }
+        BigInteger sum = new BigInteger("0");
+        for (byte aByte : bytes) {
+            BigInteger temporary = sum.multiply(new BigInteger("33"));
+            sum = temporary.xor(TreatBigInteger.intToBigInteger(aByte));
+        }
 
-                return sum;*/
+        return sum;
     }
 
     static BigInteger FNV(String word)
     {
-        BigInteger fnvSum = new BigInteger("2166136261");
+        BigInteger sum = new BigInteger("2166136261");
         BigInteger fnvValue = new BigInteger("16777619");
 
         for (int i = 0; i < word.length(); i++)
         {
-            fnvSum = (fnvSum.multiply(fnvValue)).or(TreatBigInteger.charToBigInteger(word.charAt(i)));
+            sum = (sum.multiply(fnvValue)).or(TreatBigInteger.charToBigInteger(word.charAt(i)));
         }
 
-        return fnvSum;
+        return sum;
     }
+
+    static BigInteger FNV(byte[] bytes)
+    {
+
+
+        BigInteger sum = new BigInteger("2166136261");
+        BigInteger fnvValue = new BigInteger("16777619");
+        for (byte aByte : bytes) {
+            sum = (sum.multiply(fnvValue)).or(TreatBigInteger.intToBigInteger(aByte));
+        }
+
+        return sum;
+    }
+
 
     static BigInteger JSW(String word)
     {
@@ -130,16 +158,16 @@ class HashFunctions {
         }
 
         return sum;
+    }
 
-        /* @Sem Big Integer
-        long sum = 16777551;
-
-        for (int i = 0; i < word.length(); i++)
-        {
-            sum = (sum << 1 | sum >> 31) ^ word.charAt(i);
+    static BigInteger JSW(byte[] bytes)
+    {
+        BigInteger sum = new BigInteger("16777551");
+        for (byte aByte : bytes) {
+            sum = (sum.shiftLeft(1).or(sum.shiftRight(31))).or(TreatBigInteger.intToBigInteger(aByte));
         }
 
-        return sum;*/
+        return sum;
     }
 
     static long ELF(String word)
@@ -161,6 +189,26 @@ class HashFunctions {
 
         return sum;
     }
+
+    static long ELF(byte[] bytes)
+    {
+        long sum = 0, var;
+
+        for (byte aByte : bytes) {
+            sum = (sum << 4) + aByte;
+            var = sum & 0xf0000000L;
+
+            if (var != 0) {
+                sum ^= var >> 24;
+            }
+
+            sum &= ~var;
+        }
+
+        return sum;
+    }
+
+
 
     static int[] getArrayAscii() {
         return arrayAscii;
