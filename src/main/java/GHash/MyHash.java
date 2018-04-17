@@ -1,6 +1,5 @@
 package GHash;
 
-import ByteLib.ByteArray;
 import NumLib.Prime;
 
 import java.io.IOException;
@@ -47,14 +46,15 @@ public class MyHash<K,V> implements MyMap<K,V>,Cloneable, Serializable {
         Ascii,Polynomial,Bernstein,ModifiedBernstein,FNV,JSW,ELF
     }
 
-
     private int length;
     private LinkedList[] hashVector;
     private int maxSize;
     private int actualSize;
-    private float threshold = 0.75f;
+    private float threshold = 0.40f;
+    private HashEngine hashEngine;
 
     public MyHash() {
+        this.hashEngine = new HashDefault();
         this.length = 1<<4;
         actualSize = 0;
         calcMaxSize();
@@ -63,6 +63,25 @@ public class MyHash<K,V> implements MyMap<K,V>,Cloneable, Serializable {
     }
 
     MyHash(int length) {
+        this.hashEngine = new HashDefault();
+        this.length = Prime.decideArraySize(length);
+        actualSize = 0;
+        calcMaxSize();
+        hashVector = new LinkedList[this.length];
+        fillVector();
+    }
+
+    MyHash(HashEngine hashEngine) {
+        this.hashEngine = hashEngine;
+        this.length = Prime.decideArraySize(length);
+        actualSize = 0;
+        calcMaxSize();
+        hashVector = new LinkedList[this.length];
+        fillVector();
+    }
+
+    MyHash(int length, HashEngine hashEngine) {
+        this.hashEngine = hashEngine;
         this.length = Prime.decideArraySize(length);
         actualSize = 0;
         calcMaxSize();
@@ -84,7 +103,7 @@ public class MyHash<K,V> implements MyMap<K,V>,Cloneable, Serializable {
 
     @Override
     public V findElements(K key) throws IOException {
-        int code = generateHashCode(key);
+        int code = hashEngine.generateHashCode(key);
         int vectorPos = getElementVectorPos(code);
         LinkedList<MyNode> list = hashVector[vectorPos];
         int listPos = getElementListPos(key,list);
@@ -106,7 +125,7 @@ public class MyHash<K,V> implements MyMap<K,V>,Cloneable, Serializable {
         }
 
         try{
-            int myHashCode = generateHashCode(key);
+            int myHashCode = hashEngine.generateHashCode(key);
             MyNode node = new MyNode(myHashCode,key,object);
 
             int code = node.getMyHashCode();
@@ -135,7 +154,7 @@ public class MyHash<K,V> implements MyMap<K,V>,Cloneable, Serializable {
 
         V aux;
         try{
-            int code = generateHashCode(key);
+            int code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
             LinkedList<MyNode> list = hashVector[vectorPos];
             int listPos = getElementListPos(key,list);
@@ -189,11 +208,6 @@ public class MyHash<K,V> implements MyMap<K,V>,Cloneable, Serializable {
         }
 
         return (LinkedList<V>) values;
-    }
-
-    private int generateHashCode(K key) throws IOException {
-        byte[] bytes = ByteArray.toBytesStream(key);
-        return HashFunctions.Polynomial(bytes);
     }
 
     private synchronized void resizeVector()
