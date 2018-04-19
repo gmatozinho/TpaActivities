@@ -21,7 +21,9 @@ public class BasicTestHashMap {
 
         hash.removeElement(student1.getNome());
 
+        MyHashOpenAddress<String,Integer> hash2 = new MyHashOpenAddress<>(5);
         Student student = hash.findElements(student2.getNome());
+
 
 
         if(student != null)

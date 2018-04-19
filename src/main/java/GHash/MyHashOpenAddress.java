@@ -2,11 +2,11 @@ package GHash;
 
 import NumLib.Prime;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import static GHash.AuxHashFunctions.DefineIndex;
 
+@SuppressWarnings("ALL")
 public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     private MyNode[] hashVector;
@@ -24,7 +24,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         hashVector = new MyNode[this.length];
     }
 
-    public MyHashOpenAddress(int length) {
+    MyHashOpenAddress(int length) {
         this.hashEngine = new HashDefault();
         this.length = Prime.decideArraySize(length);
         actualSize = 0;
@@ -55,19 +55,38 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     }
 
     @Override
-    public V findElements(K key) throws IOException {
+    public V findElements(K key) {
 
-        //TODO tratar a buscar, pois tem q comparar a chave da posição encontrada com a inserida
         try{
             int code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
+            if(hashVector[vectorPos].getKey() == key)
+            {
+                return (V) hashVector[vectorPos].getValue();
+            }else{
+                int searchPos = vectorPos;
+                while(true)
+                {
+                    searchPos ++;
 
-            return (V) hashVector[vectorPos].getValue();
+                    if(searchPos == length)
+                    {
+                        searchPos = 0;
+                    }else if(searchPos == vectorPos)
+                    {
+                        return null;
+                    }
+                    if(hashVector[searchPos].getKey() == key)
+                    {
+                        return (V) hashVector[searchPos].getValue();
+                    }
+                }
+            }
+
         }
         catch (Exception e)
         {
             return null;
-
         }
 
     }
@@ -81,21 +100,50 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
         try{
             int myHashCode = hashEngine.generateHashCode(key);
-            MyNode node = new MyNode(myHashCode,key,value);
+            MyNode<K, V> node = new MyNode<>(myHashCode,key,value);
 
             int code = node.getMyHashCode();
             int vectorPos = getElementVectorPos(code);
-            //int pos = checaPos(vectorPos);
 
-            //TODO Somente fazer inserção se não ouver elemento inserido ou se a chave da posição encontrada for igual ao valor
-//            if(pos == -1)
-//            {
-//                hashVector[vectorPos] = node;
-//                actualSize ++;
-//            }else{
-//                hashVector[vectorPos].setValue(value);
-//            }
+            if(hashVector[vectorPos] == null)
+            {
+                hashVector[vectorPos] = node;
+                actualSize ++;
 
+            }else{
+                if(hashVector[vectorPos].getKey() == key)
+                {
+                    hashVector[vectorPos].setValue(value);
+                }else{
+                    int searchPos = vectorPos;
+
+
+                    while(true)
+                    {
+                        searchPos ++;
+
+                        if(searchPos == length)
+                        {
+                            searchPos = 0;
+                        }else if(searchPos == vectorPos)
+                        {
+                            return false;
+                        }
+
+                        if(hashVector[searchPos] == null)
+                        {
+                            hashVector[searchPos] = node;
+                            actualSize ++;
+                            break;
+                        }
+                        else if(hashVector[searchPos].getKey() == key)
+                        {
+                            hashVector[searchPos].setValue(value);
+                            break;
+                        }
+                    }
+                }
+            }
             return  true;
         }catch (Exception e)
         {
@@ -105,27 +153,76 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     @Override
     public V removeElement(K key) {
-        return null;
+        try{
+            V aux;
+            int code = hashEngine.generateHashCode(key);
+            int vectorPos = getElementVectorPos(code);
+            if(hashVector[vectorPos].getKey() == key)
+            {
+                aux = (V) hashVector[vectorPos].getValue();
+                hashVector[vectorPos] = null;
+                actualSize --;
+                return aux;
+            }else{
+                int searchPos = vectorPos;
+                while(true)
+                {
+                    searchPos ++;
+
+                    if(searchPos == length)
+                    {
+                        searchPos = 0;
+                    }else if(searchPos == vectorPos)
+                    {
+                        return null;
+                    }
+                    if(hashVector[searchPos].getKey() == key)
+                    {
+                        aux = (V) hashVector[searchPos].getValue();
+                        hashVector[vectorPos] = null;
+                        actualSize --;
+                        return aux;
+                    }
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.length;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.length != 0;
     }
 
     @Override
     public LinkedList<K> keys() {
-        return null;
+        LinkedList<K> keys = new LinkedList<>();
+
+        for (MyNode node: hashVector) {
+            keys.add((K) node.getKey());
+        }
+
+        return keys;
     }
 
     @Override
     public LinkedList<V> values() {
-        return null;
+        LinkedList<V> values = new LinkedList<>();
+
+        for (MyNode node: hashVector) {
+            values.add((V) node.getValue());
+        }
+
+        return values;
     }
 
     private synchronized void resizeVector()
