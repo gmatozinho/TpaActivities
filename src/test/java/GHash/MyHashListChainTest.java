@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MyHashTest {
+public class MyHashListChainTest {
 
     @Test
     public void findElements() {

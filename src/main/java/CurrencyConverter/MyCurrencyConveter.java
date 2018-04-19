@@ -1,20 +1,20 @@
 package CurrencyConverter;
 
-import GHash.MyHash;
+import GHash.MyHashListChain;
 
 import java.io.IOException;
 
 public class MyCurrencyConveter {
-    private MyHash<String,MyHash<String,Double>> currencyConveter;
+    private MyHashListChain<String, MyHashListChain<String,Double>> currencyConveter;
 
     MyCurrencyConveter()
     {
-        currencyConveter = new MyHash<>();
+        currencyConveter = new MyHashListChain<>();
     }
 
     void addCoin(String coin)
     {
-        currencyConveter.insertItem(coin,new MyHash<String, Double>());
+        currencyConveter.insertItem(coin,new MyHashListChain<String, Double>());
     }
 
     public void removeCoin(String coin)
@@ -48,7 +48,7 @@ public class MyCurrencyConveter {
         for (String key: currencyConveter.keys()) {
             System.out.println("\n"+key);
             for ( String internalKey: currencyConveter.findElements(key).keys()) {
-                MyHash<String, Double> hash = currencyConveter.findElements(key);
+                MyHashListChain<String, Double> hash = currencyConveter.findElements(key);
                 System.out.println("Coin:" + internalKey +" Value:" + hash.findElements(internalKey));
             }
 

@@ -11,5 +11,4 @@ interface MyMap <K,V>{
     boolean isEmpty();
     LinkedList<K> keys();
     LinkedList<V> values();
-
 }

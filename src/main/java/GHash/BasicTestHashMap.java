@@ -11,7 +11,7 @@ public class BasicTestHashMap {
 
     private static void CallHash() throws IOException {
         //TODO ENGINE GENERATOR
-        MyHash<String, Student> hash = new MyHash<>(100);
+        MyHashListChain<String, Student> hash = new MyHashListChain<>(100);
 
         Student student1 = new Student("20132BSI0044","Gustavo",22,"Negro");
         Student student2 = new Student("20132BSI0099","Gustavo66",22,"Negro");
