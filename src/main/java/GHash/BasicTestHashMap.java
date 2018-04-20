@@ -12,19 +12,17 @@ public class BasicTestHashMap {
     private static void CallHash() throws IOException {
         //TODO ENGINE GENERATOR
         MyHashListChain<String, Student> hash = new MyHashListChain<>(100);
+        MyHashOpenAddress<String, Student> hash2 = new MyHashOpenAddress<>();
 
         Student student1 = new Student("20132BSI0044","Gustavo",22,"Negro");
         Student student2 = new Student("20132BSI0099","Gustavo66",22,"Negro");
 
-        hash.insertItem(student1.getNome(), student1);
-        hash.insertItem(student2.getNome(),student2);
+        hash2.insertItem(student1.getNome(), student1);
+        hash2.insertItem(student2.getNome(),student2);
 
-        hash.removeElement(student1.getNome());
+        hash2.removeElement(student1.getNome());
 
-        MyHashOpenAddress<String,Integer> hash2 = new MyHashOpenAddress<>(5);
-        Student student = hash.findElements(student2.getNome());
-
-
+        Student student = hash2.findElements(student2.getNome());
 
         if(student != null)
         {

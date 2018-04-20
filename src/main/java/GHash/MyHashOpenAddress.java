@@ -13,8 +13,12 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     private int length;
     private int maxSize;
     private int actualSize;
-    private float threshold = 0.40f;
+    private float threshold = 0.80f;
     private HashEngine hashEngine;
+
+    public MyNode[] getHashVector() {
+        return hashVector;
+    }
 
     public MyHashOpenAddress() {
         this.hashEngine = new HashDefault();
@@ -51,7 +55,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     private void calcMaxSize()
     {
-        this.maxSize = (int) (threshold * (Math.pow(length,2)));
+        this.maxSize = (int) (threshold * length);
     }
 
     @Override
@@ -60,7 +64,27 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         try{
             int code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
-            if(hashVector[vectorPos].getKey() == key)
+            if(hashVector[vectorPos] == null)
+            {
+                int searchPos = vectorPos;
+                while(true)
+                {
+                    searchPos ++;
+
+                    if(searchPos == length)
+                    {
+                        searchPos = 0;
+                    }else if(searchPos == vectorPos)
+                    {
+                        return null;
+                    }
+                    if(hashVector[searchPos].getKey() == key)
+                    {
+                        return (V) hashVector[searchPos].getValue();
+                    }
+                }
+            }
+            else if(hashVector[vectorPos].getKey() == key)
             {
                 return (V) hashVector[vectorPos].getValue();
             }else{
