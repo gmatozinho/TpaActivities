@@ -4,7 +4,6 @@ import HashLib.CalcHashEngine.HashDefault;
 import HashLib.CalcHashEngine.HashEngine;
 import NumLib.Prime;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import static HashLib.Functions.AuxHashFunctions.DefineIndex;
@@ -69,17 +68,22 @@ public class MyHashListChain<K,V> extends MyHash<K,V>  {
     }
 
     @Override
-    public V findElements(K key) throws IOException {
-        int code = hashEngine.generateHashCode(key);
-        int vectorPos = getElementVectorPos(code);
-        LinkedList<MyNode> list = hashVector[vectorPos];
-        int listPos = getElementListPos(key,list);
+    public V findElements(K key){
 
-        if(listPos != -1)
+        try {
+            int code = hashEngine.generateHashCode(key);
+            int vectorPos = getElementVectorPos(code);
+            LinkedList<MyNode> list = hashVector[vectorPos];
+            int listPos = getElementListPos(key, list);
+
+            if (listPos != -1) {
+                return (V) list.get(listPos).getValue();
+            }
+            return null;
+        }catch (Exception e)
         {
-            return (V) list.get(listPos).getValue();
+            return null;
         }
-        return null;
     }
 
 

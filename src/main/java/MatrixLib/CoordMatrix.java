@@ -1,22 +1,20 @@
 package MatrixLib;
 
-public class CoordMatrix {
-    private int[] coordinates;
+class CoordMatrix {
+    private String coordinates;
 
-    public CoordMatrix(int x,int y)
+    static String makeCoordinate(int row, int column)
     {
-        coordinates = new int[2];
-        coordinates[0] = x;
-        coordinates[1] = y;
+        return row + ";" + column;
     }
 
-    public int getX()
+    static int getRow(String coordinates)
     {
-        return coordinates[0];
+        return Integer.parseInt(coordinates.split(";")[1]);
     }
 
-    public int getY()
+    static int getColumn(String coordinates)
     {
-        return coordinates[1];
+        return Integer.parseInt(coordinates.split(";")[0]);
     }
 }
