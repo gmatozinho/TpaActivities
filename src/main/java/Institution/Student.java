@@ -1,7 +1,6 @@
 package Institution;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Student implements Serializable {
     private String matricula;
@@ -32,7 +31,7 @@ public class Student implements Serializable {
         return matricula;
     }
 
-
+    //TODO THisTESTFunction
     /*public static ArrayList<Student> GenerateStudents(int qtd){
         ArrayList<Student> students = new ArrayList<>();
 
