@@ -1,7 +1,7 @@
 package TreatFilesAndTextLib;
 
 import java.io.*;
-
+//TODO TreatTHisClass and WorkWithCsv Class
 public class TreatWords {
 
     public static int ConvertCharToAsciiValue(char letter)
