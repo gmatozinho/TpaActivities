@@ -58,46 +58,42 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     @Override
     public V findElements(K key) {
 
-        try{
+
+        try {
             long code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
-            if (hashVector[vectorPos] == null || hashVector[vectorPos].getKey() != key) {
-                int searchPos = vectorPos;
-                while(true)
-                {
-                    searchPos ++;
+            int probe = 0;
 
-                    if(searchPos == length)
-                    {
-                        searchPos = 0;
-                    }else if(searchPos == vectorPos)
-                    {
-                        return null;
+            if (hashVector[vectorPos] == null) {
+                do {
+                    if (hashVector[vectorPos].getKey().equals(key)) {
+                        return (V) hashVector[vectorPos].getValue();
                     }
-                    if(hashVector[searchPos] != null)
-                    {
-                        if(hashVector[searchPos].getKey() == key)
-                        {
-                            return (V) hashVector[searchPos].getValue();
-                        }
-                    }else{
-                        return null;
-                    }
-                }
-            } else {
+                    probe++;
+
+                } while (probe < length) ;
+            }else if(hashVector[vectorPos].getKey().equals(key))
+            {
                 return (V) hashVector[vectorPos].getValue();
+            }else
+            {
+                do {
+                    if (hashVector[vectorPos].getKey().equals(key)) {
+                        return (V) hashVector[vectorPos].getValue();
+                    }
+                    probe++;
+
+                } while (probe < length) ;
             }
 
-        }
-        catch (Exception e)
+            return null;
+        }catch (Exception e)
         {
             return null;
         }
 
     }
 
-
-    //FIXME THIS FUCKING FUNCTION NOT WORKS WELL
     @Override
     public boolean insertItem(K key, V value) {
         if(actualSize == maxSize)
@@ -105,49 +101,31 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
             resizeVector();
         }
 
-        try{
-            long myHashCode = hashEngine.generateHashCode(key);
-            MyNode<K, V> node = new MyNode<>(myHashCode,key,value);
+        try {
+            int probe = 0;
 
-            long code = node.getMyHashCode();
-            int vectorPos = getElementVectorPos(code);
+            do {
 
-            if (hashVector[vectorPos] != null) {
-                if (hashVector[vectorPos].getKey() != key) {
-                    int searchPos = vectorPos;
+                long code = hashEngine.generateHashCode(key);
+                int vectorPos = getElementVectorPos(code);
 
-                    while(true)
-                    {
-                        searchPos ++;
-
-                        if(searchPos == length)
-                        {
-                            searchPos = 0;
-                        }else if(searchPos == vectorPos)
-                        {
-                            return false;
-                        }
-
-                        if(hashVector[searchPos] == null)
-                        {
-                            hashVector[searchPos] = node;
-                            actualSize ++;
-                            break;
-                        }
-                        else if(hashVector[searchPos].getKey() == key){
-                            hashVector[searchPos].setValue(value);
-                            break;
-                        }
+                if (hashVector[vectorPos] == null) {
+                    long myHashCode = hashEngine.generateHashCode(key);
+                    MyNode<K, V> node = new MyNode<>(myHashCode,key,value);
+                    hashVector[vectorPos] = node;
+                    actualSize++;
+                    return true;
+                }else
+                {
+                    if(hashVector[vectorPos].getKey().equals(key)){
+                        hashVector[vectorPos].setValue(value);
+                        return true;
                     }
-                } else {
-                    hashVector[vectorPos].setValue(value);
                 }
-            } else {
-                hashVector[vectorPos] = node;
-                actualSize ++;
+                probe++;
+            } while (probe < length);
 
-            }
-            return  true;
+            return true;
         }catch (Exception e)
         {
             return false;

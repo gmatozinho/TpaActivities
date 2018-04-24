@@ -72,7 +72,6 @@ public class Document {
         return frequencyTab;
     }
 
-
     private static void splitWord(String line)
     {
         String word = "";
@@ -92,7 +91,6 @@ public class Document {
             wordsList.add(word);
         }
     }
-
     private LinkedList<String> createStopWordList(String fileName) throws IOException {
 
         LinkedList<String> stopWordList = new LinkedList<>();

@@ -1,0 +1,5 @@
+Canadá;3
+atropelou;1
+A;4
+Uma;1
+Um;2
