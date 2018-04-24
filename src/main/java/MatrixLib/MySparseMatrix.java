@@ -9,12 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class MyMatrix {
+public class MySparseMatrix {
     private int rows;
     private int columns;
     private MyHash<String,Integer> matrix;
 
-    private MyMatrix()
+    private MySparseMatrix()
     {
         rows =0;
         columns =0;
@@ -22,7 +22,7 @@ public class MyMatrix {
         matrix = new MyHashListChain<>();
     }
 
-    private MyMatrix(int rows, int columns)
+    private MySparseMatrix(int rows, int columns)
     {
         this.rows = rows;
         this.columns = columns;
@@ -88,21 +88,21 @@ public class MyMatrix {
         return values;
     }
 
-    public static MyMatrix load(String fileName) throws IOException {
-        MyMatrix myMatrix = new MyMatrix();
+    public static MySparseMatrix load(String fileName) throws IOException {
+        MySparseMatrix mySparseMatrix = new MySparseMatrix();
         BufferedReader reader = WorkWithFiles.OpenFileToRead(fileName);
 
         String line = reader.readLine();
         while (line  != null  && !line.isEmpty()) {
             String[] auxArray = line.split(";");
-            myMatrix.insert(Integer.parseInt(auxArray[0]),Integer.parseInt(auxArray[1]),Integer.parseInt(auxArray[2]));
+            mySparseMatrix.insert(Integer.parseInt(auxArray[0]),Integer.parseInt(auxArray[1]),Integer.parseInt(auxArray[2]));
             line = reader.readLine();
         }
 
         reader.close();
 
-        defineRowsAndColumns(myMatrix);
-        return myMatrix;
+        defineRowsAndColumns(mySparseMatrix);
+        return mySparseMatrix;
     }
 
     public String save(String fileName) throws IOException {
@@ -121,14 +121,14 @@ public class MyMatrix {
         return fileName;
     }
 
-    public MyMatrix multiply(MyMatrix matrix2) {
-        MyMatrix matrix1 = this;
+    public MySparseMatrix multiply(MySparseMatrix matrix2) {
+        MySparseMatrix matrix1 = this;
         if (!matrix1.isMultiplicationCompatible(matrix2)){
             throw new IllegalArgumentException(
                     "Matrices are not multiplication compatible");
         }
 
-        MyMatrix resultMatrix = new MyMatrix(matrix1.getRows(), matrix2.getColumns());
+        MySparseMatrix resultMatrix = new MySparseMatrix(matrix1.getRows(), matrix2.getColumns());
         for (int i = 0; i < matrix1.rows; i++) {
             for (int j = 0; j < matrix2.columns; j++) {
                 for (int k = 0; k < matrix1.columns; k++) {
@@ -151,15 +151,15 @@ public class MyMatrix {
         return columns;
     }
 
-    public MyMatrix sum(MyMatrix m2) {
-        MyMatrix m1 = this;
+    public MySparseMatrix sum(MySparseMatrix m2) {
+        MySparseMatrix m1 = this;
 
         if (!m1.isAdditionCompatible(m2)){
             throw new IllegalArgumentException(
                     "Matrices are not addition compatible");
         }
 
-        MyMatrix resultMatrix = new MyMatrix(rows,columns);
+        MySparseMatrix resultMatrix = new MySparseMatrix(rows,columns);
         for (int i = 0; i < m1.rows; i++) {
             for (int j = 0; j < m1.columns; j++) {
                 resultMatrix.increment(i,j,m1.find(i,j));
@@ -170,9 +170,9 @@ public class MyMatrix {
         return resultMatrix;
     }
 
-    public MyMatrix transposed() {
-        MyMatrix m = this;
-        MyMatrix resultMatrix = new MyMatrix(columns, rows);
+    public MySparseMatrix transposed() {
+        MySparseMatrix m = this;
+        MySparseMatrix resultMatrix = new MySparseMatrix(columns, rows);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -183,9 +183,9 @@ public class MyMatrix {
         return resultMatrix;
     }
 
-    public MyMatrix multiplyByValue(int multiplier) {
-        MyMatrix m = this;
-        MyMatrix resultMatrix = new MyMatrix(columns, rows);
+    public MySparseMatrix multiplyByValue(int multiplier) {
+        MySparseMatrix m = this;
+        MySparseMatrix resultMatrix = new MySparseMatrix(columns, rows);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -214,8 +214,8 @@ public class MyMatrix {
         }
     }
 
-    private boolean isMultiplicationCompatible(MyMatrix m2){
-        MyMatrix m1 = this;
+    private boolean isMultiplicationCompatible(MySparseMatrix m2){
+        MySparseMatrix m1 = this;
         boolean compatible = false;
 
         if (m1.getColumns() == m2.getRows()){
@@ -224,8 +224,8 @@ public class MyMatrix {
         return compatible;
     }
 
-    private boolean isAdditionCompatible(MyMatrix m2){
-        MyMatrix m1 = this;
+    private boolean isAdditionCompatible(MySparseMatrix m2){
+        MySparseMatrix m1 = this;
         boolean compatible = false;
 
         if (m1.getRows() == m2.getRows() &&
@@ -236,7 +236,7 @@ public class MyMatrix {
         return compatible;
     }
 
-    private static void defineRowsAndColumns(MyMatrix matrix)
+    private static void defineRowsAndColumns(MySparseMatrix matrix)
     {
         int auxRows = 0;
         int auxColumns = 0;

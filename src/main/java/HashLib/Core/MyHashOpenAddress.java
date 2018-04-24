@@ -61,8 +61,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         try{
             long code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
-            if(hashVector[vectorPos] == null || hashVector[vectorPos].getKey() != key)
-            {
+            if (hashVector[vectorPos] == null || hashVector[vectorPos].getKey() != key) {
                 int searchPos = vectorPos;
                 while(true)
                 {
@@ -81,11 +80,11 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
                         {
                             return (V) hashVector[searchPos].getValue();
                         }
+                    }else{
+                        return null;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 return (V) hashVector[vectorPos].getValue();
             }
 
@@ -97,6 +96,8 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     }
 
+
+    //FIXME THIS FUCKING FUNCTION NOT WORKS WELL
     @Override
     public boolean insertItem(K key, V value) {
         if(actualSize == maxSize)
@@ -111,18 +112,9 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
             long code = node.getMyHashCode();
             int vectorPos = getElementVectorPos(code);
 
-            if(hashVector[vectorPos] == null)
-            {
-                hashVector[vectorPos] = node;
-                actualSize ++;
-
-            }else{
-                if(hashVector[vectorPos].getKey() == key)
-                {
-                    hashVector[vectorPos].setValue(value);
-                }else{
+            if (hashVector[vectorPos] != null) {
+                if (hashVector[vectorPos].getKey() != key) {
                     int searchPos = vectorPos;
-
 
                     while(true)
                     {
@@ -147,7 +139,13 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
                             break;
                         }
                     }
+                } else {
+                    hashVector[vectorPos].setValue(value);
                 }
+            } else {
+                hashVector[vectorPos] = node;
+                actualSize ++;
+
             }
             return  true;
         }catch (Exception e)
@@ -220,7 +218,10 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         LinkedList<K> keys = new LinkedList<>();
 
         for (MyNode node: hashVector) {
-            keys.add((K) node.getKey());
+            if(node != null)
+            {
+                keys.add((K) node.getKey());
+            }
         }
 
         return keys;
@@ -239,13 +240,18 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     private synchronized void resizeVector()
     {
+        int oldMaxSize = maxSize;
         MyNode[] oldVector = hashVector;
         length = Prime.decideArraySize(length * 2);
         hashVector = new MyNode[this.length];
         calcMaxSize();
 
-        for ( MyNode node: oldVector) {
-            hashVector[getElementVectorPos(node.getMyHashCode())] = node;
+        for (int i = 0; i<oldMaxSize;i++) {
+            MyNode node = oldVector[i];
+            if(node!= null)
+            {
+                hashVector[getElementVectorPos(node.getMyHashCode())] = node;
+            }
         }
 
     }

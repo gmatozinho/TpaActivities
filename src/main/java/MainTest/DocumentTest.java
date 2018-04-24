@@ -8,6 +8,7 @@ public class DocumentTest {
     public static void main(String[] args) throws IOException {
         Document document = Document.create("document.txt");
         document.makeTabFreq("portuguesestopwords.txt");
+        document.getWordsList();
         document.save("tabfreq.txt");
     }
 }

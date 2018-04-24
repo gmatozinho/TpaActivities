@@ -2,6 +2,7 @@ package DocumentLib;
 
 import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
+import HashLib.Core.MyHashOpenAddress;
 import WorkFilesLib.WorkWithFiles;
 
 import java.io.BufferedReader;
@@ -18,7 +19,7 @@ public class Document {
     private Document()
     {
         wordsList = new LinkedList<>();
-        frequencyTab = new MyHashListChain();
+        frequencyTab = new MyHashOpenAddress<>();
         createSeparatorList();
     }
 
