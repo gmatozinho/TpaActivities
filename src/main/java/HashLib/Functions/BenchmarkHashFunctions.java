@@ -1,7 +1,6 @@
 package HashLib.Functions;
 
-import TreatFilesAndTextLib.TreatWords;
-import TreatFilesAndTextLib.WorkWithCsvFile;
+import WorkFilesLib.WorkWithFiles;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -14,7 +13,7 @@ public class BenchmarkHashFunctions {
 
     private static void HashAscii() throws IOException {
 
-        BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
+        BufferedReader reader = WorkWithFiles.OpenFileToRead("en-usa-20k.txt");
         String text = reader.readLine();
         while (text  != null) {
             int sum = HashFunctions.Ascii(text);
@@ -22,18 +21,18 @@ public class BenchmarkHashFunctions {
             text = reader.readLine();
         }
 
-        FileWriter file = WorkWithCsvFile.OpenFile("benchAscii.csv");
+        FileWriter file = WorkWithFiles.OpenFileToWrite("benchAscii.csv");
         int cont = 0;
         for (int value : HashFunctions.getArrayAscii()) {
-            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
+            WorkWithFiles.writeLine(file,WorkWithFiles.writeResultsHashBench(cont++,value));
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
     }
 
     private static void HashPolynomial() throws IOException {
 
-        BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
+        BufferedReader reader = WorkWithFiles.OpenFileToRead("en-usa-20k.txt");
         String text = reader.readLine();
         while (text  != null) {
             int sum = HashFunctions.Polynomial(text);
@@ -41,19 +40,19 @@ public class BenchmarkHashFunctions {
             text = reader.readLine();
         }
 
-        FileWriter file = WorkWithCsvFile.OpenFile("benchPolynomial.csv");
+        FileWriter file = WorkWithFiles.OpenFileToWrite("benchPolynomial.csv");
         int cont = 0;
 
         for (int value : HashFunctions.getArrayPolynomial()) {
-            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
+            WorkWithFiles.writeLine(file,WorkWithFiles.writeResultsHashBench(cont++,value));
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
     }
 
     private static void HashBernstein() throws IOException {
 
-        BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
+        BufferedReader reader = WorkWithFiles.OpenFileToRead("en-usa-20k.txt");
         String text = reader.readLine();
         while (text  != null) {
             BigInteger sum = HashFunctions.Bernstein(text);
@@ -61,19 +60,19 @@ public class BenchmarkHashFunctions {
             text = reader.readLine();
         }
 
-        FileWriter file = WorkWithCsvFile.OpenFile("benchBernstein.csv");
+        FileWriter file = WorkWithFiles.OpenFileToWrite("benchBernstein.csv");
         int cont = 0;
 
         for (int value : HashFunctions.getArrayBernstein()) {
-            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
+            WorkWithFiles.writeLine(file,WorkWithFiles.writeResultsHashBench(cont++,value));
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
     }
 
     private static void HashModifiedBernstein() throws IOException {
 
-        BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
+        BufferedReader reader = WorkWithFiles.OpenFileToRead("en-usa-20k.txt");
         String text = reader.readLine();
         while (text  != null) {
             BigInteger sum = HashFunctions.ModifiedBernstein(text);
@@ -81,19 +80,19 @@ public class BenchmarkHashFunctions {
             text = reader.readLine();
         }
 
-        FileWriter file = WorkWithCsvFile.OpenFile("benchModifiedBernstein.csv");
+        FileWriter file = WorkWithFiles.OpenFileToWrite("benchModifiedBernstein.csv");
         int cont = 0;
 
         for (int value : HashFunctions.getArrayModifiedBernstein()) {
-            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
+            WorkWithFiles.writeLine(file,WorkWithFiles.writeResultsHashBench(cont++,value));
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
     }
 
     private static void HashFNV() throws IOException {
 
-        BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
+        BufferedReader reader = WorkWithFiles.OpenFileToRead("en-usa-20k.txt");
         String text = reader.readLine();
         while (text  != null) {
             BigInteger sum = HashFunctions.FNV(text);
@@ -101,19 +100,19 @@ public class BenchmarkHashFunctions {
             text = reader.readLine();
         }
 
-        FileWriter file = WorkWithCsvFile.OpenFile("benchFNV.csv");
+        FileWriter file = WorkWithFiles.OpenFileToWrite("benchFNV.csv");
         int cont = 0;
 
         for (int value : HashFunctions.getArrayFNV()) {
-            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
+            WorkWithFiles.writeLine(file,WorkWithFiles.writeResultsHashBench(cont++,value));
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
     }
 
     private static void HashJSW() throws IOException {
 
-        BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
+        BufferedReader reader = WorkWithFiles.OpenFileToRead("en-usa-20k.txt");
         String text = reader.readLine();
         while (text  != null) {
             BigInteger sum = HashFunctions.JSW(text);
@@ -121,19 +120,19 @@ public class BenchmarkHashFunctions {
             text = reader.readLine();
         }
 
-        FileWriter file = WorkWithCsvFile.OpenFile("benchJSW.csv");
+        FileWriter file = WorkWithFiles.OpenFileToWrite("benchJSW.csv");
         int cont = 0;
 
         for (int value : HashFunctions.getArrayJSW()) {
-            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
+            WorkWithFiles.writeLine(file,WorkWithFiles.writeResultsHashBench(cont++,value));
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
     }
 
     private static void HashELF() throws IOException {
 
-        BufferedReader reader = TreatWords.OpenFile("en-usa-20k.txt");
+        BufferedReader reader = WorkWithFiles.OpenFileToRead("en-usa-20k.txt");
         String text = reader.readLine();
         while (text  != null) {
             long sum = HashFunctions.ELF(text);
@@ -141,14 +140,14 @@ public class BenchmarkHashFunctions {
             text = reader.readLine();
         }
 
-        FileWriter file = WorkWithCsvFile.OpenFile("benchELF.csv");
+        FileWriter file = WorkWithFiles.OpenFileToWrite("benchELF.csv");
         int cont = 0;
 
         for (int value : HashFunctions.getArrayELF()) {
-            WorkWithCsvFile.writeLine(file,WorkWithCsvFile.writeResults(cont++,value));
+            WorkWithFiles.writeLine(file,WorkWithFiles.writeResultsHashBench(cont++,value));
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
     }
 
     public static void CallHashsBench() throws IOException {

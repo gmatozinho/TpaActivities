@@ -2,8 +2,7 @@ package DocumentLib;
 
 import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
-import TreatFilesAndTextLib.TreatWords;
-import TreatFilesAndTextLib.WorkWithCsvFile;
+import WorkFilesLib.WorkWithFiles;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -25,7 +24,7 @@ public class Document {
 
     public static Document create(String fileName) throws IOException {
         Document document = new Document();
-        BufferedReader reader = TreatWords.OpenFile(fileName);
+        BufferedReader reader = WorkWithFiles.OpenFileToRead(fileName);
         
         String line = reader.readLine();
         while (line != null)
@@ -57,14 +56,14 @@ public class Document {
     }
 
     public String save(String fileName) throws IOException {
-        FileWriter file = WorkWithCsvFile.OpenFile(fileName);
+        FileWriter file = WorkWithFiles.OpenFileToWrite(fileName);
         for (String word : frequencyTab.keys()) {
             int value = frequencyTab.findElements(word);
             String line = word + ";" + value + "\n";
-            WorkWithCsvFile.writeLine(file,line);
+            WorkWithFiles.writeLine(file,line);
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
         return fileName;
     }
 
@@ -97,7 +96,7 @@ public class Document {
 
         LinkedList<String> stopWordList = new LinkedList<>();
 
-        BufferedReader reader = TreatWords.OpenFile(fileName);
+        BufferedReader reader = WorkWithFiles.OpenFileToRead(fileName);
         String line = reader.readLine();
         while (line != null)
         {

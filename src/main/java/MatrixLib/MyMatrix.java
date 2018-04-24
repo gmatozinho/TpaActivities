@@ -2,8 +2,7 @@ package MatrixLib;
 
 import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
-import TreatFilesAndTextLib.TreatWords;
-import TreatFilesAndTextLib.WorkWithCsvFile;
+import WorkFilesLib.WorkWithFiles;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -91,7 +90,7 @@ public class MyMatrix {
 
     public static MyMatrix load(String fileName) throws IOException {
         MyMatrix myMatrix = new MyMatrix();
-        BufferedReader reader = TreatWords.OpenFile(fileName);
+        BufferedReader reader = WorkWithFiles.OpenFileToRead(fileName);
 
         String line = reader.readLine();
         while (line  != null  && !line.isEmpty()) {
@@ -108,16 +107,16 @@ public class MyMatrix {
 
     public String save(String fileName) throws IOException {
         String separator = ";";
-        FileWriter file = WorkWithCsvFile.OpenFile(fileName);
+        FileWriter file =  WorkWithFiles.OpenFileToWrite(fileName);
         String line;
         LinkedList<String> coordenates = matrix.keys();
         for (String coordMatrix: coordenates) {
             int value = matrix.findElements(coordMatrix);
             line = "" + CoordMatrix.getColumn(coordMatrix) + separator + CoordMatrix.getColumn(coordMatrix) + separator + value +"\n";
-            WorkWithCsvFile.writeLine(file,line);
+            WorkWithFiles.writeLine(file,line);
         }
 
-        WorkWithCsvFile.CloseFile(file);
+        WorkWithFiles.CloseWrittenFile(file);
 
         return fileName;
     }
