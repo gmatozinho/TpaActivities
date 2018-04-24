@@ -59,7 +59,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     public V findElements(K key) {
 
         try{
-            int code = hashEngine.generateHashCode(key);
+            long code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
             if(hashVector[vectorPos] == null || hashVector[vectorPos].getKey() != key)
             {
@@ -105,10 +105,10 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         }
 
         try{
-            int myHashCode = hashEngine.generateHashCode(key);
+            long myHashCode = hashEngine.generateHashCode(key);
             MyNode<K, V> node = new MyNode<>(myHashCode,key,value);
 
-            int code = node.getMyHashCode();
+            long code = node.getMyHashCode();
             int vectorPos = getElementVectorPos(code);
 
             if(hashVector[vectorPos] == null)
@@ -160,7 +160,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     public V removeElement(K key) {
         try{
             V aux;
-            int code = hashEngine.generateHashCode(key);
+            long code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
 
             if(hashVector[vectorPos] == null || hashVector[vectorPos].getKey() != key)
@@ -251,6 +251,10 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     }
 
     private int getElementVectorPos(int hashCode)
+    {
+        return DefineIndex(hashCode,this.length);
+    }
+    private int getElementVectorPos(long hashCode)
     {
         return DefineIndex(hashCode,this.length);
     }

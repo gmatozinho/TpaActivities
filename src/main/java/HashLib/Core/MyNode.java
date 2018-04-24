@@ -1,11 +1,11 @@
 package HashLib.Core;
 
 class MyNode<K,V>{
-    private int myHashCode;
+    private long myHashCode;
     private K key;
     private V value;
 
-    MyNode(int myHashCode,K key, V value) {
+    MyNode(long myHashCode,K key, V value) {
         this.key = key;
         this.value = value;
         this.myHashCode = myHashCode;
@@ -24,7 +24,7 @@ class MyNode<K,V>{
         return value;
     }
 
-    int getMyHashCode() {
+    long getMyHashCode() {
         return myHashCode;
     }
 

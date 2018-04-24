@@ -60,16 +60,16 @@ public class HashFunctions {
         return sum;
     }
 
-    public static int Polynomial(byte[] bytes)
+    public static long Polynomial(byte[] bytes)
     {
-        int sum = 0;
+        long sum = 0;
         int N = 42;
         for (int i=0; i< bytes.length;i++)
         {
             sum += bytes[i] * Math.pow(N,i);
         }
 
-        return sum;
+        return Math.abs(sum);
     }
 
     static BigInteger Bernstein(String word)

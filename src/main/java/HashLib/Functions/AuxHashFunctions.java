@@ -27,7 +27,7 @@ public class AuxHashFunctions {
 
     public static int DefineIndex(long sum, int length)
     {
-        return (int)sum % length;
+        return Math.abs((int)sum % length);
     }
 
     private static int DefineIndex(long sum, int[] array)

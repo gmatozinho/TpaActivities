@@ -3,22 +3,24 @@ package DocumentLib;
 import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
 import TreatFilesAndTextLib.TreatWords;
+import TreatFilesAndTextLib.WorkWithCsvFile;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Document {
-    MyHash<String,Integer> frequencyTab = null;
-    static LinkedList<String> wordsList;
-    static String separator = " ,;:.!?()[]''-/|{}";
+    private MyHash<String,Integer> frequencyTab;
+    private static LinkedList<String> wordsList;
+    private static String separator = "  \",;:.!?()[]''-/|{}“”1234567890";
+    private static LinkedList<Character> separators;
 
-    public Document()
+    private Document()
     {
         wordsList = new LinkedList<>();
         frequencyTab = new MyHashListChain();
+        createSeparatorList();
     }
 
     public static Document create(String fileName) throws IOException {
@@ -31,45 +33,93 @@ public class Document {
             splitWord(line);
             line = reader.readLine();
         }
+
+        reader.close();
                 
         return document;
     }
 
-    public void makeTabFreq(String fileName){
+    public void makeTabFreq(String stopWordsFileName) throws IOException {
+        LinkedList<String> stopWordList = createStopWordList(stopWordsFileName);
+
+        for (String word: wordsList) {
+            if(!stopWordList.contains(word))
+            {
+                if(frequencyTab.findElements(word) == null)
+                {
+                    frequencyTab.insertItem(word,1);
+                }else{
+                    int value = frequencyTab.findElements(word);
+                    frequencyTab.insertItem(word,value+1);
+                }
+            }
+        }
     }
 
-    public String save(String fileName){return null;}
+    public String save(String fileName) throws IOException {
+        FileWriter file = WorkWithCsvFile.OpenFile(fileName);
+        for (String word : frequencyTab.keys()) {
+            int value = frequencyTab.findElements(word);
+            String line = word + ";" + value + "\n";
+            WorkWithCsvFile.writeLine(file,line);
+        }
 
-    public MyHash getTabFreq(){return null;}
+        WorkWithCsvFile.CloseFile(file);
+        return fileName;
+    }
+
+    public MyHash getTabFreq(){
+        return frequencyTab;
+    }
 
 
-    static void splitWord(String line)
+    private static void splitWord(String line)
     {
         String word = "";
         char[] letters = line.toCharArray();
-        char[] separators = separator.toCharArray();
-        LinkedList<Character> list = new LinkedList<>();
-        for (char c : separators) {
-            list.add(c);
-        }
 
-        list.add('\"');
-        list.add(' ');
-
-        System.out.println(separators);
         for (char letter : letters ) {
-            if(!list.contains(letter)){
+            if(!separators.contains(letter)){
                 word=word+letter;
-            }else if(word !="")
+            }else if(!word.equals(""))
             {
                 wordsList.add(word);
                 word ="";
             }
         }
-        if(word !="")
+        if(!word.equals(""))
         {
             wordsList.add(word);
         }
+    }
+
+    private LinkedList<String> createStopWordList(String fileName) throws IOException {
+
+        LinkedList<String> stopWordList = new LinkedList<>();
+
+        BufferedReader reader = TreatWords.OpenFile(fileName);
+        String line = reader.readLine();
+        while (line != null)
+        {
+            stopWordList.add(line);
+            line = reader.readLine();
+        }
+
+        reader.close();
+
+        return stopWordList;
+
+    }
+
+    private void createSeparatorList()
+    {
+        char[] charSeparator = separator.toCharArray();
+        separators = new LinkedList<>();
+
+        for (char c : charSeparator ) {
+            separators.add(c);
+        }
+
     }
 
     public LinkedList<String> getWordsList() {
