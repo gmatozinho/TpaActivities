@@ -1,5 +1,4 @@
-Canadá;3
+canadá;3
 atropelou;1
-A;4
-Uma;1
-Um;2
+van;5
+h;1

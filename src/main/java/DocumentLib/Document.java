@@ -111,7 +111,7 @@ public class Document {
                 word=word+letter;
             }else if(!word.equals(""))
             {
-                wordsList.add(word);
+                wordsList.add(word.toLowerCase());
                 word ="";
             }
         }
