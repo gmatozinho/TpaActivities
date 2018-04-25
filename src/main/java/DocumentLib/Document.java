@@ -18,13 +18,26 @@ public class Document {
 
     private Document()
     {
+        frequencyTab = new MyHashListChain<>();
         wordsList = new LinkedList<>();
-        frequencyTab = new MyHashOpenAddress<>();
         createSeparatorList();
     }
 
-    public static Document create(String fileName) throws IOException {
-        Document document = new Document();
+    private Document(boolean flag)
+    {
+        if(flag)
+        {
+            frequencyTab = new MyHashOpenAddress<>();
+        }
+        else{
+            frequencyTab = new MyHashListChain<>();
+        }
+        wordsList = new LinkedList<>();
+        createSeparatorList();
+    }
+
+    public static Document create(String fileName,boolean flag) throws IOException {
+        Document document = new Document(flag);
         BufferedReader reader = WorkWithFiles.OpenFileToRead(fileName);
         
         String line = reader.readLine();
@@ -36,6 +49,22 @@ public class Document {
 
         reader.close();
                 
+        return document;
+    }
+
+    public static Document create(String fileName) throws IOException {
+        Document document = new Document();
+        BufferedReader reader = WorkWithFiles.OpenFileToRead(fileName);
+
+        String line = reader.readLine();
+        while (line != null)
+        {
+            splitWord(line);
+            line = reader.readLine();
+        }
+
+        reader.close();
+
         return document;
     }
 
