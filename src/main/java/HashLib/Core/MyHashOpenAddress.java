@@ -62,10 +62,24 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         try {
             long code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
-            int pos = getNodePos(vectorPos,key);
+            int pos = vectorPos;
 
-            return pos != -1 ? (V) hashVector[pos].getValue() : null;
-
+            if(hashVector[vectorPos] != null && hashVector[vectorPos].getKey().equals(key))
+            {
+                return (V) hashVector[vectorPos].getValue();
+            }else
+            {
+                pos = (pos + 1) % length;
+                while (pos != vectorPos )//&& hashVector[pos].getKey() != key
+                {
+                    if(hashVector[pos] != null && hashVector[pos].getKey().equals(key))
+                    {
+                        return  (V) hashVector[pos].getValue();
+                    }
+                    pos = (pos + 1) % length;
+                }
+                return null;
+            }
 
         }catch (Exception e)
         {
@@ -82,65 +96,41 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         }
 
         try {
+            long code = hashEngine.generateHashCode(key);
+            int vectorPos = getElementVectorPos(code);
+            int pos = vectorPos;
 
-                long code = hashEngine.generateHashCode(key);
-                int vectorPos = getElementVectorPos(code);
-
-                int pos = getNodePos(vectorPos,key);
-                if(pos != -1)
+            if(hashVector[vectorPos] == null)// && hashVector[vectorPos].getKey().equals(key))
+            {
+                hashVector[vectorPos] = new MyNode<>(code,key,value);
+                actualSize++;
+                return true;
+            }
+            else
+            {
+                pos = (pos + 1) % length;
+                while (pos != vectorPos )
                 {
-                    hashVector[pos].setValue(value);
-                }else{
-                    long myHashCode = hashEngine.generateHashCode(key);
-                    pos = getNullPos(vectorPos);
-                    hashVector[vectorPos] = new MyNode<>(myHashCode,key,value);
-                    actualSize++;
+                    if(hashVector[pos] != null && hashVector[pos].getKey().equals(key))
+                    {
+                        hashVector[pos].setValue(value);
+                        return true;
+                    }else if (hashVector[pos]== null){
+                        hashVector[pos] = new MyNode<>(code,key,value);
+                        actualSize++;
+                        return true;
+                    }
+
+                    pos = (pos + 1) % length;
                 }
 
-                return hashVector[pos] == null;
+            }
 
+            return false;
         }catch (Exception e)
         {
             return false;
         }
-    }
-
-    public int getNodePos(int pos, K key)
-    {
-        for (int i = pos; i < length ; i++) {
-            if(hashVector[i] != null && key.equals(hashVector[i].getKey()))
-            {
-                return i;
-            }
-        }
-
-        for (int i = 0; i < pos ; i++) {
-            if(hashVector[i] != null && key.equals(hashVector[i].getKey()))
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    public int getNullPos(int pos){
-        for (int i = pos; i < length ; i++) {
-            if(hashVector[i] == null)
-            {
-                return i;
-            }
-        }
-
-        for (int i = 0; i < pos ; i++) {
-            if(hashVector[i] == null)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-
     }
 
     @Override
@@ -221,7 +211,9 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         LinkedList<V> values = new LinkedList<>();
 
         for (MyNode node: hashVector) {
-            values.add((V) node.getValue());
+            if(node != null) {
+                values.add((V) node.getValue());
+            }
         }
 
         return values;

@@ -88,9 +88,11 @@ public class Document {
     public String save(String fileName) throws IOException {
         FileWriter file = WorkWithFiles.OpenFileToWrite(fileName);
         for (String word : frequencyTab.keys()) {
-            int value = frequencyTab.findElements(word);
-            String line = word + ";" + value + "\n";
-            WorkWithFiles.writeLine(file,line);
+            if(frequencyTab.findElements(word)!= null) {
+                int value = frequencyTab.findElements(word);
+                String line = word + ";" + value + "\n";
+                WorkWithFiles.writeLine(file, line);
+            }
         }
 
         WorkWithFiles.CloseWrittenFile(file);
