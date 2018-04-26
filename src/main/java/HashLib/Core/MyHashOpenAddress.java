@@ -62,31 +62,11 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         try {
             long code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
-            int probe = 0;
+            int pos = getNodePos(vectorPos,key);
 
-            if (hashVector[vectorPos] == null) {
-                do {
-                    if (hashVector[vectorPos].getKey().equals(key)) {
-                        return (V) hashVector[vectorPos].getValue();
-                    }
-                    probe++;
+            return pos != -1 ? (V) hashVector[pos].getValue() : null;
 
-                } while (probe < length) ;
-            }else if(hashVector[vectorPos].getKey().equals(key))
-            {
-                return (V) hashVector[vectorPos].getValue();
-            }else
-            {
-                do {
-                    if (hashVector[vectorPos].getKey().equals(key)) {
-                        return (V) hashVector[vectorPos].getValue();
-                    }
-                    probe++;
 
-                } while (probe < length) ;
-            }
-
-            return null;
         }catch (Exception e)
         {
             return null;
@@ -102,34 +82,65 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         }
 
         try {
-            int probe = 0;
-
-            do {
 
                 long code = hashEngine.generateHashCode(key);
                 int vectorPos = getElementVectorPos(code);
 
-                if (hashVector[vectorPos] == null) {
-                    long myHashCode = hashEngine.generateHashCode(key);
-                    MyNode<K, V> node = new MyNode<>(myHashCode,key,value);
-                    hashVector[vectorPos] = node;
-                    actualSize++;
-                    return true;
-                }else
+                int pos = getNodePos(vectorPos,key);
+                if(pos != -1)
                 {
-                    if(hashVector[vectorPos].getKey().equals(key)){
-                        hashVector[vectorPos].setValue(value);
-                        return true;
-                    }
+                    hashVector[pos].setValue(value);
+                }else{
+                    long myHashCode = hashEngine.generateHashCode(key);
+                    pos = getNullPos(vectorPos);
+                    hashVector[vectorPos] = new MyNode<>(myHashCode,key,value);
+                    actualSize++;
                 }
-                probe++;
-            } while (probe < length);
 
-            return true;
+                return hashVector[pos] == null;
+
         }catch (Exception e)
         {
             return false;
         }
+    }
+
+    public int getNodePos(int pos, K key)
+    {
+        for (int i = pos; i < length ; i++) {
+            if(hashVector[i] != null && key.equals(hashVector[i].getKey()))
+            {
+                return i;
+            }
+        }
+
+        for (int i = 0; i < pos ; i++) {
+            if(hashVector[i] != null && key.equals(hashVector[i].getKey()))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public int getNullPos(int pos){
+        for (int i = pos; i < length ; i++) {
+            if(hashVector[i] == null)
+            {
+                return i;
+            }
+        }
+
+        for (int i = 0; i < pos ; i++) {
+            if(hashVector[i] == null)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+
     }
 
     @Override
