@@ -11,7 +11,7 @@ import static HashLib.Functions.AuxHashFunctions.DefineIndex;
 @SuppressWarnings("ALL")
 public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
-    private MyNode[] hashVector;
+    private MyNode<K,V>[] hashVector;
     private int length;
     private int maxSize;
     private int actualSize;
@@ -58,27 +58,13 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     @Override
     public V findElements(K key) {
 
-
         try {
-            long code = hashEngine.generateHashCode(key);
-            int vectorPos = getElementVectorPos(code);
-            int pos = vectorPos;
-
-            if(hashVector[vectorPos] != null && hashVector[vectorPos].getKey().equals(key))
-            {
-                return (V) hashVector[vectorPos].getValue();
-            }else
-            {
-                pos = (pos + 1) % length;
-                while (pos != vectorPos )//&& hashVector[pos].getKey() != key
-                {
-                    if(hashVector[pos] != null && hashVector[pos].getKey().equals(key))
-                    {
-                        return  (V) hashVector[pos].getValue();
-                    }
-                    pos = (pos + 1) % length;
-                }
+            int pos = find(key);
+            if(pos == -1){
                 return null;
+            }
+            else{
+                return hashVector[pos].getValue();
             }
 
         }catch (Exception e)
@@ -86,6 +72,34 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
             return null;
         }
 
+    }
+
+    public int find(K key)
+    {
+        try {
+            long code = hashEngine.generateHashCode(key);
+            int vectorPos = getElementVectorPos(code);
+
+            int searchPos = vectorPos;
+
+            if(hashVector[vectorPos] != null && hashVector[vectorPos].getKey().equals(key))
+            {
+                return vectorPos;
+            }else
+            {
+                do{
+                    if(hashVector[searchPos] != null && hashVector[searchPos].getKey().equals(key))
+                    {
+                        return searchPos;
+                    }
+                    searchPos = (searchPos + 1) % length;
+                }while (searchPos != vectorPos);
+            }
+
+            return -1;
+        }catch (Exception e){
+            return -1;
+        }
     }
 
     @Override
@@ -99,34 +113,28 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
             long code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
             int pos = vectorPos;
+            int posFind = find(key);
 
-            if(hashVector[vectorPos] == null)// && hashVector[vectorPos].getKey().equals(key))
+            if(posFind != -1)
             {
-                hashVector[vectorPos] = new MyNode<>(code,key,value);
-                actualSize++;
+                hashVector[posFind].setValue(value);
                 return true;
+
             }
-            else
-            {
-                pos = (pos + 1) % length;
-                while (pos != vectorPos )
-                {
-                    if(hashVector[pos] != null && hashVector[pos].getKey().equals(key))
-                    {
-                        hashVector[pos].setValue(value);
-                        return true;
-                    }else if (hashVector[pos]== null){
+            else{
+                do{
+                    if (hashVector[pos]== null){
                         hashVector[pos] = new MyNode<>(code,key,value);
                         actualSize++;
                         return true;
                     }
 
                     pos = (pos + 1) % length;
-                }
-
+                }while (pos != vectorPos );
             }
 
             return false;
+
         }catch (Exception e)
         {
             return false;
@@ -137,41 +145,16 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     public V removeElement(K key) {
         try{
             V aux;
-            long code = hashEngine.generateHashCode(key);
-            int vectorPos = getElementVectorPos(code);
 
-            if(hashVector[vectorPos] == null || hashVector[vectorPos].getKey() != key)
+            int removeFromPos = find(key);
+
+            if(removeFromPos == -1)
             {
-                int searchPos = vectorPos;
-                while(true)
-                {
-                    searchPos ++;
+                return  null;
+            }else{
+                aux = hashVector[removeFromPos].getValue();
+                hashVector[removeFromPos] = null;
 
-                    if(searchPos == length)
-                    {
-                        searchPos = 0;
-                    }else if(searchPos == vectorPos)
-                    {
-                        return null;
-                    }
-                    if(hashVector[searchPos] != null)
-                    {
-                        if(hashVector[searchPos].getKey() == key)
-                        {
-                            aux = (V) hashVector[searchPos].getValue();
-                            hashVector[searchPos] = null;
-                            actualSize --;
-                            return aux;
-                        }
-                    }
-                }
-
-            }
-            else
-            {
-                aux = (V) hashVector[vectorPos].getValue();
-                hashVector[vectorPos] = null;
-                actualSize --;
                 return aux;
             }
 
@@ -227,14 +210,13 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         hashVector = new MyNode[this.length];
         calcMaxSize();
 
-        for (int i = 0; i<oldMaxSize;i++) {
-            MyNode node = oldVector[i];
-            if(node!= null)
+        for (int i = 0; i<oldVector.length;i++) {
+            if(oldVector[i] != null)
             {
-                hashVector[getElementVectorPos(node.getMyHashCode())] = node;
+                MyNode node = oldVector[i];
+                insertItem((K)node.getKey(),(V)node.getValue());
             }
         }
-
     }
 
     private int getElementVectorPos(int hashCode)

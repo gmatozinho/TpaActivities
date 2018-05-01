@@ -9,6 +9,6 @@ public class HashDefault extends HashEngine {
     @Override
     public long generateHashCode(Object key) throws IOException {
         byte[] bytes = ByteArray.toBytesStream(key);
-        return HashFunctions.Polynomial(bytes);
+        return Math.abs(HashFunctions.Polynomial(bytes));
     }
 }
