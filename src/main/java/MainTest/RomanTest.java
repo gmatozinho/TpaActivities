@@ -4,7 +4,7 @@ import RomanAlgorismConverter.RomanConvert;
 
 import java.io.IOException;
 
-public class RomanToArabic {
+public class RomanTest {
     public static void main(String[] args) throws IOException {
         RomanConvert convert = new RomanConvert();
 
