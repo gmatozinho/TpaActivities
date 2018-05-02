@@ -75,7 +75,6 @@ public class MySparseMatrix {
 
     }
 
-
     public LinkedList<Integer> values()
     {
         LinkedList<Integer> values = new LinkedList<>();
@@ -121,28 +120,6 @@ public class MySparseMatrix {
         return fileName;
     }
 
-    public MySparseMatrix multiply(MySparseMatrix matrix2) {
-        MySparseMatrix matrix1 = this;
-        if (!matrix1.isMultiplicationCompatible(matrix2)){
-            throw new IllegalArgumentException(
-                    "Matrices are not multiplication compatible");
-        }
-
-        MySparseMatrix resultMatrix = new MySparseMatrix(matrix1.getRows(), matrix2.getColumns());
-        for (int i = 0; i < matrix1.rows; i++) {
-            for (int j = 0; j < matrix2.columns; j++) {
-                for (int k = 0; k < matrix1.columns; k++) {
-                    int value1 = matrix1.find(i,k);
-                    int value2 = matrix2.find(k,j);
-                    int result = value1 * value2;
-                    resultMatrix.increment(i, j, result);
-                }
-            }
-        }
-
-        return resultMatrix;
-    }
-
     private int getRows() {
         return rows;
     }
@@ -164,6 +141,28 @@ public class MySparseMatrix {
             for (int j = 0; j < m1.columns; j++) {
                 resultMatrix.increment(i,j,m1.find(i,j));
                 resultMatrix.increment(i,j,m2.find(i,j));
+            }
+        }
+
+        return resultMatrix;
+    }
+
+    public MySparseMatrix multiply(MySparseMatrix matrix2) {
+        MySparseMatrix matrix1 = this;
+        if (!matrix1.isMultiplicationCompatible(matrix2)){
+            throw new IllegalArgumentException(
+                    "Matrices are not multiplication compatible");
+        }
+
+        MySparseMatrix resultMatrix = new MySparseMatrix(matrix1.getRows(), matrix2.getColumns());
+        for (int i = 0; i < matrix1.rows; i++) {
+            for (int j = 0; j < matrix2.columns; j++) {
+                for (int k = 0; k < matrix1.columns; k++) {
+                    int value1 = matrix1.find(i,k);
+                    int value2 = matrix2.find(k,j);
+                    int result = value1 * value2;
+                    resultMatrix.increment(i, j, result);
+                }
             }
         }
 
