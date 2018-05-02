@@ -7,9 +7,8 @@ import java.io.IOException;
 
 public class RomanConvert {
 
-    //TODO Polir melhor as classes
+    private String errorMsg = "Could not convert this value";
     private MyHash<Integer,String> decimalToRoman = new MyHashListChain<>();
-
     private MyHash<String,Integer> romanToDecimal = new MyHashListChain<>();
 
     private String[] romanos = new String[]{"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
@@ -22,102 +21,66 @@ public class RomanConvert {
         }
     }
 
-    public int toInt(String number) {
+    private int toInt(String number) throws IOException {
         if (number.isEmpty()) return 0;
-        if (number.startsWith("M")) return 1000 + toInt(number.substring(1, number.length()));
-        if (number.startsWith("CM")) return 900 + toInt(number.substring(2, number.length()));
-        if (number.startsWith("D")) return 500 + toInt(number.substring(1, number.length()));
-        if (number.startsWith("CD")) return 400 + toInt(number.substring(2, number.length()));
-        if (number.startsWith("C")) return 100 + toInt(number.substring(1, number.length()));
-        if (number.startsWith("XC")) return 90 + toInt(number.substring(2, number.length()));
-        if (number.startsWith("L")) return 50 + toInt(number.substring(1, number.length()));
-        if (number.startsWith("XL")) return 40 + toInt(number.substring(2, number.length()));
-        if (number.startsWith("X")) return 10 + toInt(number.substring(1, number.length()));
-        if (number.startsWith("IX")) return 9 + toInt(number.substring(2, number.length()));
-        if (number.startsWith("V")) return 5 + toInt(number.substring(1, number.length()));
-        if (number.startsWith("IV")) return 4 + toInt(number.substring(2, number.length()));
-        if (number.startsWith("I")) return 1 + toInt(number.substring(1, number.length()));
-        else{
-            return -1;
-        }
+        if (number.startsWith("M")) return romanToDecimal.findElements("M") + toInt(number.substring(1, number.length()));
+        if (number.startsWith("CM")) return romanToDecimal.findElements("CM") + toInt(number.substring(2, number.length()));
+        if (number.startsWith("D")) return romanToDecimal.findElements("D") + toInt(number.substring(1, number.length()));
+        if (number.startsWith("CD")) return romanToDecimal.findElements("CD") + toInt(number.substring(2, number.length()));
+        if (number.startsWith("C")) return romanToDecimal.findElements("C") + toInt(number.substring(1, number.length()));
+        if (number.startsWith("XC")) return romanToDecimal.findElements("XC") + toInt(number.substring(2, number.length()));
+        if (number.startsWith("L")) return romanToDecimal.findElements("L") + toInt(number.substring(1, number.length()));
+        if (number.startsWith("XL")) return romanToDecimal.findElements("XL") + toInt(number.substring(2, number.length()));
+        if (number.startsWith("X")) return romanToDecimal.findElements("X") + toInt(number.substring(1, number.length()));
+        if (number.startsWith("IX")) return romanToDecimal.findElements("IX") + toInt(number.substring(2, number.length()));
+        if (number.startsWith("V")) return romanToDecimal.findElements("V") + toInt(number.substring(1, number.length()));
+        if (number.startsWith("IV")) return romanToDecimal.findElements("IV") + toInt(number.substring(2, number.length()));
+        if (number.startsWith("I")) return romanToDecimal.findElements("I") + toInt(number.substring(1, number.length()));
+
+        return 0;
     }
 
-
-    public String toRomano(int number) throws IOException {
-        StringBuilder m_number= new StringBuilder();
+    public String toRoman(int number) throws IOException {
 
         if(number < 4000) {
-            while (number >= 1000) {
-                m_number.append(decimalToRoman.findElements(1000));
-                number -= 1000;
-            }
-            while (number >= 900) {
-                m_number.append(decimalToRoman.findElements(900));
-                number -= 900;
-            }
-            while (number >= 500) {
-                m_number.append(decimalToRoman.findElements(500));
-                number -= 500;
-            }
-            while (number >= 400) {
-                m_number.append(decimalToRoman.findElements(400));
-                number -= 400;
-            }
-            while (number >= 100) {
-                m_number.append(decimalToRoman.findElements(100));
-                number -= 100;
-            }
-            while (number >= 90) {
-                m_number.append(decimalToRoman.findElements(90));
-                number -= 90;
-            }
-            while (number >= 50) {
-                m_number.append(decimalToRoman.findElements(50));
-                number -= 50;
-            }
-            while (number >= 40) {
-                m_number.append(decimalToRoman.findElements(40));
-                number -= 40;
-            }
-            while (number >= 10) {
-                m_number.append(decimalToRoman.findElements(10));
-                number -= 10;
-            }
-            while (number >= 9) {
-                m_number.append(decimalToRoman.findElements(9));
-                number -= 9;
-            }
-            while (number >= 5) {
-                m_number.append(decimalToRoman.findElements(5));
-                number -= 5;
-            }
-            while (number >= 4) {
-                m_number.append(decimalToRoman.findElements(4));
-                number -= 4;
-            }
-            while (number >= 1) {
-                m_number.append(decimalToRoman.findElements(1));
-                number -= 1;
-            }
-
-            return m_number.toString();
+            if(number == 0) return "";
+            if(number >= 1000) return decimalToRoman.findElements(1000) + toRoman(number - 1000);
+            if(number >= 900) return decimalToRoman.findElements(900) + toRoman(number - 900);
+            if(number >= 500) return decimalToRoman.findElements(500) + toRoman(number - 500);
+            if(number >= 400) return decimalToRoman.findElements(400) + toRoman(number - 400);
+            if(number >= 100) return decimalToRoman.findElements(100) + toRoman(number - 100);
+            if(number >= 90) return decimalToRoman.findElements(90) + toRoman(number - 90);
+            if(number >= 50) return decimalToRoman.findElements(50) + toRoman(number - 50);
+            if(number >= 40) return decimalToRoman.findElements(40) + toRoman(number - 40);
+            if(number >= 10) return decimalToRoman.findElements(10) + toRoman(number - 10);
+            if(number >= 9) return decimalToRoman.findElements(9) + toRoman(number - 9);
+            if(number >= 5) return decimalToRoman.findElements(5) + toRoman(number - 5);
+            if(number >= 4) return decimalToRoman.findElements(4) + toRoman(number - 4);
+            if(number >= 1) return decimalToRoman.findElements(1) + toRoman(number - 1);
         }
 
-        return "Nao foi possivel conveter esse valor";
+        return errorMsg;
 
     }
 
-    public String substrai(String a,String b)
-    {
+    public String subtract(String a, String b) throws IOException {
+        int intA = toInt(a);
+        int intB = toInt(b);
 
-        return "";
+        int result =  intA - intB;
+        if(result> 0 && result < 4000 && (!a.equals(errorMsg) && !b.equals(errorMsg))) return toRoman(result);
+        else return "Undefined";
 
     }
 
-    public String soma(String a,String b)
-    {
+    public String add(String a, String b) throws IOException {
+        int intA = toInt(a);
+        int intB = toInt(b);
 
-        return "";
+        int result =  intA + intB;
+        if(result> 0 && result < 4000 && (!a.equals(errorMsg) && !b.equals(errorMsg))) return toRoman(result);
+        else return "Undefined";
+
 
     }
 

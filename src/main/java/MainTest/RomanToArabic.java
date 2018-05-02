@@ -8,8 +8,10 @@ public class RomanToArabic {
     public static void main(String[] args) throws IOException {
         RomanConvert convert = new RomanConvert();
 
-        System.out.println(convert.toRomano(3999));
-        System.out.println(convert.toInt(convert.toRomano(3999)));
+        String str = convert.toRoman(10);
+        String str2 = convert.toRoman(5);
+        System.out.println(convert.subtract(str,str2));
+
 
     }
 }
