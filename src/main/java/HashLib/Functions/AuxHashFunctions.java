@@ -1,6 +1,6 @@
 package HashLib.Functions;
 
-import NumLib.TreatBigInteger;
+import NumLib.ToNumber;
 
 import java.math.BigInteger;
 
@@ -22,7 +22,7 @@ public class AuxHashFunctions {
 
     private static int DefineIndex(BigInteger sum, int[] array)
     {
-        return sum.mod(TreatBigInteger.intToBigInteger(array.length)).intValue();
+        return sum.mod(ToNumber.intToBigInteger(array.length)).intValue();
     }
 
     public static int DefineIndex(long sum, int length)

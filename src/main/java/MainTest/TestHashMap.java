@@ -4,12 +4,12 @@ import HashLib.Core.MyHashListChain;
 import HashLib.Core.MyHashOpenAddress;
 import Institution.Student;
 
-public class BasicTestHashMap {
+public class TestHashMap {
     public static void main(String[] args) {
-        CallHash();
+        TestHash();
     }
 
-    private static void CallHash() {
+    private static void TestHash() {
         //TODO HASHENGINE GENERATOR
         MyHashListChain<String, Student> hash = new MyHashListChain<>(100);
         MyHashOpenAddress<String, Student> hash2 = new MyHashOpenAddress<>();

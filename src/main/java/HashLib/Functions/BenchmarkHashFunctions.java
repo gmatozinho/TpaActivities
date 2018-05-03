@@ -150,7 +150,7 @@ public class BenchmarkHashFunctions {
         WorkWithFiles.CloseWrittenFile(file);
     }
 
-    public static void CallHashsBench() throws IOException {
+    public static void CallHashBench() throws IOException {
         HashFunctions.StartArrays(100);
         HashAscii();
         HashPolynomial();

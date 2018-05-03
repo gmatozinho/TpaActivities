@@ -1,4 +1,4 @@
-package HashLib.CalcHashEngine;
+package HashLib.HashEngine;
 
 import java.io.IOException;
 

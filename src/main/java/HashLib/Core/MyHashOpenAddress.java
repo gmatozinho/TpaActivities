@@ -1,7 +1,7 @@
 package HashLib.Core;
 
-import HashLib.CalcHashEngine.HashDefault;
-import HashLib.CalcHashEngine.HashEngine;
+import HashLib.HashEngine.HashDefault;
+import HashLib.HashEngine.HashEngine;
 import NumLib.Prime;
 
 import java.util.LinkedList;
@@ -28,7 +28,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     public MyHashOpenAddress(int length) {
         this.hashEngine = new HashDefault();
-        this.length = Prime.decideArraySize(length);
+        this.length = Prime.calcArraySize(length);
         actualSize = 0;
         calcMaxSize();
         hashVector = new MyNode[this.length];
@@ -36,7 +36,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     public MyHashOpenAddress(HashEngine hashEngine) {
         this.hashEngine = hashEngine;
-        this.length = Prime.decideArraySize(length);
+        this.length = Prime.calcArraySize(length);
         actualSize = 0;
         calcMaxSize();
         hashVector = new MyNode[this.length];
@@ -44,7 +44,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     public MyHashOpenAddress(int length, HashEngine hashEngine) {
         this.hashEngine = hashEngine;
-        this.length = Prime.decideArraySize(length);
+        this.length = Prime.calcArraySize(length);
         actualSize = 0;
         calcMaxSize();
         hashVector = new MyNode[this.length];
@@ -74,6 +74,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     }
 
+    //TODO put to do one run in vector, return {pos, pos of first null};
     public int find(K key)
     {
         try {
@@ -119,7 +120,6 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
             {
                 hashVector[posFind].setValue(value);
                 return true;
-
             }
             else{
                 do{
@@ -206,7 +206,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     {
         int oldMaxSize = maxSize;
         MyNode[] oldVector = hashVector;
-        length = Prime.decideArraySize(length * 2);
+        length = Prime.calcArraySize(length * 2);
         hashVector = new MyNode[this.length];
         calcMaxSize();
 

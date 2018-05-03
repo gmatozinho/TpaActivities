@@ -14,6 +14,7 @@ public class TestMyMatrix {
         System.out.println(matrix1.values());
 
         MySparseMatrix result = matrix.multiplyByValue(3);
+        result.save("tesmat.csv");
 
         System.out.println(result.values());
 

@@ -5,7 +5,7 @@ import HashLib.Core.MyHashListChain;
 
 import java.io.IOException;
 
-public class RomanConvert {
+public class Roman {
 
     private String errorMsg = "Could not convert this value";
     private MyHash<Integer,String> decimalToRoman = new MyHashListChain<>();
@@ -14,7 +14,7 @@ public class RomanConvert {
     private String[] romanos = new String[]{"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
     private int arabicos[] = {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
 
-    public RomanConvert() throws IOException {
+    public Roman() throws IOException {
         for (int i = 0; i < romanos.length ; i++) {
             decimalToRoman.insertItem(arabicos[i],romanos[i]);
             romanToDecimal.insertItem(romanos[i],arabicos[i]);

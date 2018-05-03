@@ -1,7 +1,7 @@
 package HashLib.Functions;
 
 import NumLib.Prime;
-import NumLib.TreatBigInteger;
+import NumLib.ToNumber;
 
 import java.math.BigInteger;
 
@@ -17,7 +17,7 @@ public class HashFunctions {
 
     static void StartArrays(int n){
 
-        int size = Prime.decideArraySize(n);
+        int size = Prime.calcArraySize(n);
         arrayAscii =  new int[size];
         arrayPolynomial =  new int[size];
         arrayBernstein =  new int[size];
@@ -78,7 +78,7 @@ public class HashFunctions {
         for (int i = 0; i < word.length(); i++)
         {
             BigInteger temporary = sum.multiply(new BigInteger("33"));
-            sum = temporary.add(TreatBigInteger.charToBigInteger(word.charAt(i)));
+            sum = temporary.add(ToNumber.charToBigInteger(word.charAt(i)));
         }
 
         return sum;
@@ -90,7 +90,7 @@ public class HashFunctions {
         BigInteger sum = new BigInteger("0");
         for (byte aByte : bytes) {
             BigInteger temporary = sum.multiply(new BigInteger("33"));
-            sum = temporary.add(TreatBigInteger.intToBigInteger(aByte));
+            sum = temporary.add(ToNumber.intToBigInteger(aByte));
         }
 
         return sum;
@@ -103,7 +103,7 @@ public class HashFunctions {
         for (int i = 0; i < word.length(); i++)
         {
             BigInteger temporary = sum.multiply(new BigInteger("33"));
-            sum = temporary.xor(TreatBigInteger.charToBigInteger(word.charAt(i)));
+            sum = temporary.xor(ToNumber.charToBigInteger(word.charAt(i)));
         }
 
         return sum;
@@ -115,7 +115,7 @@ public class HashFunctions {
         BigInteger sum = new BigInteger("0");
         for (byte aByte : bytes) {
             BigInteger temporary = sum.multiply(new BigInteger("33"));
-            sum = temporary.xor(TreatBigInteger.intToBigInteger(aByte));
+            sum = temporary.xor(ToNumber.intToBigInteger(aByte));
         }
 
         return sum;
@@ -128,7 +128,7 @@ public class HashFunctions {
 
         for (int i = 0; i < word.length(); i++)
         {
-            sum = (sum.multiply(fnvValue)).or(TreatBigInteger.charToBigInteger(word.charAt(i)));
+            sum = (sum.multiply(fnvValue)).or(ToNumber.charToBigInteger(word.charAt(i)));
         }
 
         return sum;
@@ -141,7 +141,7 @@ public class HashFunctions {
         BigInteger sum = new BigInteger("2166136261");
         BigInteger fnvValue = new BigInteger("16777619");
         for (byte aByte : bytes) {
-            sum = (sum.multiply(fnvValue)).or(TreatBigInteger.intToBigInteger(aByte));
+            sum = (sum.multiply(fnvValue)).or(ToNumber.intToBigInteger(aByte));
         }
 
         return sum;
@@ -154,7 +154,7 @@ public class HashFunctions {
 
         for (int i = 0; i < word.length(); i++)
         {
-            sum = (sum.shiftLeft(1).or(sum.shiftRight(31))).or(TreatBigInteger.charToBigInteger(word.charAt(i)));
+            sum = (sum.shiftLeft(1).or(sum.shiftRight(31))).or(ToNumber.charToBigInteger(word.charAt(i)));
         }
 
         return sum;
@@ -164,7 +164,7 @@ public class HashFunctions {
     {
         BigInteger sum = new BigInteger("16777551");
         for (byte aByte : bytes) {
-            sum = (sum.shiftLeft(1).or(sum.shiftRight(31))).or(TreatBigInteger.intToBigInteger(aByte));
+            sum = (sum.shiftLeft(1).or(sum.shiftRight(31))).or(ToNumber.intToBigInteger(aByte));
         }
 
         return sum;

@@ -2,7 +2,12 @@ package NumLib;
 
 import java.math.BigInteger;
 
-public class TreatBigInteger {
+public class ToNumber {
+
+    public static int ConvertCharToAsciiValue(char letter)
+    {
+        return (int) letter;
+    }
 
     public static BigInteger intToBigInteger(int value)
     {

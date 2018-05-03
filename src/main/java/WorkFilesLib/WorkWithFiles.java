@@ -4,11 +4,6 @@ import java.io.*;
 
 public class WorkWithFiles {
 
-    public static int ConvertCharToAsciiValue(char letter)
-    {
-        return (int) letter;
-    }
-
     public static BufferedReader OpenFileToRead(String fileName)
     {
         File file = new File("database/"+fileName);

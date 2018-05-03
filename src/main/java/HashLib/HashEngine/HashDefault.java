@@ -1,4 +1,4 @@
-package HashLib.CalcHashEngine;
+package HashLib.HashEngine;
 
 import ByteLib.ByteArray;
 import HashLib.Functions.HashFunctions;

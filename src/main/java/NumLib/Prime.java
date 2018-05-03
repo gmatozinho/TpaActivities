@@ -20,12 +20,12 @@ public class Prime {
         return qtdDiv==1;
     }
 
-    public static int decideArraySize(int n)
+    public static int calcArraySize(int n)
     {
         if(isPrime(n))
         {
             return n;
         }
-        return decideArraySize(n+1);
+        return calcArraySize(n+1);
     }
 }

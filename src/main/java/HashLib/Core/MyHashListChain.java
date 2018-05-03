@@ -1,7 +1,7 @@
 package HashLib.Core;
 
-import HashLib.CalcHashEngine.HashDefault;
-import HashLib.CalcHashEngine.HashEngine;
+import HashLib.HashEngine.HashDefault;
+import HashLib.HashEngine.HashEngine;
 import NumLib.Prime;
 
 import java.util.LinkedList;
@@ -30,7 +30,7 @@ public class MyHashListChain<K,V> extends MyHash<K,V>  {
 
     public MyHashListChain(int length) {
         this.hashEngine = new HashDefault();
-        this.length = Prime.decideArraySize(length);
+        this.length = Prime.calcArraySize(length);
         actualSize = 0;
         calcMaxSize();
         hashVector = new LinkedList[this.length];
@@ -39,7 +39,7 @@ public class MyHashListChain<K,V> extends MyHash<K,V>  {
 
     public MyHashListChain(HashEngine hashEngine) {
         this.hashEngine = hashEngine;
-        this.length = Prime.decideArraySize(length);
+        this.length = Prime.calcArraySize(length);
         actualSize = 0;
         calcMaxSize();
         hashVector = new LinkedList[this.length];
@@ -48,7 +48,7 @@ public class MyHashListChain<K,V> extends MyHash<K,V>  {
 
     public MyHashListChain(int length, HashEngine hashEngine) {
         this.hashEngine = hashEngine;
-        this.length = Prime.decideArraySize(length);
+        this.length = Prime.calcArraySize(length);
         actualSize = 0;
         calcMaxSize();
         hashVector = new LinkedList[this.length];
@@ -184,7 +184,7 @@ public class MyHashListChain<K,V> extends MyHash<K,V>  {
     private synchronized void resizeVector()
     {
         LinkedList[] oldVector = hashVector;
-        length = Prime.decideArraySize(length * 2);
+        length = Prime.calcArraySize(length * 2);
         hashVector = new LinkedList[this.length];
         calcMaxSize();
         fillVector();

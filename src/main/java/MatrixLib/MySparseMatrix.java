@@ -110,7 +110,10 @@ public class MySparseMatrix {
         String line;
         LinkedList<String> coordenates = matrix.keys();
         for (String coordMatrix: coordenates) {
-            int value = matrix.findElements(coordMatrix);
+            int value = 0;
+            Object result = matrix.findElements(coordMatrix);
+
+            if(result != null) value = (int) result;            
             line = "" + CoordMatrix.getColumn(coordMatrix) + separator + CoordMatrix.getColumn(coordMatrix) + separator + value +"\n";
             WorkWithFiles.writeLine(file,line);
         }
