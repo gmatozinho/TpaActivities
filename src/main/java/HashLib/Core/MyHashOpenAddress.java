@@ -55,11 +55,45 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         this.maxSize = (int) (threshold * length);
     }
 
+
+    public int[] find(K key)
+    {
+        int firstNull = -1;
+        try {
+            long code = hashEngine.generateHashCode(key);
+            int vectorPos = getElementVectorPos(code);
+
+            int searchPos = vectorPos;
+
+            if(hashVector[vectorPos] != null && hashVector[vectorPos].getKey().equals(key))
+            {
+                return new int[]{vectorPos,firstNull};
+            }else
+            {
+                do{
+                    if(hashVector[searchPos]==null && firstNull == -1)
+                    {
+                        firstNull = searchPos;
+                    }
+                    else if(hashVector[searchPos] != null && hashVector[searchPos].getKey().equals(key))
+                    {
+                        return new int[]{searchPos,firstNull};
+                    }
+                    searchPos = (searchPos + 1) % length;
+                }while (searchPos != vectorPos);
+            }
+
+            return new int[]{-1,firstNull};
+        }catch (Exception e){
+            return new int[]{-1,firstNull};
+        }
+    }
+
     @Override
     public V findElements(K key) {
 
         try {
-            int pos = find(key);
+            int pos = find(key)[0];
             if(pos == -1){
                 return null;
             }
@@ -74,35 +108,6 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
     }
 
-    //TODO put to do one run in vector, return {pos, pos of first null};
-    public int find(K key)
-    {
-        try {
-            long code = hashEngine.generateHashCode(key);
-            int vectorPos = getElementVectorPos(code);
-
-            int searchPos = vectorPos;
-
-            if(hashVector[vectorPos] != null && hashVector[vectorPos].getKey().equals(key))
-            {
-                return vectorPos;
-            }else
-            {
-                do{
-                    if(hashVector[searchPos] != null && hashVector[searchPos].getKey().equals(key))
-                    {
-                        return searchPos;
-                    }
-                    searchPos = (searchPos + 1) % length;
-                }while (searchPos != vectorPos);
-            }
-
-            return -1;
-        }catch (Exception e){
-            return -1;
-        }
-    }
-
     @Override
     public boolean insertItem(K key, V value) {
         if(actualSize == maxSize)
@@ -114,27 +119,23 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
             long code = hashEngine.generateHashCode(key);
             int vectorPos = getElementVectorPos(code);
             int pos = vectorPos;
-            int posFind = find(key);
-
+            int[] find = find(key);
+            int posFind = find[0];
+            int firstNull = find[1];
             if(posFind != -1)
             {
                 hashVector[posFind].setValue(value);
                 return true;
             }
             else{
-                do{
-                    if (hashVector[pos]== null){
-                        hashVector[pos] = new MyNode<>(code,key,value);
-                        actualSize++;
-                        return true;
-                    }
-
-                    pos = (pos + 1) % length;
-                }while (pos != vectorPos );
+                if(firstNull != -1)
+                {
+                    hashVector[firstNull] = new MyNode<>(code,key,value);
+                    actualSize++;
+                    return true;
+                }
+                return false;
             }
-
-            return false;
-
         }catch (Exception e)
         {
             return false;
@@ -146,7 +147,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
         try{
             V aux;
 
-            int removeFromPos = find(key);
+            int removeFromPos = find(key)[0];
 
             if(removeFromPos == -1)
             {
