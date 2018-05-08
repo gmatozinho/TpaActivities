@@ -8,7 +8,6 @@ import java.util.LinkedList;
 
 import static HashLib.Functions.AuxHashFunctions.DefineIndex;
 
-//Todo Implementar deletado
 @SuppressWarnings("ALL")
 public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
 
@@ -229,9 +228,5 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     {
         return DefineIndex(hashCode,this.length);
     }
-
-}
-
-class DeleteObject{
 
 }
