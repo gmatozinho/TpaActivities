@@ -86,7 +86,6 @@ public class MyHashListChain<K,V> extends MyHash<K,V>  {
         }
     }
 
-
     @Override
     public boolean insertItem(K key, V value) {
 
@@ -141,12 +140,12 @@ public class MyHashListChain<K,V> extends MyHash<K,V>  {
 
     @Override
     public int size() {
-        return this.length;
+        return this.actualSize;
     }
 
     @Override
     public boolean isEmpty() {
-        return this.length != 0;
+        return this.actualSize != 0;
     }
 
     @Override
