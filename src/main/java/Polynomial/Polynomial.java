@@ -5,14 +5,13 @@ import HashLib.Core.MyHashListChain;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
-
-import static java.lang.Character.isDigit;
-
+@SuppressWarnings("ALL")
 public class Polynomial {
     private MyHash<Integer,Integer> hashTable;
     private LinkedList<String> termsList;
-    LinkedList<Character> signal;
+    private LinkedList<Character> signal;
 
     public Polynomial(String polynomial)
     {
@@ -25,7 +24,7 @@ public class Polynomial {
         }
     }
 
-    public Polynomial(MyHash polynomial)
+    private Polynomial(MyHash polynomial)
     {
         if(polynomial != null || polynomial.isEmpty())
         {
@@ -50,35 +49,147 @@ public class Polynomial {
         return new Polynomial(auxHash);
     }
 
+    public Polynomial multiply(Polynomial polynomial){
+        LinkedList<Integer> keys1 = hashTable.keys();
+        LinkedList<Integer> keys2 = polynomial.getHashTable().keys();
+        MyHash<Integer,Integer> auxHash = new MyHashListChain<>();
+
+        for (int key1: keys1) {
+            for (int key2: keys2) {
+                int newKey = key1+key2;
+                try {
+                    int newValue = hashTable.findElements(key1) * polynomial.getHashTable().findElements(key2);
+                    insertPolynomial(auxHash,newKey,newValue);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return new Polynomial(auxHash);
+    }
+
+    public String toString()
+    {
+        String polynomial = "";
+        boolean first = true;
+        LinkedList<Integer> keys = hashTable.keys();
+        keys.sort(Collections.reverseOrder());
+
+        for (int key : keys) {
+
+                String valueText;
+                String keyText = "";
+
+                int value = 0;
+                try {
+                    value = hashTable.findElements(key);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if(value>0 && !first)
+                {
+                    if(value == 1) {
+                        valueText = "+";
+                    }else{
+                        valueText = "+" + value;
+                    }
+
+                }else{
+                    if(value == -1){
+                        valueText = "-";
+                    }else {
+                        valueText = "" + value;
+                    }
+                    first = false;
+                }
+
+                if(key == 1)
+                {
+                    keyText = "x";
+                }else if(key > 1)
+                {
+                    keyText = "x" + key;
+                }
+
+                polynomial +=  valueText+ keyText;
+
+        }
+        return polynomial;
+    }
+
+    public static Polynomial doOperation(String operator, Polynomial polynomial1, Polynomial polynomial2)
+    {
+        switch (operator)
+        {
+            case "+":
+                return polynomial1.sum(polynomial2);
+            case "-":
+                return polynomial1.sum(polynomial2.multiply(new Polynomial("-1")));
+            case "*":
+                return polynomial1.multiply(polynomial2);
+            default:
+                return polynomial1;
+        }
+    }
+
     private MyHash insideSumRoutine(MyHash<Integer,Integer> poly1, MyHash<Integer,Integer> poly2)
     {
         MyHashListChain<Integer,Integer> auxHash = new MyHashListChain<>();
 
-        for (int key: poly1.keys()) {
+        for (int key : poly1.keys()) {
             try {
                 Integer valuePoly1 = poly1.findElements(key);
                 Integer valuePoly2 = poly2.findElements(key);
 
                 if(valuePoly2 == null){
-                    auxHash.insertItem(key,valuePoly1);
+                    insertPolynomial(auxHash,key,valuePoly1);
                 }else{
-                    auxHash.insertItem(key,valuePoly1+valuePoly2);
+                    insertPolynomial(auxHash,key,valuePoly1+valuePoly2);
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        for (int key: poly2.keys()) {
+            if(!poly1.keys().contains(key))
+            {
+                try {
+                    insertPolynomial(auxHash,key,poly2.findElements(key));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
         return  auxHash;
     }
 
-    public Polynomial multiply(Polynomial polynomial)
-    {
+    private void insertPolynomial(MyHash<Integer,Integer> myHash,int key,int value){
+        LinkedList<Integer> keys = myHash.keys();
 
-
-        return null;
+        if(value ==0)return;
+        if(keys.contains(key))
+        {
+            try {
+                int newValue = myHash.findElements(key) + value;
+                myHash.insertItem(key,newValue);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            try {
+                myHash.insertItem(key,value);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
-
 
     private void splitPolynomial(String line)
     {
@@ -124,10 +235,22 @@ public class Polynomial {
                     terms = new String[]{term0,term1};
                 }else
                 {
-                    String term0 = terms[0];
-                    String term1 = "0";
-                    terms = new String[]{term0,term1};
+                    if((word.toCharArray()[word.length()-1]) == 'x')
+                    {
+                        String term0 = terms[0];
+                        String term1 = "1";
+                        terms = new String[]{term0,term1};
+                    }else{
+                        String term0 = terms[0];
+                        String term1 = "0";
+                        terms = new String[]{term0,term1};
+                    }
+
                 }
+            }else if(terms[0].length() == 1 &&  signal.contains((terms[0].charAt(0))))
+            {
+                String term0 = terms[0] + 1;
+                terms = new String[]{term0,terms[1]};
             }
 
             int key = Integer.parseInt(terms[1]);
@@ -141,55 +264,6 @@ public class Polynomial {
         }
 
     }
-
-    public String toString()
-    {
-        String polynomial = "";
-        boolean first = true;
-        for (int key : hashTable.keys()) {
-
-
-                String valueText;
-                String keyText = "";
-
-                int value = 0;
-                try {
-                    value = hashTable.findElements(key);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if(value>0 && !first)
-                {
-                    if(value == 1) {
-                        valueText = "+";
-                    }else{
-                        valueText = "+" + value;
-                    }
-
-                }else{
-                    if(value == -1){
-                        valueText = "-";
-                    }else {
-                        valueText = "" + value;
-                    }
-                    first = false;
-                }
-
-                if(key == 1)
-                {
-                    keyText = "x";
-                }else if(key > 1)
-                {
-                    keyText = "x" + key;
-                }
-
-                polynomial +=  valueText+ keyText;
-
-        }
-        return polynomial;
-    }
-
 
     public LinkedList<String> getTermsList() {
         return termsList;

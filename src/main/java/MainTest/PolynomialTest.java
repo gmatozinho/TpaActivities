@@ -1,14 +1,49 @@
 package MainTest;
 
 import Polynomial.Polynomial;
+import WorkFilesLib.WorkWithFiles;
+
+import java.io.BufferedReader;
 
 public class PolynomialTest {
     public static void main(String[] args) {
 
-        Polynomial pol = new Polynomial("2x4-4x3+2x2+x+5");
-        Polynomial pol2 = new Polynomial("-5x2+x");
-        Polynomial result = pol.sum(pol2);
-        System.out.println(result.toString());
+       MainRoutine("bdpoli.txt");
 
     }
+
+    private static void MainRoutine(String polifile)
+    {
+        try {
+            BufferedReader reader = WorkWithFiles.OpenFileToRead(polifile);
+
+            Polynomial result = null;
+            String line = reader.readLine();
+            while (line != null) {
+                String[] lineSplit = line.split(",");
+                String stringPolynomial = lineSplit[0];
+
+                if(lineSplit.length >1 && result!=null) {
+                    String operator = lineSplit[1];
+                    result = Polynomial.doOperation(operator,result,new Polynomial(stringPolynomial));
+                }
+                else{
+                    result = new Polynomial(stringPolynomial);
+                }
+
+                line = reader.readLine();
+            }
+
+            reader.close();
+
+            assert result != null;
+            System.out.println(result.toString());
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+
 }
