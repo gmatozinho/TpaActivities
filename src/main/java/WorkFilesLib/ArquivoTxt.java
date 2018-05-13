@@ -4,6 +4,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /* Código base professor Ernani - TPA*/
 
@@ -21,7 +24,7 @@ public class ArquivoTxt {
 	    	   arqtxt.bw = new BufferedWriter(arqtxt.fw);
 	    	   return arqtxt;
 	        } catch (IOException e) {
-	            e.printStackTrace();
+	            LOGGER.log(Level.ALL,e.toString());
 	       } // catch    		
     	}
     	else 
@@ -32,7 +35,7 @@ public class ArquivoTxt {
      	    	   arqtxt.br = new BufferedReader(arqtxt.fr);
      	    	   return arqtxt;
      	        } catch (IOException e) {
-     	            e.printStackTrace();
+     	            LOGGER.log(Level.ALL,e.toString());
      	       } // catch    		
      	    }
 
@@ -44,7 +47,7 @@ public class ArquivoTxt {
         	String linha = br.readLine();
             return linha;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.ALL,e.toString());
         } // catch
 		return null;
     } // readline
@@ -53,7 +56,7 @@ public class ArquivoTxt {
         try {
             bw.write(content + "\n");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.ALL,e.toString());
         } // catch
     } // writeline
     
@@ -61,7 +64,7 @@ public class ArquivoTxt {
         try {
             bw.write(content);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.ALL,e.toString());
         } // catch
     } // write
 

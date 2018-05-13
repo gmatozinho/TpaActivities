@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 @SuppressWarnings("ALL")
 public class Polynomial {
     private MyHash<Integer,Integer> hashTable;
@@ -61,7 +65,7 @@ public class Polynomial {
                     int newValue = hashTable.findElements(key1) * polynomial.getHashTable().findElements(key2);
                     insertPolynomial(auxHash,newKey,newValue);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.ALL,e.toString());
                 }
             }
 
@@ -86,7 +90,7 @@ public class Polynomial {
                 try {
                     value = hashTable.findElements(key);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.ALL,e.toString());
                 }
 
                 if(value>0 && !first)
@@ -151,7 +155,7 @@ public class Polynomial {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.ALL,e.toString());
             }
         }
 
@@ -161,7 +165,7 @@ public class Polynomial {
                 try {
                     insertPolynomial(auxHash,key,poly2.findElements(key));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.ALL,e.toString());
                 }
             }
         }
@@ -179,14 +183,14 @@ public class Polynomial {
                 int newValue = myHash.findElements(key) + value;
                 myHash.insertItem(key,newValue);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.ALL,e.toString());
             }
         }
         else{
             try {
                 myHash.insertItem(key,value);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.ALL,e.toString());
             }
         }
     }
@@ -259,7 +263,7 @@ public class Polynomial {
             try {
                 hashTable.insertItem(key,value);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.ALL,e.toString());
             }
         }
 
