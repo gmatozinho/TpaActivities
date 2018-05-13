@@ -65,7 +65,7 @@ public class Polynomial {
                     int newValue = hashTable.findElements(key1) * polynomial.getHashTable().findElements(key2);
                     insertPolynomial(auxHash,newKey,newValue);
                 } catch (IOException e) {
-                    LOGGER.log(Level.ALL,e.toString());
+                    e.printStackTrace();
                 }
             }
 
@@ -90,7 +90,7 @@ public class Polynomial {
                 try {
                     value = hashTable.findElements(key);
                 } catch (IOException e) {
-                    LOGGER.log(Level.ALL,e.toString());
+                    e.printStackTrace();
                 }
 
                 if(value>0 && !first)
@@ -155,7 +155,7 @@ public class Polynomial {
                 }
 
             } catch (IOException e) {
-                LOGGER.log(Level.ALL,e.toString());
+                e.printStackTrace();
             }
         }
 
@@ -165,7 +165,7 @@ public class Polynomial {
                 try {
                     insertPolynomial(auxHash,key,poly2.findElements(key));
                 } catch (IOException e) {
-                    LOGGER.log(Level.ALL,e.toString());
+                    e.printStackTrace();
                 }
             }
         }
@@ -183,14 +183,14 @@ public class Polynomial {
                 int newValue = myHash.findElements(key) + value;
                 myHash.insertItem(key,newValue);
             } catch (IOException e) {
-                LOGGER.log(Level.ALL,e.toString());
+                e.printStackTrace();
             }
         }
         else{
             try {
                 myHash.insertItem(key,value);
             } catch (IOException e) {
-                LOGGER.log(Level.ALL,e.toString());
+                e.printStackTrace();
             }
         }
     }
@@ -263,7 +263,7 @@ public class Polynomial {
             try {
                 hashTable.insertItem(key,value);
             } catch (IOException e) {
-                LOGGER.log(Level.ALL,e.toString());
+                e.printStackTrace();
             }
         }
 

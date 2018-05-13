@@ -43,7 +43,7 @@ public class PolynomialTest {
             System.out.println(result.toString());
         }catch (Exception e)
         {
-            LOGGER.log(Level.ALL,e.toString());
+            e.printStackTrace();
         }
 
     }

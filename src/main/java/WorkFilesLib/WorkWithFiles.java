@@ -1,9 +1,6 @@
 package WorkFilesLib;
 
 import java.io.*;
-import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class WorkWithFiles {
 
@@ -16,7 +13,7 @@ public class WorkWithFiles {
             reader = new BufferedReader(new FileReader(file));
 
         } catch (FileNotFoundException e) {
-            LOGGER.log(Level.ALL,e.toString());
+            e.printStackTrace();
         }
 
         return reader;
