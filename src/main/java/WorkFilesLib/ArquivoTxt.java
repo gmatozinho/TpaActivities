@@ -1,12 +1,6 @@
 package WorkFilesLib;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.logging.Level;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.io.*;
 
 /* Código base professor Ernani - TPA*/
 
@@ -44,8 +38,7 @@ public class ArquivoTxt {
     
     public String readline(){
         try {
-        	String linha = br.readLine();
-            return linha;
+            return br.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         } // catch

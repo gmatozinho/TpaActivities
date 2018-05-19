@@ -4,9 +4,6 @@ import Polynomial.Polynomial;
 import WorkFilesLib.WorkWithFiles;
 
 import java.io.BufferedReader;
-import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class PolynomialTest {
     public static void main(String[] args) {
