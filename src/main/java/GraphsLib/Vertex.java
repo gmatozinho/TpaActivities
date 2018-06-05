@@ -1,9 +1,9 @@
 package GraphsLib;
 
-public class Vertex<L,V> {
+public class Vertex {
     private int id;
-    private L label;
-    private V value;
+    private String label;
+    private Object value;
 
     public int getId() {
         return id;
@@ -13,20 +13,25 @@ public class Vertex<L,V> {
         this.id = id;
     }
 
-    public L getLabel() {
+    public String getLabel() {
         return label;
     }
 
-    public void setLabel(L label) {
+    public void setLabel(String label) {
         this.label = label;
     }
 
-    public V getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(V value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 
+    public Vertex(int id, String label, Object value) {
+        this.id = id;
+        this.label = label;
+        this.value = value;
+    }
 }
