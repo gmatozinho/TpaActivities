@@ -7,8 +7,8 @@ public abstract class MyGraph {
     public abstract LinkedList<Vertex> vertices();
     public abstract int numEdges();
     public abstract LinkedList<Edge> edges();
-    public abstract Edge getEdge(Vertex vertex1, Vertex vertex2);
-    public abstract Vertex[] endVertices(Edge edge);
+    public abstract Object getEdge(String vertex1, String vertex2);
+    public abstract String[] endVertices(String edge);
     public abstract Vertex opossite(String vertex,String edge);
     public abstract int outDegree(Vertex vertex);
     public abstract int inDegree(Vertex vertex);

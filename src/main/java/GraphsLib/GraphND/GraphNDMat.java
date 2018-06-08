@@ -46,6 +46,41 @@ public class GraphNDMat extends GraphND {
     private int globalVertexID = 0;
     private int globalEdgeID = 0;
     private String matrix[][];
+    private int lenght;
+
+    private static final int defaultsize = 64;
+
+    private int primIndexMatrix = -1;
+    private int ultimIndexMatrix = -1;
+
+
+    //Cria um grafo de tamanho Default com 64 nós.
+    public GraphNDMat()
+    {
+        this.lenght = defaultsize;
+        matrix = new String[defaultsize][defaultsize];
+
+        startMat(defaultsize);
+    }
+
+    //Cria um grafo de tamanho Custom com N nós.
+    public GraphNDMat(int lenght)
+    {
+        this.lenght = lenght;
+        matrix = new String[lenght][lenght];
+
+        startMat(lenght);
+    }
+
+    private void startMat(int size)
+    {
+        for(int i = 0; i<size; i++){
+            for (int j= 0; j <size; j++){
+                matrix[i][j] = null;
+            }
+        }
+    }
+
 
     @Override
     public int numVertices() {
@@ -54,7 +89,13 @@ public class GraphNDMat extends GraphND {
 
     @Override
     public LinkedList vertices() {
-        return dicVertices.keys();
+
+        LinkedList<String> vertices = new LinkedList<>();
+        for ( Header header: dicVertices.keys()
+             ) {
+            vertices.add(header.getLabel());
+        }
+        return vertices;
     }
 
     @Override
@@ -64,17 +105,74 @@ public class GraphNDMat extends GraphND {
 
     @Override
     public LinkedList edges() {
-        return dicVertices.keys();
+        LinkedList<String> edges = new LinkedList<>();
+        for ( Header header: dicEdges.keys()
+                ) {
+            edges.add(header.getLabel());
+        }
+        return edges;
     }
 
+    //Get edge - se a posição do vertex1 for encontrada eu busco o 2 senao retorno nulo o mesmo vale pro vertex 2;
     @Override
-    public Edge getEdge(Vertex vertex1, Vertex vertex2) {
+    public Object getEdge(String vertex1, String vertex2) {
+        int vertex1Pos = findVertexPosByLabel(vertex1);
+        int vertex2Pos;
+        if(vertex1Pos != -1)
+        {
+            vertex2Pos = findVertexPosByLabel(vertex2);
+            if(vertex2Pos != -1){
+                return matrix[vertex1Pos][vertex2Pos];
+            }
+        }
+
         return null;
     }
 
+    private int findVertexPosByLabel(String label)
+    {
+        for ( Header header: dicVertices.keys()) {
+            if(header.getLabel().equals(label))
+            {
+                return header.getId();
+            }
+        }
+        return -1;
+    }
+
+    private String findVertexPosById(int id)
+    {
+        for ( Header header: dicVertices.keys()) {
+            if(header.getId()==id)
+            {
+                return header.getLabel();
+            }
+        }
+        return "";
+    }
+
+
     @Override
-    public Vertex[] endVertices(Edge edge) {
-        return new Vertex[0];
+    public String[] endVertices(String edge) {
+        int tam = numVertices();
+        for (int i = 0; i< tam; i++){
+            for(int j = 0; j < tam; j++){
+                if(matrix[i][j].equals(edge)){
+                    String labelVertex1 = findVertexPosById(i);
+                    String labelVertex2;
+                    if(!labelVertex1.equals(""))
+                    {
+                        labelVertex2 = findVertexPosById(j);
+                        if(!labelVertex2.equals(""))
+                        {
+                            return new String[] {labelVertex2,labelVertex1};
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -139,7 +237,6 @@ public class GraphNDMat extends GraphND {
 
         numEdges ++;
         return  edge;
-
     }
 
     @Override

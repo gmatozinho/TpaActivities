@@ -62,16 +62,12 @@ public class MySparseMatrix {
 
     private Integer find(String coordMatrix)
     {
-        try {
-            Object w = matrix.findElements(coordMatrix);
-            if(null == w)
-            {
-                return 0;
-            }
-            return (Integer)w;
-        } catch (IOException e) {
+        Object w = matrix.findElements(coordMatrix);
+        if(null == w)
+        {
             return 0;
         }
+        return (Integer)w;
 
     }
 
