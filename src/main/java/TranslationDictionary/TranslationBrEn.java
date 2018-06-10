@@ -40,8 +40,8 @@ public class TranslationBrEn {
 
     }
 
-    public String Translate(String word) throws IOException {
-        String string = dictionaryBrEn.findElements(word);
+    public String Translate(String word) {
+        String string = dictionaryBrEn.findElement(word);
 
         if(string != null)
         {

@@ -90,7 +90,7 @@ public class MyHashOpenAddress<K,V> extends MyHash<K,V>{
     }
 
     @Override
-    public V findElements(K key) {
+    public V findElement(K key) {
 
         try {
             int pos = find(key)[0];

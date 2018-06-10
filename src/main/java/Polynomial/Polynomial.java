@@ -3,7 +3,6 @@ package Polynomial;
 import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -58,12 +57,8 @@ public class Polynomial {
         for (int key1: keys1) {
             for (int key2: keys2) {
                 int newKey = key1+key2;
-                try {
-                    int newValue = hashTable.findElements(key1) * polynomial.getHashTable().findElements(key2);
-                    insertPolynomial(auxHash,newKey,newValue);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                int newValue = hashTable.findElement(key1) * polynomial.getHashTable().findElement(key2);
+                insertPolynomial(auxHash,newKey,newValue);
             }
 
         }
@@ -84,13 +79,9 @@ public class Polynomial {
                 String keyText = "";
 
                 int value = 0;
-                try {
-                    value = hashTable.findElements(key);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            value = hashTable.findElement(key);
 
-                if(value>0 && !first)
+            if(value>0 && !first)
                 {
                     if(value == 1) {
                         valueText = "+";
@@ -141,29 +132,21 @@ public class Polynomial {
         MyHashListChain<Integer,Integer> auxHash = new MyHashListChain<>();
 
         for (int key : poly1.keys()) {
-            try {
-                Integer valuePoly1 = poly1.findElements(key);
-                Integer valuePoly2 = poly2.findElements(key);
+            Integer valuePoly1 = poly1.findElement(key);
+            Integer valuePoly2 = poly2.findElement(key);
 
-                if(valuePoly2 == null){
-                    insertPolynomial(auxHash,key,valuePoly1);
-                }else{
-                    insertPolynomial(auxHash,key,valuePoly1+valuePoly2);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(valuePoly2 == null){
+                insertPolynomial(auxHash,key,valuePoly1);
+            }else{
+                insertPolynomial(auxHash,key,valuePoly1+valuePoly2);
             }
+
         }
 
         for (int key: poly2.keys()) {
             if(!poly1.keys().contains(key))
             {
-                try {
-                    insertPolynomial(auxHash,key,poly2.findElements(key));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                insertPolynomial(auxHash,key,poly2.findElement(key));
             }
         }
 
@@ -176,19 +159,11 @@ public class Polynomial {
         if(value ==0)return;
         if(keys.contains(key))
         {
-            try {
-                int newValue = myHash.findElements(key) + value;
-                myHash.insertItem(key,newValue);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            int newValue = myHash.findElement(key) + value;
+            myHash.insertItem(key,newValue);
         }
         else{
-            try {
-                myHash.insertItem(key,value);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            myHash.insertItem(key,value);
         }
     }
 
@@ -257,11 +232,7 @@ public class Polynomial {
             int key = Integer.parseInt(terms[1]);
             int value = Integer.parseInt(terms[0]);
 
-            try {
-                hashTable.insertItem(key,value);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            hashTable.insertItem(key,value);
         }
 
     }

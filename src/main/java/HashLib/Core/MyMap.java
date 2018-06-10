@@ -1,10 +1,9 @@
 package HashLib.Core;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 interface MyMap <K,V>{
-    V findElements(K key);
+    V findElement(K key);
     boolean insertItem(K key, V value);
     V removeElement(K key);
     int size();

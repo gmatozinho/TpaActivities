@@ -22,24 +22,24 @@ public class MyCurrencyConveter {
 
     public void addCoinToConverter(String coinToConvert, String coin, double value)
     {
-        currencyConverter.findElements(coinToConvert).insertItem(coin,value);
+        currencyConverter.findElement(coinToConvert).insertItem(coin,value);
     }
 
     public void removeCoinToConverter(String coinToConvert, String coin, double value)
     {
-        currencyConverter.findElements(coinToConvert).removeElement(coin);
+        currencyConverter.findElement(coinToConvert).removeElement(coin);
     }
 
     public double getCoinValue(String coinToConvert, String coin) {
-        return currencyConverter.findElements(coinToConvert).findElements(coin);
+        return currencyConverter.findElement(coinToConvert).findElement(coin);
     }
 
     public void printAll() {
         for (String key: currencyConverter.keys()) {
             System.out.println("\n"+key);
-            for ( String internalKey: currencyConverter.findElements(key).keys()) {
-                MyHashListChain<String, Double> hash = currencyConverter.findElements(key);
-                System.out.println("Coin:" + internalKey +" Value:" + hash.findElements(internalKey));
+            for ( String internalKey: currencyConverter.findElement(key).keys()) {
+                MyHashListChain<String, Double> hash = currencyConverter.findElement(key);
+                System.out.println("Coin:" + internalKey +" Value:" + hash.findElement(internalKey));
             }
 
         }

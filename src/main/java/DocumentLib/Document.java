@@ -74,11 +74,11 @@ public class Document {
         for (String word: wordsList) {
             if(!stopWordList.contains(word))
             {
-                if(frequencyTab.findElements(word) == null)
+                if(frequencyTab.findElement(word) == null)
                 {
                     frequencyTab.insertItem(word,1);
                 }else{
-                    int value = frequencyTab.findElements(word);
+                    int value = frequencyTab.findElement(word);
                     frequencyTab.insertItem(word,value+1);
                 }
             }
@@ -88,8 +88,8 @@ public class Document {
     public String save(String fileName) throws IOException {
         FileWriter file = WorkWithFiles.OpenFileToWrite(fileName);
         for (String word : frequencyTab.keys()) {
-            if(frequencyTab.findElements(word)!= null) {
-                int value = frequencyTab.findElements(word);
+            if(frequencyTab.findElement(word)!= null) {
+                int value = frequencyTab.findElement(word);
                 String line = word + ";" + value + "\n";
                 WorkWithFiles.writeLine(file, line);
             }

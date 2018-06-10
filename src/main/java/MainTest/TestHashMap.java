@@ -22,7 +22,7 @@ public class TestHashMap {
         hash2.insertItem(student2.getNome(),student2);
         hash2.insertItem(student3.getNome(),student3);
 
-        Student student = hash2.findElements(student3.getNome());
+        Student student = hash2.findElement(student3.getNome());
 
         if(student != null)
         {

@@ -68,7 +68,7 @@ public class MyHashListChain<K,V> extends MyHash<K,V>  {
     }
 
     @Override
-    public V findElements(K key){
+    public V findElement(K key){
 
         try {
             long code = hashEngine.generateHashCode(key);

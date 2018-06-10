@@ -62,7 +62,7 @@ public class MySparseMatrix {
 
     private Integer find(String coordMatrix)
     {
-        Object w = matrix.findElements(coordMatrix);
+        Object w = matrix.findElement(coordMatrix);
         if(null == w)
         {
             return 0;
@@ -107,7 +107,7 @@ public class MySparseMatrix {
         LinkedList<String> coordenates = matrix.keys();
         for (String coordMatrix: coordenates) {
             int value = 0;
-            Object result = matrix.findElements(coordMatrix);
+            Object result = matrix.findElement(coordMatrix);
 
             if(result != null) value = (int) result;            
             line = "" + CoordMatrix.getColumn(coordMatrix) + separator + CoordMatrix.getColumn(coordMatrix) + separator + value +"\n";

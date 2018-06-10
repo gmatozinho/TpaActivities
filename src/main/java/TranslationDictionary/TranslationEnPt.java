@@ -36,8 +36,8 @@ public class TranslationEnPt {
 
     }
     
-    public String Translate(String word) throws IOException {
-        String string = dictionaryEnBr.findElements(word);
+    public String Translate(String word) {
+        String string = dictionaryEnBr.findElement(word);
 
         if(string != null)
         {

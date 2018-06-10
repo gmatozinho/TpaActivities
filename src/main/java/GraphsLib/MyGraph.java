@@ -4,12 +4,12 @@ import java.util.LinkedList;
 
 public abstract class MyGraph {
     public abstract int numVertices();
-    public abstract LinkedList<Vertex> vertices();
+    public abstract LinkedList<String> vertices();
     public abstract int numEdges();
-    public abstract LinkedList<Edge> edges();
+    public abstract LinkedList<String> edges();
     public abstract Object getEdge(String vertex1, String vertex2);
     public abstract String[] endVertices(String edge);
-    public abstract Vertex opossite(String vertex,String edge);
+    public abstract String opossite(String vertex, String edge);
     public abstract int outDegree(Vertex vertex);
     public abstract int inDegree(Vertex vertex);
     public abstract Object outgoingEdges(Vertex vertex);
