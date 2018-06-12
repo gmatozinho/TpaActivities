@@ -206,6 +206,12 @@ public class GraphNDMat extends GraphND {
         return vertex;
     }
 
+    public Vertex insertVertex(Object value,String label)
+    {
+        //TODO Essa função é o futuro de tudo
+        return null;
+    }
+
     @Override
     public Edge insertEdge(Vertex vertex1, Vertex vertex2, Object value) {
         Header header1 = new Header(vertex1.getLabel(),vertex1.getId());
@@ -386,11 +392,20 @@ public class GraphNDMat extends GraphND {
 
         /* lendo os vertices */
         String row = arq.readline();
-        while (!row.equals("#")){
-            String[] vector = row.split(" ", 1);
+        while (!row.trim().equals("#")){
+            String[] vector = row.split(" ", 2);
             Vertex vertex = graph.insertVertex(null);
 
+            //TODO esse código esta péssimo nao faz sentido nenhum, dado como null,
+            //inserir vertice para ser removido depois, e inserção doq foi removido
+
+            Integer vertexBkp = vertex.getId();
+            Header tmp = new Header(vertexBkp.toString(),vertexBkp);
+            graph.dicVertices.removeElement(tmp);
             vertex.setLabel(vector[1]);
+            graph.dicVertices.insertItem(new Header(vertex.getLabel(),vertexBkp),vertex);
+
+            row = arq.readline();
         }
 
         /* lendo as arestas */
@@ -398,8 +413,8 @@ public class GraphNDMat extends GraphND {
         while (row!= null){
             String[] edges = row.split(" ", 2);
 
-            int idVertex1 = Integer.parseInt(edges[0]) - 1;
-            int idVertex2 = Integer.parseInt(edges[1]) - 1;
+            int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
+            int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
 
             String labelVertex1 = graph.findVertexLabelById(idVertex1);
             String labelVertex2 = graph.findVertexLabelById(idVertex2);
@@ -414,6 +429,9 @@ public class GraphNDMat extends GraphND {
             else{
                 if(edges.length==3)
                     edge.setLabel(edges[2]);
+                else{
+                    edge.setLabel("@#"+edge.getId());
+                }
             }
 
             row = arq.readline();
@@ -471,7 +489,7 @@ public class GraphNDMat extends GraphND {
         return nome_arq_TGF;
     }
 
-    public void printToStr(){
+    public String toString(){
 
         MyHash<Integer,Integer> dicIDgrafoID_tgf = new MyHashListChain();
         /* Escrevendo os vertices */
@@ -513,8 +531,7 @@ public class GraphNDMat extends GraphND {
         }
 
 
-        System.out.println(strGrafo);
-
+        return strGrafo;
     }
 
 }
