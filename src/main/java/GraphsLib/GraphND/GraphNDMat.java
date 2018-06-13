@@ -60,7 +60,7 @@ public class GraphNDMat extends GraphND {
 
     private static final int defaultsize = 64;
 
-    private int firstIndexMatrix = -1;
+    private int firstIndexMatrix = 0;
     private int lastIndexMatrix = -1;
 
 
@@ -250,6 +250,30 @@ public class GraphNDMat extends GraphND {
 
         Integer id = globalEdgeID++;
         String label = id.toString();
+
+        Edge edge = new Edge(id,label,value);
+
+        dicEdges.insertItem(new Header(label,id),edge);
+
+        int row = vertex1.getId();
+        int column = vertex2.getId();
+
+        matrix[row][column] = edge.getLabel();
+        matrix[column][row] = edge.getLabel();
+
+        return  edge;
+    }
+
+    public Edge insertEdge(Vertex vertex1, Vertex vertex2, Object value,String label) {
+        Header header1 = new Header(vertex1.getLabel(),vertex1.getId());
+        Header header2 = new Header(vertex2.getLabel(),vertex2.getId());
+
+        if(dicVertices.findElement(header1) == null || dicVertices.findElement(header2) == null)
+        {
+            return null;
+        }
+
+        Integer id = globalEdgeID++;
 
         Edge edge = new Edge(id,label,value);
 
@@ -454,17 +478,15 @@ public class GraphNDMat extends GraphND {
             Vertex vertex1 = graph.dicVertices.findElement(new Header(labelVertex1,idVertex1));
             Vertex vertex2 = graph.dicVertices.findElement(new Header(labelVertex2,idVertex2));
 
-            Edge edge = graph.insertEdge(vertex1,vertex2,null);
+            String label;
 
-            if(edge==null)
-                return null;
+            if(edges.length==3)
+                label = (edges[2].trim());
             else{
-                if(edges.length==3)
-                    edge.setLabel(edges[2].trim());
-                else{
-                    edge.setLabel("@#"+edge.getId());
-                }
+                label = ("@#"+graph.globalEdgeID +1);
             }
+
+            Edge edge = graph.insertEdge(vertex1,vertex2,null,label);
 
             row = arq.readline();
         }
@@ -521,28 +543,28 @@ public class GraphNDMat extends GraphND {
         return nome_arq_TGF;
     }
 
-    public String toStr(){
+    public String toString(){
 
         MyHash<Integer,Integer> dicIDgrafoID_tgf = new MyHashListChain();
         /* Escrevendo os vertices */
         String strGrafo = "";
         int id = 1;
 
-        String row;
+        String row="";
 
         for(int i = this.firstIndexMatrix; i<= this.lastIndexMatrix; i++){
             if(!lstVtxDeletados.contains(i)){
                 row = id + " " + findVertexLabelById(i);
-                strGrafo.concat(row);
-                strGrafo.concat("\n");
+                strGrafo+=(row);
+                strGrafo+=("\n");
 
                 dicIDgrafoID_tgf.insertItem(i,id);
 
                 id++;
             }
         }
-        strGrafo.concat("#");
-        strGrafo.concat("\n");
+        strGrafo+=("#");
+        strGrafo+=("\n");
 
 
         /* escrevendo as arestas */
@@ -553,9 +575,15 @@ public class GraphNDMat extends GraphND {
                         if(matrix[lin][col] != null){
                             int tgf_lin = dicIDgrafoID_tgf.findElement(lin);
                             int tgf_col = dicIDgrafoID_tgf.findElement(col);
-                            row = tgf_lin + " " + tgf_col + " " + matrix[lin][col];
-                            strGrafo.concat(row);
-                            strGrafo.concat("\n");
+
+                            if(!matrix[lin][col].substring(0,2).equals("@#")) {
+                                row = tgf_lin + " " + tgf_col + " " + matrix[lin][col];
+                            }else{
+                                row = tgf_lin + " " + tgf_col;
+                            }
+
+                            strGrafo+=(row);
+                            strGrafo+=("\n");
                         }
                     }
                 }
