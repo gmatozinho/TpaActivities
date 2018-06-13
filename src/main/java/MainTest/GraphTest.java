@@ -5,6 +5,6 @@ import GraphsLib.GraphND.GraphNDMat;
 public class GraphTest {
     public static void main(String[] args) {
         GraphNDMat graphNDMat = GraphNDMat.carrega("database/"+"tgfexample.txt");
-        System.out.println(graphNDMat.toString());
+        System.out.println(graphNDMat.toStr());
     }
 }

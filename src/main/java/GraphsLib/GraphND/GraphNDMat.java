@@ -6,9 +6,12 @@ import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
 import WorkFilesLib.ArquivoTxt;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
-class Header {
+class Header implements Serializable {
     public Header(String label, int address) {
         this.label = label;
         this.id = address;
@@ -31,6 +34,14 @@ class Header {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean equals(Object object2) {
+        Header object = (Header)object2;
+        if(this.id == object.getId() && this.label == object.getLabel()) {
+            return true;
+        }
+        else return false;
     }
 }
 
@@ -208,8 +219,23 @@ public class GraphNDMat extends GraphND {
 
     public Vertex insertVertex(Object value,String label)
     {
-        //TODO Essa função é o futuro de tudo
-        return null;
+        if(dicVertices.size()/matrix[0].length >= 0.75f)
+            resize();
+
+        Integer id = generateVertexId();
+
+        if ((id < findFirstRowColUtil()) ||(findFirstRowColUtil() == -1)) {
+            firstIndexMatrix = id;
+        }
+        if((id > findLastRowColUtil())) {
+            lastIndexMatrix = id;
+        }
+
+        Vertex vertex = new Vertex(id,label, value);
+        Header header = new Header(label,id);
+
+        dicVertices.insertItem(header,vertex);
+        return vertex;
     }
 
     @Override
@@ -226,6 +252,8 @@ public class GraphNDMat extends GraphND {
         String label = id.toString();
 
         Edge edge = new Edge(id,label,value);
+
+        dicEdges.insertItem(new Header(label,id),edge);
 
         int row = vertex1.getId();
         int column = vertex2.getId();
@@ -394,16 +422,9 @@ public class GraphNDMat extends GraphND {
         String row = arq.readline();
         while (!row.trim().equals("#")){
             String[] vector = row.split(" ", 2);
-            Vertex vertex = graph.insertVertex(null);
-
-            //TODO esse código esta péssimo nao faz sentido nenhum, dado como null,
-            //inserir vertice para ser removido depois, e inserção doq foi removido
-
-            Integer vertexBkp = vertex.getId();
-            Header tmp = new Header(vertexBkp.toString(),vertexBkp);
-            graph.dicVertices.removeElement(tmp);
-            vertex.setLabel(vector[1]);
-            graph.dicVertices.insertItem(new Header(vertex.getLabel(),vertexBkp),vertex);
+            if(vector.length>1) {
+                Vertex vertex = graph.insertVertex(null, vector[1].trim());
+            }
 
             row = arq.readline();
         }
@@ -411,7 +432,18 @@ public class GraphNDMat extends GraphND {
         /* lendo as arestas */
         row = arq.readline();
         while (row!= null){
-            String[] edges = row.split(" ", 2);
+
+            LinkedList<String> list = new LinkedList<>();
+            String[] edges = row.split(" ", 3);
+            for (int i = 0; i < edges.length ; i++) {
+                if(!edges[i].equals(" "))
+                {
+                    list.add(edges[i]);
+                }
+            }
+
+            edges = new String[list.size()];
+            edges = list.toArray(edges);
 
             int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
             int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
@@ -428,7 +460,7 @@ public class GraphNDMat extends GraphND {
                 return null;
             else{
                 if(edges.length==3)
-                    edge.setLabel(edges[2]);
+                    edge.setLabel(edges[2].trim());
                 else{
                     edge.setLabel("@#"+edge.getId());
                 }
@@ -489,7 +521,7 @@ public class GraphNDMat extends GraphND {
         return nome_arq_TGF;
     }
 
-    public String toString(){
+    public String toStr(){
 
         MyHash<Integer,Integer> dicIDgrafoID_tgf = new MyHashListChain();
         /* Escrevendo os vertices */
