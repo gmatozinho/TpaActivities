@@ -273,7 +273,7 @@ public class GraphNDMat extends GraphND {
             return null;
         }
 
-        Integer id = globalEdgeID++;
+        Integer id = globalEdgeID;//++;
 
         Edge edge = new Edge(id,label,value);
 
@@ -456,18 +456,7 @@ public class GraphNDMat extends GraphND {
         /* lendo as arestas */
         row = arq.readline();
         while (row!= null){
-
-            LinkedList<String> list = new LinkedList<>();
             String[] edges = row.split(" ", 3);
-            for (int i = 0; i < edges.length ; i++) {
-                if(!edges[i].equals(" "))
-                {
-                    list.add(edges[i]);
-                }
-            }
-
-            edges = new String[list.size()];
-            edges = list.toArray(edges);
 
             int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
             int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
@@ -478,12 +467,14 @@ public class GraphNDMat extends GraphND {
             Vertex vertex1 = graph.dicVertices.findElement(new Header(labelVertex1,idVertex1));
             Vertex vertex2 = graph.dicVertices.findElement(new Header(labelVertex2,idVertex2));
 
-            String label;
+            String label="";
 
-            if(edges.length==3)
+            if(edges.length == 3) {
                 label = (edges[2].trim());
-            else{
-                label = ("@#"+graph.globalEdgeID +1);
+            }
+            if(label.equals("")) {
+
+                label = ("@#"+graph.globalEdgeID++);
             }
 
             Edge edge = graph.insertEdge(vertex1,vertex2,null,label);
@@ -500,43 +491,8 @@ public class GraphNDMat extends GraphND {
     public String salva(String nome_arq_TGF){
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "wt");
-        MyHash<Integer,Integer> dicIDgrafoID_tgf = new MyHashListChain();
-        /* Escrevendo os vertices */
 
-        int id = 1;
-
-        String row;
-
-        for(int i = firstIndexMatrix; i<=lastIndexMatrix; i++){
-            if(!lstVtxDeletados.contains(i)){
-                row = id + " " + findVertexLabelById(i);
-                arq.writeline(row);
-
-                dicIDgrafoID_tgf.insertItem(i,id);
-
-                id++;
-            }
-        }
-        arq.writeline("#");
-
-
-        /* escrevendo as arestas */
-        for(int lin = firstIndexMatrix; lin<=lastIndexMatrix; lin++){
-            if(!lstVtxDeletados.contains(lin)){
-                for (int col = firstIndexMatrix; col <= lastIndexMatrix; col++){
-                    if(!lstVtxDeletados.contains(col)){
-                        if(matrix[lin][col] != null){
-                            int tgf_lin = dicIDgrafoID_tgf.findElement(lin);
-                            int tgf_col = dicIDgrafoID_tgf.findElement(col);
-                            row = tgf_lin + " " + tgf_col + " " + matrix[lin][col];
-
-                            arq.writeline(row);
-                        }
-                    }
-                }
-            }
-        }
-
+        arq.write(this.toString());
 
         arq.close();
 
@@ -570,7 +526,7 @@ public class GraphNDMat extends GraphND {
         /* escrevendo as arestas */
         for(int lin =firstIndexMatrix; lin<=lastIndexMatrix; lin++){
             if(!lstVtxDeletados.contains(lin)){
-                for (int col = firstIndexMatrix; col <= lastIndexMatrix; col++){
+                for (int col = lin; col <= lastIndexMatrix; col++){
                     if(!lstVtxDeletados.contains(col)){
                         if(matrix[lin][col] != null){
                             int tgf_lin = dicIDgrafoID_tgf.findElement(lin);
