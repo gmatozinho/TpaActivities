@@ -7,9 +7,7 @@ import HashLib.Core.MyHashListChain;
 import WorkFilesLib.ArquivoTxt;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 class Header implements Serializable {
     public Header(String label, int address) {
@@ -273,7 +271,7 @@ public class GraphNDMat extends GraphND {
             return null;
         }
 
-        Integer id = globalEdgeID;//++;
+        Integer id = globalEdgeID++;
 
         Edge edge = new Edge(id,label,value);
 
@@ -473,8 +471,7 @@ public class GraphNDMat extends GraphND {
                 label = (edges[2].trim());
             }
             if(label.equals("")) {
-
-                label = ("@#"+graph.globalEdgeID++);
+                label = ("@#");
             }
 
             Edge edge = graph.insertEdge(vertex1,vertex2,null,label);
