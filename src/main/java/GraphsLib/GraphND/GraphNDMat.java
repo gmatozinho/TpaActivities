@@ -405,7 +405,6 @@ public class GraphNDMat extends GraphND {
         return lastIndexMatrix;
     }
 
-
     private int findLastRowColUtil(){
         int i = lastIndexMatrix - 1;
         while(lstVtxDeletados.contains(i) && (i>= firstIndexMatrix))
