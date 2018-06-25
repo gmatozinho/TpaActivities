@@ -50,7 +50,7 @@ public class GraphNDMat extends GraphND {
     private MyHash<Header,Vertex> dicVertices = new MyHashListChain<>();
     private MyHash<Header,Edge> dicEdges = new MyHashListChain<>();
 
-    private LinkedList<Integer> lstVtxDeletados = new LinkedList();
+    private LinkedList<Integer> lstVtxDelete = new LinkedList();
 
     private int globalVertexID = 0;
     private int globalEdgeID = 0;
@@ -152,6 +152,18 @@ public class GraphNDMat extends GraphND {
         }
 
         return null;
+    }
+
+    public int degree(Vertex v){
+        int degree = 0;
+
+        int row = v.getId();
+
+        for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++)
+            if(!lstVtxDelete.contains(i) && (matrix[row][i]!= null))
+                degree++;
+
+        return degree;
     }
 
     @Override
@@ -292,10 +304,10 @@ public class GraphNDMat extends GraphND {
 
         int row = vertex.getId();
         int limitCol = dicVertices.size();
-        lstVtxDeletados.add(row);
+        lstVtxDelete.add(row);
 
         for(int i = 0; i < limitCol; i++){
-            if( !lstVtxDeletados.contains(i)) {
+            if( !lstVtxDelete.contains(i)) {
                 String edgeLabel = matrix[row][i];
                 int pos = findEdgePosByLabel(edgeLabel);
                 dicEdges.removeElement(new Header(edgeLabel,pos));
@@ -335,7 +347,7 @@ public class GraphNDMat extends GraphND {
         int row = v.getId();
 
         for (int i = firstIndexMatrix; i <= lastIndexMatrix; i++) {
-            if(!lstVtxDeletados.contains(i) && matrix[row][i] != null){
+            if(!lstVtxDelete.contains(i) && matrix[row][i] != null){
                 String label = findVertexLabelById(i);
                 lst.add(dicVertices.findElement(new Header(label,i)));
             }
@@ -350,6 +362,23 @@ public class GraphNDMat extends GraphND {
         int column = vertex2.getId();
 
         return matrix[row][column] != null;
+    }
+
+
+    public LinkedList<Edge> incidentEdges(Vertex v){
+        LinkedList<Edge> lst = new LinkedList<>();
+
+        int row = findVertexPosByLabel(v.getLabel());
+        for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++)
+            if(!lstVtxDelete.contains(i)){
+                if(matrix[row][i] != null) {
+                    String label = matrix[row][i];
+                    Header header = new Header(label,findVertexPosByLabel(label));
+                    lst.add(dicEdges.findElement(header));
+                }
+            }
+
+        return lst;
     }
 
     private int findVertexPosByLabel(String label)
@@ -386,9 +415,9 @@ public class GraphNDMat extends GraphND {
     }
 
     private int generateVertexId(){
-        if(lstVtxDeletados.size() > 0){
-            int id = lstVtxDeletados.get(0);
-            lstVtxDeletados.remove(0);
+        if(lstVtxDelete.size() > 0){
+            int id = lstVtxDelete.get(0);
+            lstVtxDelete.remove(0);
             return id;
         }
         else
@@ -397,9 +426,9 @@ public class GraphNDMat extends GraphND {
 
     private int findFirstRowColUtil(){
         int i = firstIndexMatrix +1;
-        while(lstVtxDeletados.contains(i) && (i<= lastIndexMatrix))
+        while(lstVtxDelete.contains(i) && (i<= lastIndexMatrix))
             i=i+1;
-        if(!lstVtxDeletados.contains(i))
+        if(!lstVtxDelete.contains(i))
             return i;
 
         return lastIndexMatrix;
@@ -407,10 +436,10 @@ public class GraphNDMat extends GraphND {
 
     private int findLastRowColUtil(){
         int i = lastIndexMatrix - 1;
-        while(lstVtxDeletados.contains(i) && (i>= firstIndexMatrix))
+        while(lstVtxDelete.contains(i) && (i>= firstIndexMatrix))
             i = i-1;
 
-        if(!lstVtxDeletados.contains(i))
+        if(!lstVtxDelete.contains(i))
             return i;
 
         return firstIndexMatrix;
@@ -505,7 +534,7 @@ public class GraphNDMat extends GraphND {
         String row="";
 
         for(int i = this.firstIndexMatrix; i<= this.lastIndexMatrix; i++){
-            if(!lstVtxDeletados.contains(i)){
+            if(!lstVtxDelete.contains(i)){
                 row = id + " " + findVertexLabelById(i);
                 strGrafo+=(row);
                 strGrafo+=("\n");
@@ -521,9 +550,9 @@ public class GraphNDMat extends GraphND {
 
         /* escrevendo as arestas */
         for(int lin =firstIndexMatrix; lin<=lastIndexMatrix; lin++){
-            if(!lstVtxDeletados.contains(lin)){
+            if(!lstVtxDelete.contains(lin)){
                 for (int col = lin; col <= lastIndexMatrix; col++){
-                    if(!lstVtxDeletados.contains(col)){
+                    if(!lstVtxDelete.contains(col)){
                         if(matrix[lin][col] != null){
                             int tgf_lin = dicIDgrafoID_tgf.findElement(lin);
                             int tgf_col = dicIDgrafoID_tgf.findElement(col);
