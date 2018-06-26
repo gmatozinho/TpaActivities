@@ -36,7 +36,7 @@ class Header implements Serializable {
 
     public boolean equals(Object object2) {
         Header object = (Header)object2;
-        if(this.id == object.getId() && this.label == object.getLabel()) {
+        if(this.id == object.getId() && this.label.equals(object.getLabel())) {
             return true;
         }
         else return false;
@@ -70,10 +70,10 @@ public class GraphNDMat extends GraphND {
     }
 
     //Cria um grafo de tamanho Custom com N nós.
-    public GraphNDMat(int lenght)
+    public GraphNDMat(int length)
     {
-        matrix = new String[lenght][lenght];
-        startMat(lenght);
+        matrix = new String[length][length];
+        startMat(length);
     }
 
     private void startMat(int size)    {
@@ -136,7 +136,7 @@ public class GraphNDMat extends GraphND {
         int tam = numVertices();
         for (int i = 0; i< tam; i++){
             for(int j = 0; j < tam; j++){
-                if(matrix[i][j].equals(edge)){
+                if(matrix[i][j] != null && matrix[i][j].equals(edge)){
                     String labelVertex1 = findVertexLabelById(i);
                     String labelVertex2;
                     if(!labelVertex1.equals(""))
@@ -309,11 +309,13 @@ public class GraphNDMat extends GraphND {
         for(int i = 0; i < limitCol; i++){
             if( !lstVtxDelete.contains(i)) {
                 String edgeLabel = matrix[row][i];
-                int pos = findEdgePosByLabel(edgeLabel);
-                dicEdges.removeElement(new Header(edgeLabel,pos));
+                if(edgeLabel!=null) {
+                    int pos = findEdgePosByLabel(edgeLabel);
+                    dicEdges.removeElement(new Header(edgeLabel, pos));
 
-                matrix[row][i] = null;
-                matrix[i][row] = null;
+                    matrix[row][i] = null;
+                    matrix[i][row] = null;
+                }
             }
         }
 
@@ -373,7 +375,7 @@ public class GraphNDMat extends GraphND {
             if(!lstVtxDelete.contains(i)){
                 if(matrix[row][i] != null) {
                     String label = matrix[row][i];
-                    Header header = new Header(label,findVertexPosByLabel(label));
+                    Header header = new Header(label,findEdgePosByLabel(label));
                     lst.add(dicEdges.findElement(header));
                 }
             }
@@ -499,7 +501,7 @@ public class GraphNDMat extends GraphND {
                 label = (edges[2].trim());
             }
             if(label.equals("")) {
-                label = ("@#");
+                label = ("@#" + (graph.globalEdgeID+1));
             }
 
             Edge edge = graph.insertEdge(vertex1,vertex2,null,label);
