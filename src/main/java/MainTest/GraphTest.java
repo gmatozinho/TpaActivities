@@ -1,11 +1,11 @@
 package MainTest;
 
-import GraphsLib.GraphND.GraphNDMat;
+import GraphsLib.GraphMad.GraphMadND;
 
 public class GraphTest {
     public static void main(String[] args) {
-        GraphNDMat graphNDMat = GraphNDMat.carrega("database/"+"tgfexample.txt");
-        System.out.println(graphNDMat);
-        //graphNDMat.salva("results/grafoResult.txt");
+        GraphMadND graphMadND = GraphMadND.carrega("database/"+"tgfexample.txt");
+        System.out.println(graphMadND);
+        //graphMadND.salva("results/grafoResult.txt");
     }
 }

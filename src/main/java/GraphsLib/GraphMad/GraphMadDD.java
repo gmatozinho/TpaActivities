@@ -1,4 +1,4 @@
-package GraphsLib.GraphND;
+package GraphsLib.GraphMad;
 
 import GraphsLib.Edge;
 import GraphsLib.Header;
@@ -9,9 +9,7 @@ import WorkFilesLib.ArquivoTxt;
 
 import java.util.LinkedList;
 
-
-public class GraphNDMat extends GraphND {
-
+public class GraphMadDD extends GraphMad {
     // Dicionários com chave Header(Label,ID) e conteúdo objeto Vertex/Edge.
     private MyHash<Header,Vertex> dicVertices = new MyHashListChain<>();
     private MyHash<Header,Edge> dicEdges = new MyHashListChain<>();
@@ -29,14 +27,14 @@ public class GraphNDMat extends GraphND {
 
 
     //Cria um grafo de tamanho Default com 64 nós.
-    public GraphNDMat()
+    public ()
     {
         matrix = new String[defaultsize][defaultsize];
         startMat(defaultsize);
     }
 
     //Cria um grafo de tamanho Custom com N nós.
-    public GraphNDMat(int length)
+    public (int length)
     {
         matrix = new String[length][length];
         startMat(length);
@@ -60,7 +58,7 @@ public class GraphNDMat extends GraphND {
 
         LinkedList<String> vertices = new LinkedList<>();
         for ( Header header: dicVertices.keys()
-             ) {
+                ) {
             vertices.add(header.getLabel());
         }
         return vertices;
@@ -120,16 +118,8 @@ public class GraphNDMat extends GraphND {
         return null;
     }
 
-    public int degree(Vertex v){
-        int degree = 0;
-
-        int row = v.getId();
-
-        for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++)
-            if(!lstVtxDelete.contains(i) && (matrix[row][i]!= null))
-                degree++;
-
-        return degree;
+    public int degree(Vertex vertex){
+        return inDegree(vertex)+ outDegree(vertex);
     }
 
     @Override
@@ -153,12 +143,31 @@ public class GraphNDMat extends GraphND {
 
     @Override
     public int outDegree(Vertex vertex) {
-        return 0;
+        int outDegree = 0;
+
+        int row = findVertexPosByLabel(vertex.getLabel());
+        for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++)
+            if(!lstVtxDelete.contains(i)){
+                if(matrix[row][i] != null)
+                    outDegree ++;
+            }
+
+        return outDegree;
     }
 
     @Override
     public int inDegree(Vertex vertex) {
-        return 0;
+
+        int inDegree = 0;
+
+        int col = findVertexPosByLabel(vertex.getLabel());
+        for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++)
+            if(!lstVtxDelete.contains(i)){
+                if(matrix[i][col] != null)
+                    inDegree ++;
+            }
+
+        return inDegree;
     }
 
     @Override
@@ -235,7 +244,6 @@ public class GraphNDMat extends GraphND {
         int column = vertex2.getId();
 
         matrix[row][column] = edge.getLabel();
-        matrix[column][row] = edge.getLabel();
 
         return  edge;
     }
@@ -259,7 +267,6 @@ public class GraphNDMat extends GraphND {
         int column = vertex2.getId();
 
         matrix[row][column] = edge.getLabel();
-        matrix[column][row] = edge.getLabel();
 
         return  edge;
     }
@@ -280,7 +287,6 @@ public class GraphNDMat extends GraphND {
                     dicEdges.removeElement(new Header(edgeLabel, pos));
 
                     matrix[row][i] = null;
-                    matrix[i][row] = null;
                 }
             }
         }
@@ -300,28 +306,8 @@ public class GraphNDMat extends GraphND {
         int column = findVertexPosByLabel(endPoints[1]);
 
         matrix[row][column] = null;
-        matrix[column][row] = null;
 
         return tmp;
-    }
-
-    public LinkedList<Vertex> adjacentVertices(Vertex v){
-        Header headerToFind = new Header(v.getLabel(),v.getId());
-
-        if(dicVertices.findElement(headerToFind) == null)
-            return null;
-
-        LinkedList<Vertex> lst = new LinkedList();
-        int row = v.getId();
-
-        for (int i = firstIndexMatrix; i <= lastIndexMatrix; i++) {
-            if(!lstVtxDelete.contains(i) && matrix[row][i] != null){
-                String label = findVertexLabelById(i);
-                lst.add(dicVertices.findElement(new Header(label,i)));
-            }
-        }
-
-        return lst;
     }
 
     public boolean areaAdjacent(Vertex vertex1, Vertex vertex2)
@@ -332,21 +318,101 @@ public class GraphNDMat extends GraphND {
         return matrix[row][column] != null;
     }
 
-
-    public LinkedList<Edge> incidentEdges(Vertex v){
+    public LinkedList<Edge> inIncidentEdges(Vertex vertex) {
         LinkedList<Edge> lst = new LinkedList<>();
-
-        int row = findVertexPosByLabel(v.getLabel());
-        for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++)
-            if(!lstVtxDelete.contains(i)){
-                if(matrix[row][i] != null) {
-                    String label = matrix[row][i];
-                    Header header = new Header(label,findEdgePosByLabel(label));
+        int col = findVertexPosByLabel(vertex.getLabel());
+        for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++) {
+            if (!lstVtxDelete.contains(i)) {
+                if (matrix[i][col] != null) {
+                    String label = matrix[i][col];
+                    Header header = new Header(label, findEdgePosByLabel(label));
                     lst.add(dicEdges.findElement(header));
                 }
             }
+        }
 
         return lst;
+    }
+
+    public LinkedList<Edge> outIncidentEdges(Vertex v) {
+        LinkedList<Edge> lst = new LinkedList<Edge>();
+        int row = findVertexPosByLabel(v.getLabel());
+        for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++) {
+            if (!lstVtxDelete.contains(i)) {
+                if (matrix[row][i] != null) {
+                    String label = matrix[row][i];
+                    Header header = new Header(label, findEdgePosByLabel(label));
+                    lst.add(dicEdges.findElement(header));
+                }
+            }
+        }
+
+        return lst;
+    }
+
+    public LinkedList<Vertex> inAdjacentVertices(Vertex v) {
+        Header headerToFind = new Header(v.getLabel(),v.getId());
+
+        if(dicVertices.findElement(headerToFind) == null)
+            return null;
+
+        LinkedList<Vertex> lst = new LinkedList<Vertex>();
+        int col = v.getId();
+
+        for(int i = firstIndexMatrix; i<=lastIndexMatrix; i++) {
+            if (!lstVtxDelete.contains(i) && (matrix[i][col] != null)) {
+                String label = findVertexLabelById(i);
+                lst.add(dicVertices.findElement(new Header(label, i)));
+            }
+        }
+
+
+        return lst;
+    }
+
+    public  LinkedList<Vertex> outAdjacentVertices(Vertex v) {
+        Header headerToFind = new Header(v.getLabel(),v.getId());
+
+        if(dicVertices.findElement(headerToFind) == null)
+            return null;
+
+        LinkedList<Vertex> lst = new LinkedList<Vertex>();
+        int row = v.getId();
+
+        for(int i = firstIndexMatrix; i<=lastIndexMatrix; i++) {
+            if (!lstVtxDelete.contains(i) && (matrix[row][i] != null)) {
+                String label = findVertexLabelById(i);
+                lst.add(dicVertices.findElement(new Header(label, i)));
+            }
+        }
+
+
+        return lst;
+    }
+
+    public Vertex destination(Edge e) {
+
+        for(int i=firstIndexMatrix; i<lastIndexMatrix ;i++) {
+            for (int j = firstIndexMatrix; j < lastIndexMatrix; j++) {
+                if (!lstVtxDelete.contains(j) && (matrix[i][j].equals(e))) {
+                    String label = findVertexLabelById(j);
+                    return dicVertices.findElement(new Header(label, j));
+                }
+            }
+        }
+        return null;
+    }
+
+    public Vertex origin(Edge e) {
+        for(int i=firstIndexMatrix; i<lastIndexMatrix ;i++) {
+            for (int j = firstIndexMatrix; j < lastIndexMatrix; j++) {
+                if (!lstVtxDelete.contains(i) && (matrix[i][j].equals(e))) {
+                    String label = findVertexLabelById(i);
+                    return dicVertices.findElement(new Header(label, i));
+                }
+            }
+        }
+        return null;
     }
 
     private int findVertexPosByLabel(String label)
@@ -431,8 +497,8 @@ public class GraphNDMat extends GraphND {
      *  Exemplo de uso:
      *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
      * */
-    public static GraphNDMat carrega(String nome_arq_TGF){
-        GraphNDMat graph = new GraphNDMat();
+    public static  carrega(String nome_arq_TGF){
+         graph = new ();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
 
