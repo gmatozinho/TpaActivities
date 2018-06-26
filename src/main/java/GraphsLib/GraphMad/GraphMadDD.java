@@ -27,14 +27,14 @@ public class GraphMadDD extends GraphMad {
 
 
     //Cria um grafo de tamanho Default com 64 nós.
-    public ()
+    public GraphMadDD ()
     {
         matrix = new String[defaultsize][defaultsize];
         startMat(defaultsize);
     }
 
     //Cria um grafo de tamanho Custom com N nós.
-    public (int length)
+    public GraphMadDD(int length)
     {
         matrix = new String[length][length];
         startMat(length);
@@ -497,8 +497,8 @@ public class GraphMadDD extends GraphMad {
      *  Exemplo de uso:
      *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
      * */
-    public static  carrega(String nome_arq_TGF){
-         graph = new ();
+    public static GraphMadDD carrega(String nome_arq_TGF){
+        GraphMadDD graph = new GraphMadDD();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
 
