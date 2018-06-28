@@ -1,6 +1,8 @@
 package GraphsLib.GraphLad;
 
 import GraphsLib.Vertex;
+import HashLib.Core.MyHash;
+import HashLib.Core.MyHashListChain;
 
 import java.util.LinkedList;
 
@@ -10,6 +12,68 @@ public class VertexLad extends Vertex {
         super(id, label, value);
     }
 
-    LinkedList<EdgeLad> in = new LinkedList() {};
-    LinkedList<EdgeLad> out = new LinkedList() {};
+    private MyHash<String,EdgeLad> in = new MyHashListChain<>();
+    private MyHash<String,EdgeLad> out = new MyHashListChain<>();
+
+    private int myInDegree()
+    {
+        return in.size();
+    }
+
+    private int myOutDegree()
+    {
+        return  out.size();
+    }
+
+    int myDegree()
+    {
+        return myInDegree() + myOutDegree();
+    }
+
+    public EdgeLad addEdgeIn(EdgeLad edge)
+    {
+        in.insertItem(edge.getLabel(),edge);
+        return edge;
+    }
+
+    public EdgeLad addEdgeOut(EdgeLad edge)
+    {
+        out.insertItem(edge.getLabel(),edge);
+        return edge;
+    }
+
+    public boolean isEndPoint(EdgeLad edge)
+    {
+        return (in.findElement(edge.getLabel()) != null || out.findElement(edge.getLabel()) != null);
+    }
+
+    public boolean isOrigin(EdgeLad edge)
+    {
+        return out.findElement(edge.getLabel()) != null;
+    }
+
+    public boolean isDestiny(EdgeLad edge)
+    {
+        return in.findElement(edge.getLabel()) != null;
+    }
+
+
+    private LinkedList<EdgeLad> getEdgesIn(){
+        return in.values();
+    }
+
+    private LinkedList<EdgeLad> getEdgesOut(){
+        return out.values();
+    }
+
+    LinkedList<EdgeLad> getEdges(){
+
+        LinkedList<EdgeLad> edges = getEdgesIn();
+        edges.addAll(getEdgesOut());
+
+        return edges;
+    }
+
+
+
 }
