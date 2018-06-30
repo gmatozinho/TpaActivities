@@ -1,13 +1,14 @@
 package GraphsLib.GraphLad;
 
 import GraphsLib.Edge;
+import GraphsLib.GraphNonDirectional;
 import GraphsLib.Vertex;
 import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
 
 import java.util.LinkedList;
 
-public class GraphLadND extends GraphLad {
+public class GraphLadND extends GraphLad implements GraphNonDirectional {
     private MyHash<String,VertexLad> vertices = new MyHashListChain<>();
     private MyHash<String,EdgeLad> edges = new MyHashListChain<>();
 
@@ -17,9 +18,8 @@ public class GraphLadND extends GraphLad {
     }
 
     //Tem q retornar os vertex
-    @Override
-    public LinkedList<String> vertices() {
-        return vertices.keys();
+    public LinkedList<Vertex> vertices() {
+        return (LinkedList<Vertex>)(LinkedList<?>) vertices.values();
     }
 
     @Override
@@ -28,11 +28,9 @@ public class GraphLadND extends GraphLad {
     }
 
     //Tem  retornar o edges
-    @Override
-    public LinkedList<String> edges() {
-        return edges.keys();
+    public LinkedList<Edge> edges() {
+        return (LinkedList<Edge>)(LinkedList<?>) edges.values();
     }
-
 
     public int degree(VertexLad vertex)
     {
@@ -66,32 +64,22 @@ public class GraphLadND extends GraphLad {
     }
 
     @Override
-    public int outDegree(Vertex vertex) {
-        return 0;
-    }
-
-    @Override
-    public int inDegree(Vertex vertex) {
-        return 0;
-    }
-
-    @Override
-    public Object outgoingEdges(Vertex vertex) {
-        return null;
-    }
-
-    @Override
-    public Object incomingEdges(Vertex vertex) {
-        return null;
-    }
-
-    @Override
     public Vertex insertVertex(Object value) {
         return null;
     }
 
     @Override
+    public Vertex insertVertex(Object value, String label) {
+        return null;
+    }
+
+    @Override
     public Edge insertEdge(Vertex vertex1, Vertex vertex2, Object value) {
+        return null;
+    }
+
+    @Override
+    public Edge insertEdge(Vertex vertex1, Vertex vertex2, Object value, String label) {
         return null;
     }
 
@@ -102,6 +90,26 @@ public class GraphLadND extends GraphLad {
 
     @Override
     public Object removeEdge(Edge edge) {
+        return null;
+    }
+
+    @Override
+    public boolean areaAdjacent(Vertex vertex1, Vertex vertex2) {
+        return false;
+    }
+
+    @Override
+    public int degree(Vertex vertex) {
+        return 0;
+    }
+
+    @Override
+    public LinkedList<Edge> incidentEdges(Vertex vertex) {
+        return null;
+    }
+
+    @Override
+    public LinkedList<Vertex> adjacentVertices(Vertex vertex) {
         return null;
     }
 }

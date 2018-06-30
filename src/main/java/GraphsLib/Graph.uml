@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="76.25" y="79.0">GraphsLib.GraphLad.GraphLad</node>
+    <node x="516.375" y="79.0">GraphsLib.GraphNonDirectional</node>
+    <node x="472.875" y="158.0">GraphsLib.GraphMad.GraphMadND</node>
+    <node x="225.0" y="0.0">GraphsLib.Graph</node>
+    <node x="392.375" y="79.0">GraphsLib.GraphMad.GraphMad</node>
+    <node x="9.5" y="232.0">GraphsLib.Vertex</node>
+    <node x="0.0" y="158.0">GraphsLib.GraphLad.GraphLadND</node>
+    <node x="144.0" y="311.0">GraphsLib.GraphLad.EdgeLad</node>
+    <node x="282.0" y="232.0">GraphsLib.Header</node>
+    <node x="135.99999999999994" y="158.0">GraphsLib.GraphLad.GraphLadDD</node>
+    <node x="0.0" y="311.0">GraphsLib.GraphLad.VertexLad</node>
+    <node x="153.5" y="232.0">GraphsLib.Edge</node>
+    <node x="235.375" y="79.0">GraphsLib.GraphDirectional</node>
+    <node x="301.125" y="158.0">GraphsLib.GraphMad.GraphMadDD</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="GraphsLib.GraphLad.VertexLad" target="GraphsLib.Vertex">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphLad.GraphLad" target="GraphsLib.Graph">
+      <point x="0.0" y="-14.5" />
+      <point x="125.75" y="54.0" />
+      <point x="245.0" y="54.0" />
+      <point x="-20.0" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphMad.GraphMadDD" target="GraphsLib.GraphDirectional">
+      <point x="-30.0" y="-14.5" />
+      <point x="331.125" y="133.0" />
+      <point x="303.875" y="133.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphMad.GraphMadND" target="GraphsLib.GraphNonDirectional">
+      <point x="30.25" y="-14.5" />
+      <point x="563.625" y="133.0" />
+      <point x="596.375" y="133.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphLad.EdgeLad" target="GraphsLib.Edge">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphLad.GraphLadDD" target="GraphsLib.GraphLad.GraphLad">
+      <point x="5.6843418860808015E-14" y="-14.5" />
+      <point x="193.5" y="133.0" />
+      <point x="150.5" y="133.0" />
+      <point x="24.75" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphMad.GraphMadDD" target="GraphsLib.GraphMad.GraphMad">
+      <point x="30.0" y="-14.5" />
+      <point x="391.125" y="133.0" />
+      <point x="418.375" y="133.0" />
+      <point x="-26.0" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphMad.GraphMad" target="GraphsLib.Graph">
+      <point x="0.0" y="-14.5" />
+      <point x="444.375" y="54.0" />
+      <point x="285.0" y="54.0" />
+      <point x="20.0" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphLad.GraphLadND" target="GraphsLib.GraphLad.GraphLad">
+      <point x="0.0" y="-14.5" />
+      <point x="58.0" y="133.0" />
+      <point x="101.0" y="133.0" />
+      <point x="-24.75" y="14.5" />
+    </edge>
+    <edge source="GraphsLib.GraphMad.GraphMadND" target="GraphsLib.GraphMad.GraphMad">
+      <point x="-30.25" y="-14.5" />
+      <point x="503.125" y="133.0" />
+      <point x="470.375" y="133.0" />
+      <point x="26.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8" x="812.0" y="903.25" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

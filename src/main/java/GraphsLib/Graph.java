@@ -2,21 +2,21 @@ package GraphsLib;
 
 import java.util.LinkedList;
 
-public abstract class MyGraph {
+public abstract class Graph {
     public abstract int numVertices();
-    public abstract LinkedList<String> vertices();
+    public abstract LinkedList<Vertex> vertices();
     public abstract int numEdges();
-    public abstract LinkedList<String> edges();
+    public abstract LinkedList<Edge> edges();
     public abstract Object getEdge(String vertex1, String vertex2);
     public abstract String[] endVertices(String edge);
     public abstract String opossite(String vertex, String edge);
-    public abstract int outDegree(Vertex vertex);
-    public abstract int inDegree(Vertex vertex);
-    public abstract Object outgoingEdges(Vertex vertex);
-    public abstract Object incomingEdges(Vertex vertex);
     public abstract Vertex insertVertex(Object value);
+    public abstract Vertex insertVertex(Object value,String label);
     public abstract Edge insertEdge(Vertex vertex1,Vertex vertex2, Object value);
+    public abstract Edge insertEdge(Vertex vertex1, Vertex vertex2, Object value, String label);
     public abstract Object removeVertex(Vertex vertex);
     public abstract Object removeEdge(Edge edge);
+    public abstract boolean areaAdjacent(Vertex vertex1, Vertex vertex2);
+    public abstract int degree(Vertex vertex);
 
 }

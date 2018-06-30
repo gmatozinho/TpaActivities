@@ -57,7 +57,6 @@ public class VertexLad extends Vertex {
         return in.findElement(edge.getLabel()) != null;
     }
 
-
     private LinkedList<EdgeLad> getEdgesIn(){
         return in.values();
     }

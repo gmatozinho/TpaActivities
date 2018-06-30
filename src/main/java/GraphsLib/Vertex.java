@@ -30,4 +30,10 @@ public class Vertex {
         this.label = label;
         this.value = value;
     }
+
+
+    @Override
+    public String toString() {
+        return "ID: " + id + "; " + "Label: " + label + "; " + "Value: " + value;
+    }
 }

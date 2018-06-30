@@ -34,4 +34,15 @@ public class Edge<L,V> {
         this.label = label;
         this.value = value;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Edge object = (Edge) obj;
+        return this.id == object.getId() && this.label.equals(object.getLabel()) && this.value == object.value;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + "; " + "Label: " + label + "; " + "Value: " + value;
+    }
 }
