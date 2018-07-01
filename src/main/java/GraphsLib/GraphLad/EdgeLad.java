@@ -4,41 +4,43 @@ import GraphsLib.Edge;
 
 public class EdgeLad extends Edge {
 
-    public EdgeLad(int id, String label, Object value) {
+    public EdgeLad(int id, String label, Object value,VertexLad origin,VertexLad destination) {
         super(id, label, value);
+        this.destination = destination;
+        this.origin = origin;
     }
 
-    private VertexLad in;
-    private VertexLad out;
+    private VertexLad destination;
+    private VertexLad origin;
 
-    boolean isEndPoint(VertexLad vertex)
+    public boolean isEndPoint(VertexLad vertex)
     {
-        return in.equals(vertex) || out.equals(vertex);
+        return destination.equals(vertex) || origin.equals(vertex);
     }
 
-    public VertexLad getIn() {
-        return in;
+    public VertexLad getDestination() {
+        return destination;
     }
 
-    public void setIn(VertexLad in) {
-        this.in = in;
+    public void setDestination(VertexLad destination) {
+        this.destination = destination;
     }
 
-    public VertexLad getOut() {
-        return out;
+    public VertexLad getOrigin() {
+        return origin;
     }
 
-    public void setOut(VertexLad out) {
-        this.out = out;
+    public void setOrigin(VertexLad origin) {
+        this.origin = origin;
     }
 
     public VertexLad myOpossite(VertexLad vertex)
     {
-        if(vertex.equals(in))
+        if(vertex.equals(destination))
         {
-            return out;
-        }else if(vertex.equals(out)){
-            return in;
+            return origin;
+        }else if(vertex.equals(origin)){
+            return destination;
         }
 
         return null;

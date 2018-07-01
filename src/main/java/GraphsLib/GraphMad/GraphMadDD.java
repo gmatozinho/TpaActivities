@@ -51,14 +51,6 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
         return inDegree;
     }
 
-    public Object outgoingEdges(Vertex vertex) {
-        return null;
-    }
-
-    public Object incomingEdges(Vertex vertex) {
-        return null;
-    }
-
     @Override
     public Edge insertEdge(Vertex vertex1, Vertex vertex2, Object value) {
         Header header1 = new Header(vertex1.getLabel(),vertex1.getId());

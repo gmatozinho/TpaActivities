@@ -15,12 +15,12 @@ public class VertexLad extends Vertex {
     private MyHash<String,EdgeLad> in = new MyHashListChain<>();
     private MyHash<String,EdgeLad> out = new MyHashListChain<>();
 
-    private int myInDegree()
+    public int myInDegree()
     {
         return in.size();
     }
 
-    private int myOutDegree()
+    public int myOutDegree()
     {
         return  out.size();
     }
@@ -57,11 +57,11 @@ public class VertexLad extends Vertex {
         return in.findElement(edge.getLabel()) != null;
     }
 
-    private LinkedList<EdgeLad> getEdgesIn(){
+    public LinkedList<EdgeLad> getEdgesIn(){
         return in.values();
     }
 
-    private LinkedList<EdgeLad> getEdgesOut(){
+    public LinkedList<EdgeLad> getEdgesOut(){
         return out.values();
     }
 

@@ -3,8 +3,9 @@ package GraphsLib;
 import java.util.LinkedList;
 
 public interface GraphDirectional {
-    Object outgoingEdges(Vertex vertex);
-    Object incomingEdges(Vertex vertex);
+    public int outDegree(Vertex vertex);
+
+    public int inDegree(Vertex vertex);
     LinkedList<Edge> inIncidentEdges(Vertex vertex);
     LinkedList<Edge> outIncidentEdges(Vertex vertex);
     LinkedList<Vertex> inAdjacentVertices(Vertex vertex);

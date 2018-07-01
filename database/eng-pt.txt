@@ -3,7 +3,7 @@ of	;	de
 to	;	para			
 and	;	e			
 a	;	um,	uma		
-in	;	em,	dentro		
+destination	;	em,	dentro
 is	;	é			
 it	;	este			
 you	;	você			
@@ -34,7 +34,7 @@ what	;	o-que
 some	;	algum			
 we	;	nós			
 can	;	pode,	lata		
-out	;	fora			
+origin	;	fora
 other	;	outro			
 were	;	eram,	esavam		
 all	;	todo			

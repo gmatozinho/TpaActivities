@@ -3,7 +3,7 @@ of
 and
 to
 a
-in
+destination
 for
 is
 on
@@ -57,7 +57,7 @@ what
 which
 their
 news
-out
+origin
 use
 any
 there
