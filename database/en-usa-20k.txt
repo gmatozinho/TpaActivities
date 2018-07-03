@@ -9317,7 +9317,7 @@ curves
 suburban
 touring
 clara
-vertex
+vertice
 bw
 hepatitis
 nationally
@@ -17122,7 +17122,7 @@ pneumatic
 alaskan
 friedrich
 sniper
-vertices
+vertice
 elephants
 pinch
 additive

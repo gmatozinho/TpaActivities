@@ -1,11 +1,11 @@
-package GraphsLib.GraphMad;
+package TeacherAppBenchmark.graphs.GraphMad;
 
-import GraphsLib.Edge;
-import GraphsLib.Header;
-import GraphsLib.Graph;
-import GraphsLib.Vertex;
 import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
+import TeacherAppBenchmark.graphs.Edge;
+import TeacherAppBenchmark.graphs.Graph;
+import TeacherAppBenchmark.graphs.Header;
+import TeacherAppBenchmark.graphs.Vertice;
 import WorkFilesLib.ArquivoTxt;
 
 import java.util.LinkedList;
@@ -13,7 +13,7 @@ import java.util.LinkedList;
 public class GraphMad extends Graph {
 
     // Dicionários com chave Header(Label,ID) e conteúdo objeto Vertice/Edge.
-    protected MyHash<Header,Vertex> dicVertices = new MyHashListChain<>();
+    protected MyHash<Header,Vertice> dicVertices = new MyHashListChain<>();
     protected MyHash<Header,Edge> dicEdges = new MyHashListChain<>();
 
     protected LinkedList<Integer> lstVtxDelete = new LinkedList();
@@ -45,7 +45,7 @@ public class GraphMad extends Graph {
     }
 
     @Override
-    public LinkedList<Vertex> vertices() {
+    public LinkedList<Vertice> vertices() {
         return dicVertices.values();
     }
 
@@ -118,7 +118,7 @@ public class GraphMad extends Graph {
     }
 
     @Override
-    public Vertex insertVertex(Object value) {
+    public Vertice insertVertex(Object value) {
         if(dicVertices.size()/matrix[0].length >= 0.75f)
             resize();
 
@@ -132,15 +132,15 @@ public class GraphMad extends Graph {
             lastIndexMatrix = id;
         }
 
-        Vertex vertex = new Vertex(id,label, value);
+        Vertice vertice = new Vertice(id,label, value);
         Header header = new Header(label,id);
 
-        dicVertices.insertItem(header,vertex);
-        return vertex;
+        dicVertices.insertItem(header, vertice);
+        return vertice;
     }
 
     @Override
-    public Vertex insertVertex(Object value,String label)
+    public Vertice insertVertex(Object value, String label)
     {
         if(dicVertices.size()/matrix[0].length >= 0.75f)
             resize();
@@ -154,26 +154,26 @@ public class GraphMad extends Graph {
             lastIndexMatrix = id;
         }
 
-        Vertex vertex = new Vertex(id,label, value);
+        Vertice vertice = new Vertice(id,label, value);
         Header header = new Header(label,id);
 
-        dicVertices.insertItem(header,vertex);
-        return vertex;
+        dicVertices.insertItem(header, vertice);
+        return vertice;
     }
 
     @Override
-    public Edge insertEdge(Vertex vertex1, Vertex vertex2, Object value) {
+    public Edge insertEdge(Vertice vertice1, Vertice vertice2, Object value) {
         return null;
     }
 
 
     @Override
-    public Edge insertEdge(Vertex vertex1, Vertex vertex2, Object value, String label) {
+    public Edge insertEdge(Vertice vertice1, Vertice vertice2, Object value, String label) {
         return null;
     }
 
     @Override
-    public Object removeVertex(Vertex vertex) {
+    public Object removeVertex(Vertice vertice) {
         return null;
     }
 
@@ -183,16 +183,16 @@ public class GraphMad extends Graph {
     }
 
     @Override
-    public boolean areaAdjacent(Vertex vertex1, Vertex vertex2)
+    public boolean areAdjacent(Vertice vertice1, Vertice vertice2)
     {
-        int row = vertex1.getId();
-        int column = vertex2.getId();
+        int row = vertice1.getId();
+        int column = vertice2.getId();
 
         return matrix[row][column] != null;
     }
 
     @Override
-    public int degree(Vertex vertex) {
+    public int degree(Vertice vertice) {
         return 0;
     }
 
@@ -299,8 +299,8 @@ public class GraphMad extends Graph {
             String labelVertex1 = graph.findVertexLabelById(idVertex1);
             String labelVertex2 = graph.findVertexLabelById(idVertex2);
 
-            Vertex vertex1 = graph.dicVertices.findElement(new Header(labelVertex1,idVertex1));
-            Vertex vertex2 = graph.dicVertices.findElement(new Header(labelVertex2,idVertex2));
+            Vertice vertice1 = graph.dicVertices.findElement(new Header(labelVertex1,idVertex1));
+            Vertice vertice2 = graph.dicVertices.findElement(new Header(labelVertex2,idVertex2));
 
             String label="";
 
@@ -311,7 +311,7 @@ public class GraphMad extends Graph {
                 label = ("@#" + (graph.globalEdgeID+1));
             }
 
-            graph.insertEdge(vertex1, vertex2, null, label);
+            graph.insertEdge(vertice1, vertice2, null, label);
 
             row = arq.readline();
         }
