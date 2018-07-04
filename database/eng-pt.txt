@@ -640,7 +640,7 @@ roll	;	giro,	lista
 temperature	;	temperatura			
 finger	;	dedo			
 industry	;	indústria			
-value	;	valor			
+dado	;	valor
 fight	;	luta			
 lie	;	deitar,	mentir		
 beat	;	bater			

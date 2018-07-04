@@ -11,12 +11,12 @@ import WorkFilesLib.ArquivoTxt;
 import java.util.LinkedList;
 
 
-public class GraphMadND extends GraphMad implements GraphNonDirectional {
+public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
 
-    public GraphMadND() {
+    public TADGrafoMadjND() {
     }
 
-    public GraphMadND(int length) {
+    public TADGrafoMadjND(int length) {
         super(length);
     }
 
@@ -86,7 +86,7 @@ public class GraphMadND extends GraphMad implements GraphNonDirectional {
 
     @Override
     public Object removeVertex(Vertice vertice) {
-        Object tmp = vertice.getValue();
+        Object tmp = vertice.getDado();
 
         int row = vertice.getId();
         int limitCol = dicVertices.size();
@@ -110,7 +110,7 @@ public class GraphMadND extends GraphMad implements GraphNonDirectional {
 
     @Override
     public Object removeEdge(Edge edge) {
-        Object tmp = edge.getValue();
+        Object tmp = edge.getDado();
         String edgeLabel = edge.getLabel();
         dicEdges.removeElement(new Header(edgeLabel,edge.getId()));
 
@@ -163,10 +163,10 @@ public class GraphMadND extends GraphMad implements GraphNonDirectional {
 
     /*
      *  Exemplo de uso:
-     *  TGrafoNDMAd g = TGrafoNDMAd.load("nomeArqTGF.txt");
+     *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
      * */
-    public static GraphMadND load(String nome_arq_TGF){
-        GraphMadND graph = new GraphMadND();
+    public static TADGrafoMadjND load(String nome_arq_TGF){
+        TADGrafoMadjND graph = new TADGrafoMadjND();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
 

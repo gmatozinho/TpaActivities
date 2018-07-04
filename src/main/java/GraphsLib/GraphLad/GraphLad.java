@@ -170,5 +170,4 @@ public class GraphLad extends Graph {
         return globalVertexID++;
     }
 
-
 }

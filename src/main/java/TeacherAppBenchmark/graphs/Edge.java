@@ -3,7 +3,7 @@ package TeacherAppBenchmark.graphs;
 public class Edge<L,V> {
     private int id;
     private String label;
-    private Object value;
+    private Object dado;
 
     public int getId() {
         return id;
@@ -21,28 +21,28 @@ public class Edge<L,V> {
         this.label = label;
     }
 
-    public Object getValue() {
-        return value;
+    public Object getDado() {
+        return dado;
     }
 
-    public void setValue(Object value) {
-        this.value = value;
+    public void setDado(Object dado) {
+        this.dado = dado;
     }
 
-    public Edge(int id, String label, Object value) {
+    public Edge(int id, String label, Object dado) {
         this.id = id;
         this.label = label;
-        this.value = value;
+        this.dado = dado;
     }
 
     @Override
     public boolean equals(Object obj) {
         Edge object = (Edge) obj;
-        return this.id == object.getId() && this.label.equals(object.getLabel()) && this.value == object.value;
+        return this.id == object.getId() && this.label.equals(object.getLabel()) && this.dado == object.dado;
     }
 
     @Override
     public String toString() {
-        return "ID: " + id + "; " + "Label: " + label + "; " + "Value: " + value;
+        return "ID: " + id + "; " + "Label: " + label + "; " + "Value: " + dado;
     }
 }

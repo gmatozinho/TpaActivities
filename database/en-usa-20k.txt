@@ -407,7 +407,7 @@ compare
 movies
 include
 college
-value
+dado
 article
 york
 man
@@ -1147,7 +1147,7 @@ values
 division
 coming
 tuesday
-value
+dado
 lesbian
 appropriate
 machine

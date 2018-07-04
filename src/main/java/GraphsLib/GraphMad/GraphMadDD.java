@@ -248,7 +248,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
 
      /*
      *  Exemplo de uso:
-     *  TGrafoNDMAd g = TGrafoNDMAd.load("nomeArqTGF.txt");
+     *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
      * */
     public static GraphMadDD load(String nome_arq_TGF){
         GraphMadDD graph = new GraphMadDD();

@@ -5,6 +5,7 @@ import HashLib.Core.MyHashListChain;
 import TeacherAppBenchmark.graphs.Edge;
 import TeacherAppBenchmark.graphs.Graph;
 import TeacherAppBenchmark.graphs.Vertice;
+import WorkFilesLib.ArquivoTxt;
 
 import java.util.LinkedList;
 
@@ -37,9 +38,6 @@ public class GraphLad extends Graph {
     @Override
     public Object getEdge(String vertex1, String vertex2) {
 
-//        VerticeLad vertexObj1 = vertices.findElement(vertex1);
-////        VerticeLad vertexObj2 = vertices.findElement(vertex2);
-
         VerticeLad vertexObj1 = findVertices(vertex1);
         VerticeLad vertexObj2 = findVertices(vertex2);
 
@@ -58,7 +56,7 @@ public class GraphLad extends Graph {
     private VerticeLad findVertices(String vertex)
     {
         for (VerticeLad vertice : vertices.values()) {
-            if(vertice.getLabel()== vertex)
+            if(vertice.getLabel().equals(vertex))
             {
                 return vertice;
             }
@@ -67,16 +65,39 @@ public class GraphLad extends Graph {
         return null;
     }
 
+    private EdgeLad findEdges(String edge)
+    {
+        for (EdgeLad edgeLad : edges.values()) {
+            if(edgeLad.getLabel().equals(edge))
+            {
+                return edgeLad;
+            }
+        }
+
+        return null;
+    }
+
+
     @Override
     public String[] endVertices(String edge) {
-        EdgeLad edgeLad = edges.findElement(edge);
+        EdgeLad edgeLad = findEdges(edge);
         return new String[] { edgeLad.getOrigin().getLabel(),edgeLad.getDestination().getLabel()};
+    }
+
+    public LinkedList<Vertice> endVertices(Edge edge) {
+        EdgeLad edgeLad = edges.findElement(edge.getId());
+        LinkedList<Vertice> lst = new LinkedList<>();
+        lst.add(edgeLad.getOrigin());
+        lst.add(edgeLad.getDestination());
+
+
+        return lst;
     }
 
     @Override
     public String opossite(String vertex, String edge) {
-        VerticeLad vertexLad = vertices.findElement(vertex);
-        EdgeLad edgeLad = edges.findElement(edge);
+        VerticeLad vertexLad = findVertices(vertex);
+        EdgeLad edgeLad = findEdges(edge);
 
         for (EdgeLad edgeObj : vertexLad.getEdges()) {
             if(edgeObj == edgeLad)
@@ -95,7 +116,7 @@ public class GraphLad extends Graph {
 
         VerticeLad vertexLad = new VerticeLad(id,label, value);
 
-        vertices.insertItem(label,vertexLad);
+        vertices.insertItem(id,vertexLad);
 
         return vertexLad;
     }
@@ -106,15 +127,15 @@ public class GraphLad extends Graph {
 
         VerticeLad vertexLad = new VerticeLad(id,label, value);
 
-        vertices.insertItem(label,vertexLad);
+        vertices.insertItem(id,vertexLad);
 
         return vertexLad;
     }
 
     @Override
     public Edge insertEdge(Vertice vertice1, Vertice vertice2, Object value) {
-        VerticeLad vertexLad1 = vertices.findElement(vertice1.getLabel());
-        VerticeLad vertexLad2 = vertices.findElement(vertice2.getLabel());
+        VerticeLad vertexLad1 = vertices.findElement(vertice1.getId());
+        VerticeLad vertexLad2 = vertices.findElement(vertice2.getId());
 
         Integer id = globalEdgeID++;
         String label = id.toString();
@@ -123,13 +144,15 @@ public class GraphLad extends Graph {
         vertexLad1.addEdgeIn(edgeLad);
         vertexLad2.addEdgeOut(edgeLad);
 
+        edges.insertItem(id,edgeLad);
+
         return edgeLad;
     }
 
     @Override
     public Edge insertEdge(Vertice vertice1, Vertice vertice2, Object value, String label) {
-        VerticeLad vertexLad1 = vertices.findElement(vertice1.getLabel());
-        VerticeLad vertexLad2 = vertices.findElement(vertice2.getLabel());
+        VerticeLad vertexLad1 = vertices.findElement(vertice1.getId());
+        VerticeLad vertexLad2 = vertices.findElement(vertice2.getId());
 
         Integer id = globalEdgeID++;
 
@@ -137,17 +160,30 @@ public class GraphLad extends Graph {
         vertexLad1.addEdgeIn(edgeLad);
         vertexLad2.addEdgeOut(edgeLad);
 
+        edges.insertItem(id,edgeLad);
+
         return edgeLad;
     }
 
     @Override
     public Object removeVertex(Vertice vertice) {
-        return this.vertices.removeElement(vertice.getLabel());
+
+        VerticeLad verticeLad = ((VerticeLad)vertice);
+        LinkedList<EdgeLad> edgesLad = verticeLad.getEdges();
+        for (Edge edge: edgesLad) {
+            Edge edgeFind = edges.findElement(edge.getId());
+            if( edgeFind != null)
+            {
+                removeEdge(edge);
+            }
+        }
+
+        return this.vertices.removeElement(vertice.getId());
     }
 
     @Override
     public Object removeEdge(Edge edge) {
-        return edges.removeElement(edge.getLabel());
+        return edges.removeElement(edge.getId());
     }
 
     @Override
@@ -186,6 +222,45 @@ public class GraphLad extends Graph {
 
     protected int generateVertexId(){
         return globalVertexID++;
+    }
+
+    protected static void loadCommon(GraphLad graph, ArquivoTxt arq){
+        /* lendo os vertices */
+        String row = arq.readline();
+        while (!row.trim().equals("#")){
+            String[] vector = row.split(" ", 2);
+            if(vector.length>1) {
+                graph.insertVertex(null, vector[1].trim());
+            }
+
+            row = arq.readline();
+        }
+
+        /* lendo as arestas */
+        row = arq.readline();
+        while (row!= null){
+            String[] edges = row.split(" ", 3);
+
+            int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
+            int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
+
+            Vertice vertice1 = graph.vertices.findElement(idVertex1);
+            Vertice vertice2 = graph.vertices.findElement(idVertex2);
+
+            String label="";
+
+            if(edges.length == 3) {
+                label = (edges[2].trim());
+            }
+            if(label.equals("")) {
+                label = ("@#" + (graph.globalEdgeID+1));
+            }
+
+            graph.insertEdge(vertice1, vertice2, null, label);
+
+            row = arq.readline();
+        }
+
     }
 
 

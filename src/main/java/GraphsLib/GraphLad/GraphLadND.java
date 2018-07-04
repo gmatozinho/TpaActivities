@@ -31,3 +31,4 @@ public class GraphLadND extends GraphLad implements GraphNonDirectional {
         return lst;
     }
 }
+
