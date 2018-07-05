@@ -35,10 +35,8 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
 
     @Override
     public Edge insertEdge(Vertice vertice1, Vertice vertice2, Object value) {
-        Header header1 = new Header(vertice1.getLabel(), vertice1.getId());
-        Header header2 = new Header(vertice2.getLabel(), vertice2.getId());
 
-        if(dicVertices.findElement(header1) == null || dicVertices.findElement(header2) == null)
+        if(dicVertices.findElement(vertice1.getId()) == null || dicVertices.findElement(vertice2.getId()) == null)
         {
             return null;
         }
@@ -48,7 +46,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
 
         Edge edge = new Edge(id,label,value);
 
-        dicEdges.insertItem(new Header(label,id),edge);
+        dicEdges.insertItem(id,edge);
 
         int row = vertice1.getId();
         int column = vertice2.getId();
@@ -61,10 +59,8 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
 
     @Override
     public Edge insertEdge(Vertice vertice1, Vertice vertice2, Object value, String label) {
-        Header header1 = new Header(vertice1.getLabel(), vertice1.getId());
-        Header header2 = new Header(vertice2.getLabel(), vertice2.getId());
 
-        if(dicVertices.findElement(header1) == null || dicVertices.findElement(header2) == null)
+        if(dicVertices.findElement(vertice1.getId()) == null || dicVertices.findElement(vertice2.getId()) == null)
         {
             return null;
         }
@@ -73,7 +69,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
 
         Edge edge = new Edge(id,label,value);
 
-        dicEdges.insertItem(new Header(label,id),edge);
+        dicEdges.insertItem(id,edge);
 
         int row = vertice1.getId();
         int column = vertice2.getId();
@@ -97,7 +93,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
                 String edgeLabel = matrix[row][i];
                 if(edgeLabel!=null) {
                     int pos = findEdgePosByLabel(edgeLabel);
-                    dicEdges.removeElement(new Header(edgeLabel, pos));
+                    dicEdges.removeElement(pos);
 
                     matrix[row][i] = null;
                     matrix[i][row] = null;
@@ -112,7 +108,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
     public Object removeEdge(Edge edge) {
         Object tmp = edge.getDado();
         String edgeLabel = edge.getLabel();
-        dicEdges.removeElement(new Header(edgeLabel,edge.getId()));
+        dicEdges.removeElement(edge.getId());
 
         String [] endPoints = endVertices(edge.getLabel());
 
@@ -134,7 +130,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
                 if (matrix[row][i] != null) {
                     String label = matrix[row][i];
                     Header header = new Header(label, findEdgePosByLabel(label));
-                    lst.add(dicEdges.findElement(header));
+                    lst.add(dicEdges.findElement(findEdgePosByLabel(label)));
                 }
             }
         }
@@ -145,7 +141,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
     public LinkedList<Vertice> adjacenteVertices(Vertice vertice){
         Header headerToFind = new Header(vertice.getLabel(), vertice.getId());
 
-        if(dicVertices.findElement(headerToFind) == null)
+        if(dicVertices.findElement(vertice.getId()) == null)
             return null;
 
         LinkedList<Vertice> lst = new LinkedList();
@@ -154,7 +150,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
         for (int i = firstIndexMatrix; i <= lastIndexMatrix; i++) {
             if(!lstVtxDelete.contains(i) && matrix[row][i] != null){
                 String label = findVertexLabelById(i);
-                lst.add(dicVertices.findElement(new Header(label,i)));
+                lst.add(dicVertices.findElement(i));
             }
         }
 

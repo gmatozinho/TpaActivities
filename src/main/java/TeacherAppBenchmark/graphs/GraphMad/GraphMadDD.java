@@ -56,7 +56,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
         Header header1 = new Header(vertice1.getLabel(), vertice1.getId());
         Header header2 = new Header(vertice2.getLabel(), vertice2.getId());
 
-        if(dicVertices.findElement(header1) == null || dicVertices.findElement(header2) == null)
+        if(dicVertices.findElement(vertice1.getId()) == null || dicVertices.findElement(vertice2.getId()) == null)
         {
             return null;
         }
@@ -66,7 +66,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
 
         Edge edge = new Edge(id,label,value);
 
-        dicEdges.insertItem(new Header(label,id),edge);
+        dicEdges.insertItem(id,edge);
 
         int row = vertice1.getId();
         int column = vertice2.getId();
@@ -81,7 +81,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
         Header header1 = new Header(vertice1.getLabel(), vertice1.getId());
         Header header2 = new Header(vertice2.getLabel(), vertice2.getId());
 
-        if(dicVertices.findElement(header1) == null || dicVertices.findElement(header2) == null)
+        if(dicVertices.findElement(vertice1.getId()) == null || dicVertices.findElement(vertice2.getId()) == null)
         {
             return null;
         }
@@ -90,7 +90,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
 
         Edge edge = new Edge(id,label,value);
 
-        dicEdges.insertItem(new Header(label,id),edge);
+        dicEdges.insertItem(id,edge);
 
         int row = vertice1.getId();
         int column = vertice2.getId();
@@ -113,7 +113,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
                 String edgeLabel = matrix[row][i];
                 if(edgeLabel!=null) {
                     int pos = findEdgePosByLabel(edgeLabel);
-                    dicEdges.removeElement(new Header(edgeLabel, pos));
+                    dicEdges.removeElement(pos);
 
                     matrix[row][i] = null;
                 }
@@ -127,7 +127,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
     public Object removeEdge(Edge edge) {
         Object tmp = edge.getDado();
         String edgeLabel = edge.getLabel();
-        dicEdges.removeElement(new Header(edgeLabel,edge.getId()));
+        dicEdges.removeElement(edge.getId());
 
         String [] endPoints = endVertices(edge.getLabel());
 
@@ -165,14 +165,14 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
                     if (matrix[pos][i] != null) {
                         label = matrix[pos][i];
                         header = new Header(label, findEdgePosByLabel(label));
-                        lst.add(dicEdges.findElement(header));
+                        lst.add(dicEdges.findElement(findEdgePosByLabel(label)));
                     }
                 }else
                 {
                     if (matrix[i][pos] != null) {
                         label = matrix[i][pos];
                         header = new Header(label, findEdgePosByLabel(label));
-                        lst.add(dicEdges.findElement(header));
+                        lst.add(dicEdges.findElement(findEdgePosByLabel(label)));
                     }
                 }
             }
@@ -192,7 +192,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
     {
         Header headerToFind = new Header(vertice.getLabel(), vertice.getId());
 
-        if(dicVertices.findElement(headerToFind) == null)
+        if(dicVertices.findElement(vertice.getId()) == null)
             return null;
 
         LinkedList<Vertice> lst = new LinkedList<>();
@@ -203,12 +203,12 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
             if(row) {
                 if (!lstVtxDelete.contains(i) && (matrix[pos][i] != null)) {
                     String label = findVertexLabelById(i);
-                    lst.add(dicVertices.findElement(new Header(label, i)));
+                    lst.add(dicVertices.findElement(i));
                 }
             }else {
                 if (!lstVtxDelete.contains(i) && (matrix[i][pos] != null)) {
                     String label = findVertexLabelById(i);
-                    lst.add(dicVertices.findElement(new Header(label, i)));
+                    lst.add(dicVertices.findElement(i));
                 }
             }
         }
@@ -231,12 +231,12 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
                 if(origin) {
                     if (!lstVtxDelete.contains(i) && (matrix[i][j] != null) && (matrix[i][j].equals(edge.getLabel()))) {
                         String label = findVertexLabelById(i);
-                        return dicVertices.findElement(new Header(label, i));
+                        return dicVertices.findElement(i);
                     }
                 }else{
                     if (!lstVtxDelete.contains(j) && (matrix[i][j] != null) && (matrix[i][j].equals(edge.getLabel()))) {
                         String label = findVertexLabelById(j);
-                        return dicVertices.findElement(new Header(label, j));
+                        return dicVertices.findElement(j);
                     }
                 }
             }

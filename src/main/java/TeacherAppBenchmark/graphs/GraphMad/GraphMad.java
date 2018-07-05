@@ -4,7 +4,6 @@ import HashLib.Core.MyHash;
 import HashLib.Core.MyHashListChain;
 import TeacherAppBenchmark.graphs.Edge;
 import TeacherAppBenchmark.graphs.Graph;
-import TeacherAppBenchmark.graphs.Header;
 import TeacherAppBenchmark.graphs.Vertice;
 import WorkFilesLib.ArquivoTxt;
 
@@ -13,8 +12,8 @@ import java.util.LinkedList;
 public class GraphMad extends Graph {
 
     // Dicionários com chave Header(Label,ID) e conteúdo objeto Vertice/Edge.
-    protected MyHash<Header,Vertice> dicVertices = new MyHashListChain<>();
-    protected MyHash<Header,Edge> dicEdges = new MyHashListChain<>();
+    protected MyHash<Integer,Vertice> dicVertices = new MyHashListChain<>();
+    protected MyHash<Integer,Edge> dicEdges = new MyHashListChain<>();
 
     protected LinkedList<Integer> lstVtxDelete = new LinkedList();
 
@@ -133,9 +132,7 @@ public class GraphMad extends Graph {
         }
 
         Vertice vertice = new Vertice(id,label, value);
-        Header header = new Header(label,id);
-
-        dicVertices.insertItem(header, vertice);
+        dicVertices.insertItem(id, vertice);
         return vertice;
     }
 
@@ -155,9 +152,8 @@ public class GraphMad extends Graph {
         }
 
         Vertice vertice = new Vertice(id,label, value);
-        Header header = new Header(label,id);
 
-        dicVertices.insertItem(header, vertice);
+        dicVertices.insertItem(id, vertice);
         return vertice;
     }
 
@@ -200,10 +196,10 @@ public class GraphMad extends Graph {
 
     protected int findVertexPosByLabel(String label)
     {
-        for ( Header header: dicVertices.keys()) {
-            if(header.getLabel().equals(label))
+        for ( Vertice vertice: dicVertices.values()) {
+            if(vertice.getLabel().equals(label))
             {
-                return header.getId();
+                return vertice.getId();
             }
         }
         return -1;
@@ -211,10 +207,10 @@ public class GraphMad extends Graph {
 
     protected String findVertexLabelById(int id)
     {
-        for ( Header header: dicVertices.keys()) {
-            if(header.getId()==id)
+        for ( Vertice vertice: dicVertices.values()) {
+            if(vertice.getId()==id)
             {
-                return header.getLabel();
+                return vertice.getLabel();
             }
         }
         return "";
@@ -222,10 +218,10 @@ public class GraphMad extends Graph {
 
     protected int findEdgePosByLabel(String label)
     {
-        for (Header header: dicEdges.keys()) {
-            if(header.getLabel().equals(label))
+        for (Edge edge: dicEdges.values()) {
+            if(edge.getLabel().equals(label))
             {
-                return header.getId();
+                return edge.getId();
             }
         }
         return -1;
@@ -296,11 +292,8 @@ public class GraphMad extends Graph {
             int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
             int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
 
-            String labelVertex1 = graph.findVertexLabelById(idVertex1);
-            String labelVertex2 = graph.findVertexLabelById(idVertex2);
-
-            Vertice vertice1 = graph.dicVertices.findElement(new Header(labelVertex1,idVertex1));
-            Vertice vertice2 = graph.dicVertices.findElement(new Header(labelVertex2,idVertex2));
+            Vertice vertice1 = graph.dicVertices.findElement(idVertex1);
+            Vertice vertice2 = graph.dicVertices.findElement(idVertex2);
 
             String label="";
 
