@@ -1,5 +1,6 @@
 package TeacherAppBenchmark;
 
+import TeacherAppBenchmark.HashLib.Core.TabHEA;
 import TeacherAppBenchmark.graphs.GraphLad.TADGrafoLadjND;
 import TeacherAppBenchmark.graphs.GraphMad.TADGrafoMadjND;
 import TeacherAppBenchmark.graphs.Vertice;

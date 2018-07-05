@@ -9,7 +9,7 @@ import WorkFilesLib.ArquivoTxt;
 
 import java.util.LinkedList;
 
-public class GraphLad extends Graph {
+public class TADGrafoLadj extends Graph {
     protected int globalVertexID = 0;
     protected int globalEdgeID = 0;
     protected MyHash<Integer,VerticeLad> vertices = new MyHashListChain<>();
@@ -36,7 +36,7 @@ public class GraphLad extends Graph {
     }
 
     @Override
-    public Object getEdge(String vertex1, String vertex2) {
+    public Edge getEdge(String vertex1, String vertex2) {
 
         VerticeLad vertexObj1 = findVertices(vertex1);
         VerticeLad vertexObj2 = findVertices(vertex2);
@@ -77,7 +77,6 @@ public class GraphLad extends Graph {
         return null;
     }
 
-
     @Override
     public String[] endVertices(String edge) {
         EdgeLad edgeLad = findEdges(edge);
@@ -103,6 +102,20 @@ public class GraphLad extends Graph {
             if(edgeObj == edgeLad)
             {
                 return edgeObj.myOpossite(vertexLad).getLabel();
+            }
+        }
+
+        return null;
+    }
+
+    public Vertice opossite(Vertice vertex, Edge edge) {
+        VerticeLad vertexLad = (VerticeLad) vertex;
+        EdgeLad edgeLad = (EdgeLad)edge;
+
+        for (EdgeLad edgeObj : vertexLad.getEdges()) {
+            if(edgeObj == edgeLad)
+            {
+                return edgeObj.myOpossite(vertexLad);
             }
         }
 
@@ -224,7 +237,7 @@ public class GraphLad extends Graph {
         return globalVertexID++;
     }
 
-    protected static void loadCommon(GraphLad graph, ArquivoTxt arq){
+    protected static void loadCommon(TADGrafoLadj graph, ArquivoTxt arq){
         /* lendo os vertices */
         String row = arq.readline();
         while (!row.trim().equals("#")){

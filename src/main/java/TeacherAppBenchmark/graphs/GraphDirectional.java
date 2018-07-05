@@ -8,8 +8,10 @@ public interface GraphDirectional {
     public int inDegree(Vertice vertice);
     LinkedList<Edge> inIncidentEdges(Vertice vertice);
     LinkedList<Edge> outIncidentEdges(Vertice vertice);
+    LinkedList<Edge> incidentEdges(Vertice vertice);
     LinkedList<Vertice> inAdjacentVertices(Vertice vertice);
     LinkedList<Vertice> outAdjacentVertices(Vertice vertice);
+    LinkedList<Vertice> adjacenteVertices(Vertice vertice);
     Vertice destination(Edge edge);
     Vertice origin(Edge edge);
 }

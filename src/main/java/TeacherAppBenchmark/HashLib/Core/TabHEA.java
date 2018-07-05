@@ -1,16 +1,15 @@
-package TeacherAppBenchmark;
+package TeacherAppBenchmark.HashLib.Core;
 
-import HashLib.Core.MyHash;
-import HashLib.HashEngine.HashDefault;
-import HashLib.HashEngine.HashEngine;
 import NumLib.Prime;
+import TeacherAppBenchmark.HashLib.HashEngine.HashDefault;
+import TeacherAppBenchmark.HashLib.HashEngine.HashEngine;
 
 import java.util.LinkedList;
 
 import static HashLib.Functions.AuxHashFunctions.DefineIndex;
 
 @SuppressWarnings("ALL")
-public class TabHEA<K,V> extends MyHash<K,V>{
+public class TabHEA<K,V> extends MyHash<K,V> {
 
     public static final Item NO_SUCH_KEY = new Item(null, null);
     private Item<K,V>[] hashVector;

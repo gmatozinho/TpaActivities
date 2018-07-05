@@ -11,7 +11,7 @@ import WorkFilesLib.ArquivoTxt;
 import java.util.LinkedList;
 
 
-public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
+public class TADGrafoMadjND extends TADGrafoMadj implements GraphNonDirectional {
 
     public TADGrafoMadjND() {
     }
@@ -36,7 +36,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
     @Override
     public Edge insertEdge(Vertice vertice1, Vertice vertice2, Object value) {
 
-        if(dicVertices.findElement(vertice1.getId()) == null || dicVertices.findElement(vertice2.getId()) == null)
+        if(vertices.findElement(vertice1.getId()) == null || vertices.findElement(vertice2.getId()) == null)
         {
             return null;
         }
@@ -46,13 +46,13 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
 
         Edge edge = new Edge(id,label,value);
 
-        dicEdges.insertItem(id,edge);
+        edges.insertItem(id,edge);
 
         int row = vertice1.getId();
         int column = vertice2.getId();
 
-        matrix[row][column] = edge.getLabel();
-        matrix[column][row] = edge.getLabel();
+        matrix[row][column] = id;
+        matrix[column][row] = id;
 
         return  edge;
     }
@@ -60,7 +60,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
     @Override
     public Edge insertEdge(Vertice vertice1, Vertice vertice2, Object value, String label) {
 
-        if(dicVertices.findElement(vertice1.getId()) == null || dicVertices.findElement(vertice2.getId()) == null)
+        if(vertices.findElement(vertice1.getId()) == null || vertices.findElement(vertice2.getId()) == null)
         {
             return null;
         }
@@ -69,13 +69,13 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
 
         Edge edge = new Edge(id,label,value);
 
-        dicEdges.insertItem(id,edge);
+        edges.insertItem(id,edge);
 
         int row = vertice1.getId();
         int column = vertice2.getId();
 
-        matrix[row][column] = edge.getLabel();
-        matrix[column][row] = edge.getLabel();
+        matrix[row][column] = id;
+        matrix[column][row] = id;
 
         return  edge;
     }
@@ -85,21 +85,23 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
         Object tmp = vertice.getDado();
 
         int row = vertice.getId();
-        int limitCol = dicVertices.size();
+        int limitCol = vertices.size()+lstVtxDelete.size();
         lstVtxDelete.add(row);
 
         for(int i = 0; i < limitCol; i++){
             if( !lstVtxDelete.contains(i)) {
-                String edgeLabel = matrix[row][i];
+                Integer edgeLabel = matrix[row][i];
                 if(edgeLabel!=null) {
-                    int pos = findEdgePosByLabel(edgeLabel);
-                    dicEdges.removeElement(pos);
+                    edges.removeElement(edgeLabel);
 
                     matrix[row][i] = null;
                     matrix[i][row] = null;
                 }
             }
         }
+
+
+        vertices.removeElement(vertice.getId());
 
         return tmp;
     }
@@ -108,7 +110,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
     public Object removeEdge(Edge edge) {
         Object tmp = edge.getDado();
         String edgeLabel = edge.getLabel();
-        dicEdges.removeElement(edge.getId());
+        edges.removeElement(edge.getId());
 
         String [] endPoints = endVertices(edge.getLabel());
 
@@ -128,9 +130,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
         for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++) {
             if (!lstVtxDelete.contains(i)) {
                 if (matrix[row][i] != null) {
-                    String label = matrix[row][i];
-                    Header header = new Header(label, findEdgePosByLabel(label));
-                    lst.add(dicEdges.findElement(findEdgePosByLabel(label)));
+                    lst.add(edges.findElement(matrix[row][i]));
                 }
             }
         }
@@ -141,7 +141,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
     public LinkedList<Vertice> adjacenteVertices(Vertice vertice){
         Header headerToFind = new Header(vertice.getLabel(), vertice.getId());
 
-        if(dicVertices.findElement(vertice.getId()) == null)
+        if(vertices.findElement(vertice.getId()) == null)
             return null;
 
         LinkedList<Vertice> lst = new LinkedList();
@@ -150,7 +150,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
         for (int i = firstIndexMatrix; i <= lastIndexMatrix; i++) {
             if(!lstVtxDelete.contains(i) && matrix[row][i] != null){
                 String label = findVertexLabelById(i);
-                lst.add(dicVertices.findElement(i));
+                lst.add(vertices.findElement(i));
             }
         }
 
@@ -161,7 +161,7 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
      *  Exemplo de uso:
      *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
      * */
-    public static TADGrafoMadjND load(String nome_arq_TGF){
+    public static TADGrafoMadjND carrega(String nome_arq_TGF){
         TADGrafoMadjND graph = new TADGrafoMadjND();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
@@ -208,8 +208,8 @@ public class TADGrafoMadjND extends GraphMad implements GraphNonDirectional {
                             int tgf_lin = dicIDgrafoID_tgf.findElement(lin);
                             int tgf_col = dicIDgrafoID_tgf.findElement(col);
 
-                            if(!matrix[lin][col].substring(0,2).equals("@#")) {
-                                row = tgf_lin + " " + tgf_col + " " + matrix[lin][col];
+                            if(!edges.findElement(matrix[lin][col]).getLabel().substring(0,2).equals("@#")) {
+                                row = tgf_lin + " " + tgf_col + " " + edges.findElement(matrix[lin][col]).getLabel();
                             }else{
                                 row = tgf_lin + " " + tgf_col;
                             }

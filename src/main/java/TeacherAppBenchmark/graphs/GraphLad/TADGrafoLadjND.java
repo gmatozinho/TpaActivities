@@ -9,7 +9,7 @@ import WorkFilesLib.ArquivoTxt;
 
 import java.util.LinkedList;
 
-public class TADGrafoLadjND extends GraphLad implements GraphNonDirectional {
+public class TADGrafoLadjND extends TADGrafoLadj implements GraphNonDirectional {
 
     @Override
     public LinkedList<Edge> incidentEdges(Vertice vertice) {

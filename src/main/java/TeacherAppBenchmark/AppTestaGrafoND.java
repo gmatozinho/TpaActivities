@@ -1,15 +1,19 @@
 package TeacherAppBenchmark;
 
 import TeacherAppBenchmark.graphs.Edge;
-import TeacherAppBenchmark.graphs.GraphMad.TADGrafoMadjND;
+import TeacherAppBenchmark.graphs.GraphLad.TADGrafoLadjDD;
+import TeacherAppBenchmark.graphs.GraphLad.TADGrafoLadjND;
+import TeacherAppBenchmark.graphs.GraphMad.TADGrafoMadjDD;
 import TeacherAppBenchmark.graphs.Vertice;
 
 import java.util.LinkedList;
 
 public class AppTestaGrafoND {		
 	public static void main(String[] args){
-		TADGrafoMadjND gnd = new TADGrafoMadjND();
-		//TADGrafoLadjND gnd = new TADGrafoLadjND();
+		//TADGrafoMadjND gnd = new TADGrafoMadjND();
+		TADGrafoLadjND gnd = new TADGrafoLadjND();
+		//TADGrafoLadjDD gnd = new TADGrafoLadjDD();
+		//TADGrafoMadjDD gnd = new TADGrafoMadjDD();
 		
 		// Povoando o grafo gnd.
 		Vertice v = gnd.insertVertex(null);

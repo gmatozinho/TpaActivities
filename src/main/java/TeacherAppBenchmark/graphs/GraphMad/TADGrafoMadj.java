@@ -7,19 +7,20 @@ import TeacherAppBenchmark.graphs.Graph;
 import TeacherAppBenchmark.graphs.Vertice;
 import WorkFilesLib.ArquivoTxt;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
-public class GraphMad extends Graph {
+public class TADGrafoMadj extends Graph {
 
     // Dicionários com chave Header(Label,ID) e conteúdo objeto Vertice/Edge.
-    protected MyHash<Integer,Vertice> dicVertices = new MyHashListChain<>();
-    protected MyHash<Integer,Edge> dicEdges = new MyHashListChain<>();
+    protected MyHash<Integer,Vertice> vertices = new MyHashListChain<>();
+    protected MyHash<Integer,Edge> edges = new MyHashListChain<>();
 
     protected LinkedList<Integer> lstVtxDelete = new LinkedList();
 
     protected int globalVertexID = 0;
     protected int globalEdgeID = 0;
-    protected String matrix[][];
+    protected Integer matrix[][];
 
     protected static final int defaultsize = 64;
 
@@ -27,47 +28,47 @@ public class GraphMad extends Graph {
     protected int lastIndexMatrix = -1;
 
     //Cria um grafo de tamanho Default com 64 nós.
-    public GraphMad ()
+    public TADGrafoMadj()
     {
-        matrix = new String[defaultsize][defaultsize];
+        matrix = new Integer[defaultsize][defaultsize];
     }
 
     //Cria um grafo de tamanho Custom com N nós.
-    public GraphMad(int length)
+    public TADGrafoMadj(int length)
     {
-        matrix = new String[length][length];
+        matrix = new Integer[length][length];
     }
 
     @Override
     public int numVertices() {
-        return dicVertices.size();
+        return vertices.size();
     }
 
     @Override
     public LinkedList<Vertice> vertices() {
-        return dicVertices.values();
+        return vertices.values();
     }
 
     @Override
     public int numEdges() {
-        return dicEdges.size();
+        return edges.size();
     }
 
     @Override
     public LinkedList<Edge> edges() {
-        return dicEdges.values();
+        return edges.values();
     }
 
     //Get edge - se a posição do vertex1 for encontrada eu busco o 2 senao retorno nulo o mesmo vale pro vertex 2;
     @Override
-    public Object getEdge(String vertex1, String vertex2) {
+    public Edge getEdge(String vertex1, String vertex2) {
         int vertex1Pos = findVertexPosByLabel(vertex1);
         int vertex2Pos;
         if(vertex1Pos != -1)
         {
             vertex2Pos = findVertexPosByLabel(vertex2);
             if(vertex2Pos != -1){
-                return matrix[vertex1Pos][vertex2Pos];
+                return edges.findElement(matrix[vertex1Pos][vertex2Pos]);
             }
         }
 
@@ -77,17 +78,43 @@ public class GraphMad extends Graph {
     @Override
     public String[] endVertices(String edge) {
         int tam = numVertices();
+
+        int id = findEdgePosByLabel(edge);
         for (int i = 0; i< tam; i++){
             for(int j = 0; j < tam; j++){
-                if(matrix[i][j] != null && matrix[i][j].equals(edge)){
-                    String labelVertex1 = findVertexLabelById(i);
+                if(matrix[i][j] != null && matrix[i][j].equals(id)){
+                    String labelVertex1 = vertices.findElement(i).getLabel();
                     String labelVertex2;
                     if(!labelVertex1.equals(""))
                     {
-                        labelVertex2 = findVertexLabelById(j);
+                        labelVertex2 = vertices.findElement(j).getLabel();
                         if(!labelVertex2.equals(""))
                         {
                             return new String[] {labelVertex2,labelVertex1};
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public LinkedList<Vertice> endVertices(Edge edge) {
+        int tam = numVertices();
+
+        int id = edge.getId();
+        for (int i = 0; i< tam; i++){
+            for(int j = 0; j < tam; j++){
+                if(matrix[i][j] != null && matrix[i][j].equals(id)){
+                    Vertice vertex1 = vertices.findElement(i);
+                    Vertice vertex2;
+                    if(!vertex1.equals(""))
+                    {
+                        vertex2 = vertices.findElement(j);
+                        if(!vertex2.equals(""))
+                        {
+                            return new LinkedList<>(Arrays.asList(vertex2, vertex1));
                         }
                     }
                 }
@@ -116,9 +143,27 @@ public class GraphMad extends Graph {
         return null;
     }
 
+    public Vertice opossite(Vertice vertex, Edge edge) {
+        if(vertex==null) return null;
+        if(edge==null)return null;
+
+        LinkedList<Vertice> endPoints = endVertices(edge);
+
+        if(endPoints != null) {
+            if (vertex.equals(endPoints.get(0))) {
+                return endPoints.get(1);
+            } else
+            if(vertex.equals(endPoints.get(1))) {
+                return endPoints.get(0);
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public Vertice insertVertex(Object value) {
-        if(dicVertices.size()/matrix[0].length >= 0.75f)
+        if(vertices.size()/matrix[0].length >= 0.75f)
             resize();
 
         Integer id = generateVertexId();
@@ -132,14 +177,14 @@ public class GraphMad extends Graph {
         }
 
         Vertice vertice = new Vertice(id,label, value);
-        dicVertices.insertItem(id, vertice);
+        vertices.insertItem(id, vertice);
         return vertice;
     }
 
     @Override
     public Vertice insertVertex(Object value, String label)
     {
-        if(dicVertices.size()/matrix[0].length >= 0.75f)
+        if(vertices.size()/matrix[0].length >= 0.75f)
             resize();
 
         Integer id = generateVertexId();
@@ -153,7 +198,7 @@ public class GraphMad extends Graph {
 
         Vertice vertice = new Vertice(id,label, value);
 
-        dicVertices.insertItem(id, vertice);
+        vertices.insertItem(id, vertice);
         return vertice;
     }
 
@@ -196,7 +241,7 @@ public class GraphMad extends Graph {
 
     protected int findVertexPosByLabel(String label)
     {
-        for ( Vertice vertice: dicVertices.values()) {
+        for ( Vertice vertice: vertices.values()) {
             if(vertice.getLabel().equals(label))
             {
                 return vertice.getId();
@@ -207,7 +252,7 @@ public class GraphMad extends Graph {
 
     protected String findVertexLabelById(int id)
     {
-        for ( Vertice vertice: dicVertices.values()) {
+        for ( Vertice vertice: vertices.values()) {
             if(vertice.getId()==id)
             {
                 return vertice.getLabel();
@@ -218,7 +263,7 @@ public class GraphMad extends Graph {
 
     protected int findEdgePosByLabel(String label)
     {
-        for (Edge edge: dicEdges.values()) {
+        for (Edge edge: edges.values()) {
             if(edge.getLabel().equals(label))
             {
                 return edge.getId();
@@ -260,7 +305,7 @@ public class GraphMad extends Graph {
 
     protected void resize(){
         int newSize = (int)(matrix[0].length * 1.5f);
-        String newMat[][] = new String[newSize][newSize];
+        Integer newMat[][] = new Integer[newSize][newSize];
 
         for (int i = firstIndexMatrix; i <= lastIndexMatrix; i++) {
             for (int j = firstIndexMatrix; j <= lastIndexMatrix; j++) {
@@ -272,7 +317,7 @@ public class GraphMad extends Graph {
 
     }
 
-    protected static void loadCommon(GraphMad graph, ArquivoTxt arq){
+    protected static void loadCommon(TADGrafoMadj graph, ArquivoTxt arq){
         /* lendo os vertices */
         String row = arq.readline();
         while (!row.trim().equals("#")){
@@ -292,8 +337,8 @@ public class GraphMad extends Graph {
             int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
             int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
 
-            Vertice vertice1 = graph.dicVertices.findElement(idVertex1);
-            Vertice vertice2 = graph.dicVertices.findElement(idVertex2);
+            Vertice vertice1 = graph.vertices.findElement(idVertex1);
+            Vertice vertice2 = graph.vertices.findElement(idVertex2);
 
             String label="";
 

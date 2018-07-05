@@ -2,7 +2,7 @@ package HashLib;
 
 import org.junit.Test;
 
-public class MyHashOpenAddressTest {
+public class TabHEATest {
 
     @Test
     public void getHashVector() {

@@ -1,19 +1,19 @@
-package TeacherAppBenchmark;
+package TeacherAppBenchmark.HashLib.Core;
 
 class Item<K,V>{
     private long myHashCode;
     private K key;
     private V value;
 
-    Item(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
     Item(long myHashCode, K key, V value) {
         this.key = key;
         this.value = value;
         this.myHashCode = myHashCode;
+    }
+
+    Item(K key, V value) {
+        this.key = key;
+        this.value = value;
     }
 
     void setValue(V value) {

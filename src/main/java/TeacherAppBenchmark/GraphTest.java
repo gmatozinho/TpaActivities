@@ -1,10 +1,5 @@
-package MainTest;
+package TeacherAppBenchmark;
 
-import GraphsLib.Edge;
-import GraphsLib.Vertex;
-import TeacherAppBenchmark.graphs.GraphLad.TADGrafoLadjDD;
-import TeacherAppBenchmark.graphs.GraphLad.TADGrafoLadjND;
-import TeacherAppBenchmark.graphs.GraphMad.TADGrafoMadjDD;
 import TeacherAppBenchmark.graphs.GraphMad.TADGrafoMadjND;
 
 public class GraphTest {

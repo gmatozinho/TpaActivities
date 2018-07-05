@@ -1,0 +1,220 @@
+package TeacherAppBenchmark.HashLib.Core;
+
+import NumLib.Prime;
+import TeacherAppBenchmark.HashLib.HashEngine.HashDefault;
+import TeacherAppBenchmark.HashLib.HashEngine.HashEngine;
+
+import java.util.LinkedList;
+
+import static HashLib.Functions.AuxHashFunctions.DefineIndex;
+
+
+@SuppressWarnings("ALL")
+public class MyHashListChain<K,V> extends MyHash<K,V> {
+
+    private int length;
+    private LinkedList[] hashVector;
+    private int maxSize;
+    private int actualSize;
+    private float threshold = 0.40f;
+    private HashEngine hashEngine;
+
+    public MyHashListChain() {
+        this.hashEngine = new HashDefault();
+        this.length = 1<<4;
+        actualSize = 0;
+        calcMaxSize();
+        hashVector = new LinkedList[this.length];
+        fillVector();
+    }
+
+    public MyHashListChain(int length) {
+        this.hashEngine = new HashDefault();
+        this.length = Prime.calcArraySize(length);
+        actualSize = 0;
+        calcMaxSize();
+        hashVector = new LinkedList[this.length];
+        fillVector();
+    }
+
+    public MyHashListChain(HashEngine hashEngine) {
+        this.hashEngine = hashEngine;
+        this.length = Prime.calcArraySize(length);
+        actualSize = 0;
+        calcMaxSize();
+        hashVector = new LinkedList[this.length];
+        fillVector();
+    }
+
+    public MyHashListChain(int length, HashEngine hashEngine) {
+        this.hashEngine = hashEngine;
+        this.length = Prime.calcArraySize(length);
+        actualSize = 0;
+        calcMaxSize();
+        hashVector = new LinkedList[this.length];
+        fillVector();
+    }
+
+    private void fillVector()
+    {
+        for(int i = 0; i < hashVector.length; i++){
+            hashVector[i] = new LinkedList<Item>();
+        }
+    }
+
+    private void calcMaxSize()
+    {
+        this.maxSize = (int) (threshold * (Math.pow(length,2)));
+    }
+
+    @Override
+    public V findElement(K key){
+
+        try {
+            long code = hashEngine.generateHashCode(key);
+            int vectorPos = getElementVectorPos(code);
+            LinkedList<Item> list = hashVector[vectorPos];
+            int listPos = getElementListPos(key, list);
+
+            if (listPos != -1) {
+                return (V) list.get(listPos).getValue();
+            }
+            return null;
+        }catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean insertItem(K key, V value) {
+
+        if(actualSize == maxSize)
+        {
+            resizeVector();
+        }
+
+        try{
+            long myHashCode = hashEngine.generateHashCode(key);
+            Item node = new Item(myHashCode,key,value);
+
+            long code = node.getMyHashCode();
+            int vectorPos = getElementVectorPos(code);
+            LinkedList<Item> list = hashVector[vectorPos];
+            int listPos = getElementListPos(key,list);
+
+            if(listPos == -1)
+            {
+                list.add(node);
+                actualSize ++;
+            }else{
+                list.get(listPos).setValue(value);
+            }
+
+            return  true;
+        }catch (Exception e)
+        {
+            return false;
+        }
+
+    }
+
+    @Override
+    public V removeElement(K key) {
+
+        V aux;
+        try{
+            long code = hashEngine.generateHashCode(key);
+            int vectorPos = getElementVectorPos(code);
+            LinkedList<Item> list = hashVector[vectorPos];
+            int listPos = getElementListPos(key,list);
+            aux = (V) list.remove(listPos).getValue();
+            actualSize --;
+            return aux;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public int size() {
+        return this.actualSize;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.actualSize != 0;
+    }
+
+    @Override
+    public LinkedList<K> keys() {
+        LinkedList<K> keys = new LinkedList<>();
+
+        for (LinkedList<Item> list: hashVector) {
+            if(list.size() > 0)
+            {
+                for (Item node:list) {
+                    keys.add((K) node.getKey());
+                }
+            }
+        }
+
+        return keys;
+    }
+
+    @Override
+    public LinkedList<V> values() {
+        LinkedList<Object> values = new LinkedList<>();
+
+        for (LinkedList<Item> list: hashVector) {
+            if(list.size() > 0)
+            {
+                for (Item node:list) {
+                    values.add(node.getValue());
+                }
+            }
+        }
+
+        return (LinkedList<V>) values;
+    }
+
+    private synchronized void resizeVector()
+    {
+        LinkedList[] oldVector = hashVector;
+        length = Prime.calcArraySize(length * 2);
+        hashVector = new LinkedList[this.length];
+        calcMaxSize();
+        fillVector();
+
+        for ( LinkedList<Item> list: oldVector) {
+            for ( Item node: list) {
+                hashVector[getElementVectorPos(node.getMyHashCode())].add(node);
+            }
+        }
+    }
+
+    private int getElementVectorPos(int hashCode)
+    {
+        return DefineIndex(hashCode,this.length);
+    }
+
+    private int getElementVectorPos(long hashCode)
+    {
+        return DefineIndex(hashCode,this.length);
+    }
+
+    private int getElementListPos(K key, LinkedList<Item> list)
+    {
+        for(int i=0;i<list.size();i++ )
+        {
+            if(key.equals(list.get(i).getKey()))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+}
