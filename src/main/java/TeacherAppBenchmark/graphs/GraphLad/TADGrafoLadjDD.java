@@ -91,7 +91,7 @@ public class TADGrafoLadjDD extends TADGrafoLadj implements GraphDirectional {
         return edgeLad.getOrigin();
     }
 
-    public static TADGrafoLadjDD carrega(String nome_arq_TGF){
+    public static TADGrafoLadjDD load(String nome_arq_TGF){
         TADGrafoLadjDD graph = new TADGrafoLadjDD();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");

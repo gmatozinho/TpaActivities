@@ -34,7 +34,7 @@ public class TADGrafoLadjND extends TADGrafoLadj implements GraphNonDirectional 
         return lst;
     }
 
-    public static TADGrafoLadjND carrega(String nome_arq_TGF){
+    public static TADGrafoLadjND load(String nome_arq_TGF){
         TADGrafoLadjND graph = new TADGrafoLadjND();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
@@ -47,6 +47,7 @@ public class TADGrafoLadjND extends TADGrafoLadj implements GraphNonDirectional 
         return graph;
 
     }
+
 
     public String toString(){
 

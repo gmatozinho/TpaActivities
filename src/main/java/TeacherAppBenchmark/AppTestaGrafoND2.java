@@ -1,16 +1,16 @@
 package TeacherAppBenchmark;
 
 import TeacherAppBenchmark.HashLib.Core.TabHEA;
+import TeacherAppBenchmark.graphs.Edge;
 import TeacherAppBenchmark.graphs.GraphLad.TADGrafoLadjND;
 import TeacherAppBenchmark.graphs.GraphMad.TADGrafoMadjND;
 import TeacherAppBenchmark.graphs.Vertice;
-import TeacherAppBenchmark.graphs.Edge;
 
 import java.util.LinkedList;
 
 public class AppTestaGrafoND2 {
 	public static void main(String[] args) {
-		TADGrafoMadjND gndMat = new TADGrafoMadjND();
+		TADGrafoMadjND gndMat  = new TADGrafoMadjND();
 		TADGrafoLadjND gndLad = new TADGrafoLadjND();
 
 		// ****************************************************
@@ -22,8 +22,11 @@ public class AppTestaGrafoND2 {
 		// O conteúdo do grafo original, gndLad, é lido do arquivo meses.txt.
 		// O conteúdo do grafo clone, gndMat, é salvo em meses2.txt.
 		String cwd = System.getProperty("user.dir");
-		String grafoIN = cwd + "/../../bdgrafos/meses.txt";
-		String grafoOUT = cwd + "/../../bdgrafos/meses2.txt";
+//		String grafoIN = cwd + "/../../bdgrafos/meses.txt";
+//		String grafoOUT = cwd + "/../../bdgrafos/meses2.txt";
+
+		String grafoIN = cwd + "\\src\\main\\java\\TeacherAppBenchmark\\bdgrafos\\meses.txt";
+		String grafoOUT = cwd + "\\src\\main\\java\\TeacherAppBenchmark\\bdgrafos\\meses2.txt";
 
 		// Lê o grafo original do disco e o exibe via GraphStream.
 		gndLad.carrega(grafoIN);
@@ -33,7 +36,7 @@ public class AppTestaGrafoND2 {
 		// Cria um dicionário de vértices com o label sendo a chave do dicionário.
 		// SUbstitua esta linha e as linhas de utilização do dicionário pelas suas
 		// classes e chamadas equivalentes.
-		TabHEA dicVclonados = new TabHEA();
+		TabHEA<Integer,Vertice> dicVclonados = new TabHEA();
     	LinkedList<Vertice> lst_vs_glad = gndLad.vertices();
     	LinkedList<Edge> lst_es_glad = gndLad.edges();
 
@@ -64,32 +67,33 @@ public class AppTestaGrafoND2 {
 
 			// Se este vértice ainda não foi clonado então cloná-lo: criar um novo vértice,
 			// copiar os campos dado e label, inserí-lo no grafo clone (gndMat).
-			if(dicVclonados.findElement(bkpV.getLabel()).equals(TabHEA.NO_SUCH_KEY)){
+			if(dicVclonados.findElement(bkpV.getId())== null){
 			  dado = bkpV.getDado();
 			  v = gndMat.insertVertex(dado);
 			  v.setLabel(bkpV.getLabel());
-			  dicVclonados.insertItem(v.getLabel(), v);
+			  dicVclonados.insertItem(v.getId(), v);
 			}
 			else
 				// Se o vértice já foi clonado, resgatá-lo do dicionário de clonados para posterior
 				// clonagem da aresta (porque a clonagem da aresta precisa de 2 end vértices, linha 96).
-				v = (Vertice)dicVclonados.findElement(bkpV.getLabel());
+
+				v = dicVclonados.findElement(bkpV.getId());
 
 			// Faça um bkp do segundo end vertice da aresta.
             bkpV = lst_end_vertices_gnLad.get(1);
 
             // Se este vértice ainda não foi clonado então cloná-lo: criar um novo vértice,
          	// copiar os campos dado e label, inserí-lo no grafo clone (gndMat).
-            if(dicVclonados.findElement(bkpV.getLabel()).equals(TabHEA.NO_SUCH_KEY)){
+            if(dicVclonados.findElement(bkpV.getId())==null){
 			  dado = bkpV.getDado();
 			  w = gndMat.insertVertex(dado);
 			  w.setLabel(bkpV.getLabel());
-			  dicVclonados.insertItem(w.getLabel(), w);
+			  dicVclonados.insertItem(w.getId(), w);
 			}
 			else
 				// Se o vértice já foi clonado, resgatá-lo do dicionário de clonados para posterior
 				// clonagem da aresta (porque a clonagem da aresta precisa de 2 end vértices, linha 96).
-				w = (Vertice)dicVclonados.findElement(bkpV.getLabel());
+				w = dicVclonados.findElement(bkpV.getId());
 
             // FInalmente, faz a clonagem da aresta do grafo origem.
 			Edge bkpE = lst_es_glad.get(i);

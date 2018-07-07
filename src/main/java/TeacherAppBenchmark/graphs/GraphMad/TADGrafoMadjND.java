@@ -159,9 +159,9 @@ public class TADGrafoMadjND extends TADGrafoMadj implements GraphNonDirectional 
 
     /*
      *  Exemplo de uso:
-     *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
+     *  TGrafoNDMAd g = TGrafoNDMAd.load("nomeArqTGF.txt");
      * */
-    public static TADGrafoMadjND carrega(String nome_arq_TGF){
+    public static TADGrafoMadjND load(String nome_arq_TGF){
         TADGrafoMadjND graph = new TADGrafoMadjND();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
@@ -174,7 +174,6 @@ public class TADGrafoMadjND extends TADGrafoMadj implements GraphNonDirectional 
         return graph;
 
     }
-
 
     public String toString(){
 

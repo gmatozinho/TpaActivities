@@ -262,9 +262,9 @@ public class TADGrafoMadjDD extends TADGrafoMadj implements GraphDirectional {
 
      /*
      *  Exemplo de uso:
-     *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
+     *  TGrafoNDMAd g = TGrafoNDMAd.load("nomeArqTGF.txt");
      * */
-    public static TADGrafoMadjDD carrega(String nome_arq_TGF){
+    public static TADGrafoMadjDD load(String nome_arq_TGF){
         TADGrafoMadjDD graph = new TADGrafoMadjDD();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");

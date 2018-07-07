@@ -356,6 +356,57 @@ public class TADGrafoMadj extends Graph {
 
     }
 
+    public void carrega(String nome_arq_TGF){
+
+
+        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
+
+        assert arq != null;
+        carregaCommon(arq);
+
+        arq.close();
+
+
+    }
+
+    protected void carregaCommon(ArquivoTxt arq){
+        /* lendo os vertices */
+        String row = arq.readline();
+        while (!row.trim().equals("#")){
+            String[] vector = row.split(" ", 2);
+            if(vector.length>1) {
+                insertVertex(null, vector[1].trim());
+            }
+
+            row = arq.readline();
+        }
+
+        /* lendo as arestas */
+        row = arq.readline();
+        while (row!= null){
+            String[] edges = row.split(" ", 3);
+
+            int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
+            int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
+
+            Vertice vertice1 = vertices.findElement(idVertex1);
+            Vertice vertice2 = vertices.findElement(idVertex2);
+
+            String label="";
+
+            if(edges.length == 3) {
+                label = (edges[2].trim());
+            }
+            if(label.equals("")) {
+                label = ("@#" + (globalEdgeID+1));
+            }
+
+            insertEdge(vertice1, vertice2, null, label);
+
+            row = arq.readline();
+        }
+
+    }
     public String save(String nome_arq_TGF){
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "wt");

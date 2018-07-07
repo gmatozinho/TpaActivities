@@ -10,8 +10,8 @@ import WorkFilesLib.ArquivoTxt;
 import java.util.LinkedList;
 
 public class TADGrafoLadj extends Graph {
-    protected int globalVertexID = 0;
-    protected int globalEdgeID = 0;
+    private int globalVertexID = 0;
+    private int globalEdgeID = 0;
     protected MyHash<Integer,VerticeLad> vertices = new MyHashListChain<>();
     protected MyHash<Integer,EdgeLad> edges = new MyHashListChain<>();
 
@@ -80,6 +80,7 @@ public class TADGrafoLadj extends Graph {
     @Override
     public String[] endVertices(String edge) {
         EdgeLad edgeLad = findEdges(edge);
+        assert edgeLad != null;
         return new String[] { edgeLad.getOrigin().getLabel(),edgeLad.getDestination().getLabel()};
     }
 
@@ -233,7 +234,7 @@ public class TADGrafoLadj extends Graph {
         return false;
     }
 
-    protected int generateVertexId(){
+    private int generateVertexId(){
         return globalVertexID++;
     }
 
@@ -270,6 +271,55 @@ public class TADGrafoLadj extends Graph {
             }
 
             graph.insertEdge(vertice1, vertice2, null, label);
+
+            row = arq.readline();
+        }
+
+    }
+
+
+    public void carrega(String nome_arq_TGF){
+        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
+
+        assert arq != null;
+        carregaCommon(arq);
+
+        arq.close();
+    }
+
+    private void carregaCommon(ArquivoTxt arq){
+        /* lendo os vertices */
+        String row = arq.readline();
+        while (!row.trim().equals("#")){
+            String[] vector = row.split(" ", 2);
+            if(vector.length>1) {
+                insertVertex(null, vector[1].trim());
+            }
+
+            row = arq.readline();
+        }
+
+        /* lendo as arestas */
+        row = arq.readline();
+        while (row!= null){
+            String[] edges = row.split(" ", 3);
+
+            int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
+            int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
+
+            Vertice vertice1 = vertices.findElement(idVertex1);
+            Vertice vertice2 = vertices.findElement(idVertex2);
+
+            String label="";
+
+            if(edges.length == 3) {
+                label = (edges[2].trim());
+            }
+            if(label.equals("")) {
+                label = ("@#" + (globalEdgeID+1));
+            }
+
+            insertEdge(vertice1, vertice2, null, label);
 
             row = arq.readline();
         }

@@ -163,7 +163,7 @@ public class GraphMadND extends GraphMad implements GraphNonDirectional {
 
     /*
      *  Exemplo de uso:
-     *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
+     *  TGrafoNDMAd g = TGrafoNDMAd.load("nomeArqTGF.txt");
      * */
     public static GraphMadND load(String nome_arq_TGF){
         GraphMadND graph = new GraphMadND();

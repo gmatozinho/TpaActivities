@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 public class GraphMadDD extends GraphMad implements GraphDirectional {
 
-    public GraphMadDD() {
+    private GraphMadDD() {
     }
 
     public GraphMadDD(int length) {
@@ -248,7 +248,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
 
      /*
      *  Exemplo de uso:
-     *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
+     *  TGrafoNDMAd g = TGrafoNDMAd.load("nomeArqTGF.txt");
      * */
     public static GraphMadDD load(String nome_arq_TGF){
         GraphMadDD graph = new GraphMadDD();
@@ -269,7 +269,7 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
 
         MyHash<Integer,Integer> dicIDgrafoID_tgf = new MyHashListChain();
         /* Escrevendo os vertices */
-        String strGrafo = "";
+        StringBuilder strGrafo = new StringBuilder();
         int id = 1;
 
         String row;
@@ -277,16 +277,16 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
         for(int i = this.firstIndexMatrix; i<= this.lastIndexMatrix; i++){
             if(!lstVtxDelete.contains(i)){
                 row = id + " " + findVertexLabelById(i);
-                strGrafo+=(row);
-                strGrafo+=("\n");
+                strGrafo.append(row);
+                strGrafo.append("\n");
 
                 dicIDgrafoID_tgf.insertItem(i,id);
 
                 id++;
             }
         }
-        strGrafo+=("#");
-        strGrafo+=("\n");
+        strGrafo.append("#");
+        strGrafo.append("\n");
 
         /* escrevendo as arestas */
         for(int lin =firstIndexMatrix; lin<=lastIndexMatrix; lin++){
@@ -303,8 +303,8 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
                                 row = tgf_lin + " " + tgf_col;
                             }
 
-                            strGrafo+=(row);
-                            strGrafo+=("\n");
+                            strGrafo.append(row);
+                            strGrafo.append("\n");
                         }
                     }
                 }
@@ -312,6 +312,6 @@ public class GraphMadDD extends GraphMad implements GraphDirectional {
         }
 
 
-        return strGrafo;
+        return strGrafo.toString();
     }
 }

@@ -1,9 +1,7 @@
 package TeacherAppBenchmark;
 
 import TeacherAppBenchmark.graphs.Edge;
-import TeacherAppBenchmark.graphs.GraphLad.TADGrafoLadjDD;
 import TeacherAppBenchmark.graphs.GraphLad.TADGrafoLadjND;
-import TeacherAppBenchmark.graphs.GraphMad.TADGrafoMadjDD;
 import TeacherAppBenchmark.graphs.Vertice;
 
 import java.util.LinkedList;
@@ -18,7 +16,7 @@ public class AppTestaGrafoND {
 		// Povoando o grafo gnd.
 		Vertice v = gnd.insertVertex(null);
 		v.setLabel("V");
-		
+
 		Vertice u = gnd.insertVertex(null);
 		u.setLabel("U");
 		
@@ -59,7 +57,7 @@ public class AppTestaGrafoND {
 		h.setLabel("h");
 		
 		//gnd.printmatriz();
-		
+
 		System.out.println();
 		
 		// Testando interface do grafo
